@@ -1,12 +1,12 @@
 import React from 'react'
+import { RouterProvider } from 'react-router-dom'
 import { GlobalStyles } from './globalStyles'
+import { router } from './routes'
 
 const App: React.FC = () =>
 	(
 		<>
-			<div className="App">
-			Olá, NOSCONFORMES!
-			</div>
+			<RouterProvider router={router} />
 			<GlobalStyles />
 		</>
 	)

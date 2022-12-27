@@ -8,7 +8,7 @@ const GlobalStyles = createGlobalStyle`
     outline: 0;
   }
   body {
-    background: #FFFFFF;
+    background: #E9EFF5;
     color: #0F141E;
     -webkit-font-smoothing: antialiased;
   }
