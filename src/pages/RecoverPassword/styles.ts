@@ -56,60 +56,84 @@ export const RightSide = styled.div`
 		margin-top: 124px;
 	}
 
-	p.welcome {
-		font-family: 'Inter', sans-serif;
-		font-weight: 700;
-		font-size: 40px;
-		margin-top: 22px;
-		margin-bottom: 44px;
-	}
-
-	form {
+	.back {
 		display: flex;
-		flex-direction: column;
-		width: 481px;
+		flex-direction: row;
+		align-items: center;
+		padding: 0px;
+		gap: 12px;
 
-		a {
-			font-family: 'Inter', sans-serif;
+		position: relative;
+
+		width: 97px;
+		height: 37px;
+		right: 180px;
+
+		margin-top: 240px;
+		margin-bottom: 60px;
+
+		&:hover {
+			cursor: pointer;
+		}
+
+		svg {
+			width: 37px;
+			height: 37px;
+			color: blue;
+		}
+
+		p {
+			font-family: 'Inter';
+			font-style: normal;
 			font-weight: 700;
 			font-size: 16px;
-			text-decoration: none;
-			margin-top: 16px;
-			margin-bottom: 20px;
+			line-height: 170.4%;
+
 			color: #1F4CD5;
 		}
 	}
 
-	.login-error {
+	.message-container {
 		display: flex;
-		flex-direction: row;
-		justify-content: flex-start;
+		flex-direction: column;
 		align-items: center;
-		padding: 6px 12px 6px 11px;
-		margin-bottom: 12px;
-		gap: 10px;
+		padding: 0px;
 
 		width: 481px;
-		height: 69px;
+		height: 215px;
 
-		background: #FFADC6;
-		border-radius: 8px;
-
-		svg {
-			color: #FF2163;
-		}
-
-		span {
-			width: 383px;
-			height: 34px;
-
+		.title {
 			font-family: 'Inter';
 			font-style: normal;
-			font-weight: 600;
-			font-size: 14px;
-			line-height: 17px;
+			font-weight: 700;
+			font-size: 40px;
+			line-height: 48px;
+			text-align: center;
 
-			color: #FF2163;
+			color: #0F141E;
+
+			margin-bottom: 30px;
+		}
+
+		.message {
+			font-family: 'Inter';
+			font-style: normal;
+			font-weight: 500;
+			font-size: 20px;
+			line-height: 24px;
+
+			color: #323E57;
+			margin-bottom: 60px;
+		}
+
+		.mail {
+			font-family: 'Inter';
+			font-style: normal;
+			font-weight: 700;
+			font-size: 24px;
+			line-height: 29px;
+
+			color: #323E57;
 		}
 	}
 
