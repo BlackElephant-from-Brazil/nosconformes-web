@@ -1,6 +1,6 @@
 import { styled, TextField } from '@mui/material'
 
-export const PrimaryInput = styled(TextField)({
+export const PrimaryInput = styled(TextField)(props => ({
 	marginTop: 12,
 	marginBottom: 12,
 	borderRadius: 8,
@@ -13,7 +13,7 @@ export const PrimaryInput = styled(TextField)({
 		height: 48,
 
 		'& fieldset': {
-			borderColor: '#FFFFFF',
+			borderColor: props.error ? '#FF2163' : '#FFFFFF',
 		},
 		'&:hover fieldset': {
 			borderColor: '#1F4CD5',
@@ -40,7 +40,7 @@ export const PrimaryInput = styled(TextField)({
 	},
 
 	'& label': {
-		color: '#323E57',
+		color: props.error ? '#FF2163' : '#323E57',
 		fontWeight: 700
 	},
 
@@ -53,4 +53,4 @@ export const PrimaryInput = styled(TextField)({
 	},
 
 
-})
+}))

@@ -6,16 +6,22 @@ import { PrimaryInput } from './styles'
 type InputProps = {
 	label: string,
 	name: string,
-	icon?: SvgIconComponent
-	type?: string
+	icon?: SvgIconComponent,
+	type?: string,
+	error?: boolean,
+	value?: string,
+	onChange?: (value: string) => void
 }
 
-
-const Input: React.FC<InputProps> = ({ icon, label, name, type }) => {
+const Input: React.FC<InputProps> = ({ icon, label, name, type, error, value, onChange }) => {
 	const [showPassword, setShowPassword] = React.useState(false)
 	const handleClickShowPassword = () => setShowPassword((show) => !show)
 	const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
+	}
+
+	const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
+		onChange?.(event.target.value)
 	}
 
 	if (icon) {
@@ -26,6 +32,9 @@ const Input: React.FC<InputProps> = ({ icon, label, name, type }) => {
 				name={name}
 				id={name}
 				type={type === 'password' && showPassword ? 'text' : type}
+				value={value}
+				onChange={onChangeInput}
+				error={error}
 				InputProps={{
 					startAdornment: icon ? (
 						<InputAdornment position='start'>
@@ -56,6 +65,9 @@ const Input: React.FC<InputProps> = ({ icon, label, name, type }) => {
 				label={label}
 				name={name}
 				id={name}
+				value={value}
+				error={error}
+				onChange={onChangeInput}
 			/>
 		)
 	}
