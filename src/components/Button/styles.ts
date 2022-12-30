@@ -7,6 +7,7 @@ export const PrimaryButton = styled(Button)`
 	font-size: 16px;
 	height: 48px;
 	font-weight: bold;
+	text-transform: initial;
 
 	:hover {
 		background-color: #072788;

@@ -1,27 +1,16 @@
 import React from 'react'
 import { createBrowserRouter } from 'react-router-dom'
-import { ChangePassword } from '../modules/login/pages/ChangePassword'
+import { companiesRoutes } from '../modules/companies/companies.routes'
+import { loginRoutes } from '../modules/login/login.routes'
 import { Home } from '../modules/login/pages/Home'
-import { Login } from '../modules/login/pages/Login'
-import { RecoverPassword } from '../modules/login/pages/RecoverPassword'
 
 const router = createBrowserRouter([
 	{
 		path: '/',
 		element: <Home />
 	},
-	{
-		path: '/login',
-		element: <Login />
-	},
-	{
-		path: '/recuperar-senha',
-		element: <RecoverPassword />
-	},
-	{
-		path: '/mudar-senha',
-		element: <ChangePassword />
-	}
+	...loginRoutes,
+	...companiesRoutes
 ])
 
 export { router }
