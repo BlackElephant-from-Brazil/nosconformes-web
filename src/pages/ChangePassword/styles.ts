@@ -56,6 +56,12 @@ export const RightSide = styled.div`
 		margin-top: 124px;
 	}
 
+	img.dm11-rounded-logo {
+		width: 134px;
+		height: 124px;
+		margin-top: 124px;
+	}
+
 	p.welcome {
 		font-family: 'Inter', sans-serif;
 		font-weight: 700;
@@ -67,20 +73,24 @@ export const RightSide = styled.div`
 	form {
 		display: flex;
 		flex-direction: column;
+
 		width: 481px;
 
-		a {
-			font-family: 'Inter', sans-serif;
-			font-weight: 700;
-			font-size: 16px;
-			text-decoration: none;
-			margin-top: 16px;
-			margin-bottom: 20px;
-			color: #1F4CD5;
+		p.pass-advise {
+			width: 481px;
+			height: 24px;
+
+			font-family: 'Inter';
+			font-style: normal;
+			font-weight: 500;
+			font-size: 20px;
+			line-height: 24px;
+
+			color: #323E57;
 		}
 	}
 
-	.login-error {
+	.pass-error {
 		display: flex;
 		flex-direction: row;
 		justify-content: flex-start;

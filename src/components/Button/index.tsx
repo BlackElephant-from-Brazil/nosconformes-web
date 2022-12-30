@@ -3,16 +3,21 @@ import { DangerButton, PrimaryButton } from './styles'
 
 type ButtonProps = {
 	text: string,
-	variant: 'primary' | 'danger'
+	variant: 'primary' | 'danger',
+	onClick?: () => void
 }
 
+const Button: React.FC<ButtonProps> = ({ text, variant, onClick }) => {
+	const onClickButton = (): void => {
+		onClick?.()
+	}
 
-const Button: React.FC<ButtonProps> = ({ text, variant }) => {
 	if (variant === 'primary') {
 		return (
 			<PrimaryButton
 				variant="contained"
 				disableElevation
+				onClick={() => { onClickButton() }}
 			>
 				{text}
 			</PrimaryButton>
@@ -22,12 +27,19 @@ const Button: React.FC<ButtonProps> = ({ text, variant }) => {
 			<DangerButton
 				variant="contained"
 				disableElevation
+				onClick={() => { onClickButton() }}
 			>
 				{text}
 			</DangerButton>
 		)
 	}
-	return ( <a>{text}</a>  )
+	return (
+		<a
+			onClick={() => { onClickButton() }}
+		>
+			{text}
+		</a>
+	)
 }
 
 export { Button }
