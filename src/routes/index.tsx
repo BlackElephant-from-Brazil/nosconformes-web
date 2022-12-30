@@ -1,9 +1,9 @@
 import React from 'react'
 import { createBrowserRouter } from 'react-router-dom'
-import { Home } from '../pages/Home'
-import { Login } from '../pages/Login'
-import { RecoverPassword } from '../pages/RecoverPassword'
-import { ChangePassword } from '../pages/ChangePassword'
+import { ChangePassword } from '../modules/login/pages/ChangePassword'
+import { Home } from '../modules/login/pages/Home'
+import { Login } from '../modules/login/pages/Login'
+import { RecoverPassword } from '../modules/login/pages/RecoverPassword'
 
 const router = createBrowserRouter([
 	{

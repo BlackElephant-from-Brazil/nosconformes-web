@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { Container, LeftSide, RightSide } from './styles'
-import ncHorizontal from '../../assets/nc-horizontal.png'
-import dm11Logotipo from '../../assets/dm11-logotipo.png'
-import dm11RoundedLogo from '../../assets/dm11-rounded-logo.png'
-import dashboardLogin from '../../assets/dashboard-login.png'
+import ncHorizontal from '../../../../assets/nc-horizontal.png'
+import dm11Logotipo from '../../../../assets/dm11-logotipo.png'
+import dm11RoundedLogo from '../../../../assets/dm11-rounded-logo.png'
+import dashboardLogin from '../../../../assets/dashboard-login.png'
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred'
 import Lock from '@mui/icons-material/Lock'
-import { Input } from '../../components/Input'
-import { Button } from '../../components/Button'
-import { ErrorMessage } from '../../components/ErrorMessage'
+import { Input } from '../../../../components/Input'
+import { Button } from '../../../../components/Button'
+import { ErrorMessage } from '../../../../components/ErrorMessage'
 
 type passErrorType = {
 	pass: boolean,

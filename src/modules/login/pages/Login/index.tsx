@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import { Container, LeftSide, RightSide } from './styles'
-import nosconformesRoundedLogo from '../../assets/nosconformes-rounded-logo.png'
-import ncHorizontal from '../../assets/nc-horizontal.png'
-import dm11Logotipo from '../../assets/dm11-logotipo.png'
-import dashboardLogin from '../../assets/dashboard-login.png'
-import { Button } from '../../components/Button'
+import nosconformesRoundedLogo from '../../../../assets/nosconformes-rounded-logo.png'
+import ncHorizontal from '../../../../assets/nc-horizontal.png'
+import dm11Logotipo from '../../../../assets/dm11-logotipo.png'
+import dashboardLogin from '../../../../assets/dashboard-login.png'
 import Mail from '@mui/icons-material/Mail'
 import Lock from '@mui/icons-material/Lock'
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred'
-import { Input } from '../../components/Input'
-import { ErrorMessage } from '../../components/ErrorMessage'
 import { useNavigate } from 'react-router-dom'
+import { Input } from '../../../../components/Input'
+import { ErrorMessage } from '../../../../components/ErrorMessage'
+import { Button } from '../../../../components/Button'
 
 type loginErrorType = {
 	mail: boolean,
