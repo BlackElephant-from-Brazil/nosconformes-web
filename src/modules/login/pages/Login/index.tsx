@@ -116,8 +116,8 @@ const Login: React.FC = () => {
 				<img src={nosconformesRoundedLogo} alt="Logotipo da empresa DM11" className='dm11-logo'/>
 				<p className="welcome">Bem vindo! 👋</p>
 				<form>
-					<Input value={mail} onChange={setMail} error={loginError.mail} label='Email' name='email' icon={Mail} type="email" />
-					<Input value={pass} onChange={setPass} error={loginError.pass} label='Senha' name='password' icon={Lock} type="password" />
+					<Input value={mail} onChange={setMail} error={loginError.mail} label='Email' name='email' startAdornmentIcon={<Mail />} type="email" />
+					<Input value={pass} onChange={setPass} error={loginError.pass} label='Senha' name='password' startAdornmentIcon={<Lock />} type="password" />
 					<a
 						onClick={recoverPassword}
 						role="button"

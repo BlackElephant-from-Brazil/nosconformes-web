@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import { Header } from '../../../components/Header'
 import BusinessIcon from '@mui/icons-material/Business'
 import InsertPhotoOutlinedIcon from '@mui/icons-material/InsertPhotoOutlined'
 import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined'
 import { Container, Body, CreateYourFirstCompanyScreen, AddCompanyData, AddManagerData } from './styles'
-import { Button } from '../../../components/Button'
-import { Input } from '../../../components/Input'
 import { useNavigate } from 'react-router-dom'
+import { Header } from '../../../../components/Header'
+import { Button } from '../../../../components/Button'
+import { Input } from '../../../../components/Input'
 
 const TAB_ADD_FIRST_COMPANY = 0
 const TAB_ADD_COMPANY_DATA = 1
@@ -39,7 +39,7 @@ const AddFirstCompany: React.FC = () => {
 
 	return (
 		<Container>
-			<Header icon={<BusinessIcon fontSize='large'/>} title="Empresas"/>
+			<Header icon={<BusinessIcon />} title="Empresas"/>
 			<Body>
 
 				<CreateYourFirstCompanyScreen active={activeTab === TAB_ADD_FIRST_COMPANY}>
