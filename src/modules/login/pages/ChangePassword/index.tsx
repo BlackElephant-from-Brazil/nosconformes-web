@@ -100,7 +100,7 @@ const ChangePassword: React.FC = () => {
 						text={textError}
 						error={passError.pass || passError.confirm}
 					/>
-					<Button onClick={onChangePassword} text='Atualizar sua senha' variant='primary' />
+					<Button onClick={onChangePassword} text='Atualizar sua senha' buttonStyle='primary' />
 				</form>
 
 				<div className='footer'>

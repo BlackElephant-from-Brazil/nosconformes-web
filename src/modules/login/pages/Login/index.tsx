@@ -128,7 +128,7 @@ const Login: React.FC = () => {
 						text={textError}
 						error={loginError.mail || loginError.pass}
 					/>
-					<Button onClick={onLogin} text='Login' variant='primary' />
+					<Button onClick={onLogin} text='Login' buttonStyle='primary' />
 				</form>
 				<div className='footer'>
 					<img src={ncHorizontal} alt="Logotipo NosConformes horizontal." />

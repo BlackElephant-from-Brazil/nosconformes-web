@@ -1,6 +1,11 @@
 import { Button, styled } from '@mui/material'
+import { ButtonVariations } from '.'
 
-export const PrimaryButton = styled(Button)`
+type PrimaryButtonProps = {
+	buttonStyle: ButtonVariations,
+}
+
+export const StyledButton = styled(Button)<PrimaryButtonProps>`
 	background: #1F4CD5;
 	font-family: 'Inter';
 	border-radius: 8px;
@@ -8,29 +13,35 @@ export const PrimaryButton = styled(Button)`
 	height: 48px;
 	font-weight: bold;
 	text-transform: initial;
+	width: 100%;
+	margin-bottom: 10px;
+	margin-top: 10px;
 
 	:hover {
-		background-color: #072788;
+		background: #072788;
 	}
 
 	:active {
-		background-color: #1F4CD5;
-	}
-`
-
-export const DangerButton = styled(Button)`
-	background: #FF2163;
-	font-family: 'Inter';
-	border-radius: 8;
-	font-size: 16px;
-	height: 48px;
-	font-weight: bold;
-
-	:hover {
-		background-color: #072788;
+		background: #1F4CD5;
 	}
 
-	:active {
-		background-color: #1F4CD5;
+	${(props) => {
+		if (props.buttonStyle === 'secondary') {
+			return `
+						background: #FFFFFF;
+						color: #1F4CD5;
+
+						:hover {
+							background: #D6E4FF;
+						}
+
+						:active {
+							background: #FFFFFF;
+						}
+					`
+		}
 	}
+}
+
+
 `
