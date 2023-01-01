@@ -16,6 +16,7 @@ export const Container = styled.div<ContainerProps>`
 	.company-infos {
 		display: flex;
 		flex-direction: row;
+		cursor: pointer;
 
 
 		img {
@@ -70,7 +71,7 @@ export const Container = styled.div<ContainerProps>`
 				height: 50px;
 				border-radius: 50%;
 				object-fit: cover;
-				border: 2px solid #FFFFFF;
+				border: 4px solid #FFFFFF;
 
 				:first-child {
 					transform: translateX(10px);
@@ -78,7 +79,6 @@ export const Container = styled.div<ContainerProps>`
 
 				:last-child {
 					transform: translateX(-50px);
-					/* transform: translateZ(0); */
 				}
 			}
 		}

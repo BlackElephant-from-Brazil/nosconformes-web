@@ -4,6 +4,7 @@ import AssignmentLateRoundedIcon from '@mui/icons-material/AssignmentLateRounded
 import WatchLaterRoundedIcon from '@mui/icons-material/WatchLaterRounded'
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded'
+import { useNavigate } from 'react-router-dom'
 
 export const STATUS_LATE = 'late'
 export const STATUS_IN_PROGRESS = 'inprogress'
@@ -24,6 +25,8 @@ export const CompanyCard:React.FC<CompanyCardProps> = ({
 	managerName,
 	status
 }) => {
+	const navigate = useNavigate()
+
 	const renderStatusComponent = () => {
 		if(status === STATUS_LATE) {
 			return (
@@ -59,9 +62,13 @@ export const CompanyCard:React.FC<CompanyCardProps> = ({
 		}
 	}
 
+	const handleOpenCompanyDetails = () => {
+		navigate('/detalhes-da-empresa')
+	}
+
 	return (
 		<Container status={status}>
-			<div className="company-infos">
+			<div className="company-infos" onClick={handleOpenCompanyDetails}>
 				<img src={companyLogo} alt="Logo da empresa" />
 				<div className="details">
 					<p className='company-name'>{companyName}</p>

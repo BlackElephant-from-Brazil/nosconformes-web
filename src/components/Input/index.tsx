@@ -35,16 +35,16 @@ const Input: React.FC<InputProps> = ({ startAdornmentIcon, endAdornmentIcon, lab
 			onChange={onChangeInput}
 			error={error}
 			InputProps={{
-				startAdornment: (
+				startAdornment: startAdornmentIcon ? (
 					<InputAdornment position='start'>
 						{startAdornmentIcon}
 					</InputAdornment>
-				),
-				endAdornment: (
+				) : null,
+				endAdornment: endAdornmentIcon ? (
 					<InputAdornment position='end'>
 						{endAdornmentIcon}
 					</InputAdornment>
-				)
+				) : null
 			}}
 		/>
 	)

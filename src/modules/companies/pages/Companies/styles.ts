@@ -38,3 +38,21 @@ export const CardContainer = styled.div`
 	justify-content: space-between;
 	margin-top: 40px;
 `
+
+export const AddNewCompanyContainerDrawer = styled.div`
+	display: flex;
+	flex-direction: column;
+
+	.close-drawer-icon {
+		position: absolute;
+		left: 26px;
+		top: 26px;
+		width: 50px;
+		height: 50px;
+		cursor: pointer;
+	}
+
+	.drawer-body {
+		margin-top: 120px;
+	}
+`
