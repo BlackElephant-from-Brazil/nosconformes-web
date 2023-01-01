@@ -49,8 +49,47 @@ export const Container = styled.div<ContainerProps>`
 
 	}
 
+	.auditors {
+		display: flex;
+		align-items: center;
+		margin-top: 24px;
+		color: #1F4CD5;
+		cursor: pointer;
+
+		p {
+			font-family: 'Inter';
+			font-weight: 700;
+			font-size: 16px;
+		}
+
+		.auditors-photos {
+			margin-left: 8px;
+
+			img {
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				object-fit: cover;
+				border: 2px solid #FFFFFF;
+
+				:first-child {
+					transform: translateX(10px);
+				}
+
+				:last-child {
+					transform: translateX(-50px);
+					/* transform: translateZ(0); */
+				}
+			}
+		}
+
+		svg {
+				transform: translateX(-40px);
+			}
+	}
+
 	.status-container {
-		margin-top: 40px;
+		margin-top: 24px;
 
 		.status-title {
 			color: #323E57;
