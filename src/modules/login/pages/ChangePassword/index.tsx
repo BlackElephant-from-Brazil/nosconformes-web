@@ -92,15 +92,15 @@ const ChangePassword: React.FC = () => {
 				<p className="welcome">Bem vindo! 👋</p>
 				<form>
 					<p className="pass-advise">Digite sua nova senha nos campos abaixo:</p>
-					<Input value={pass} onChange={setPass} error={passError.pass} label='Senha' name='password' icon={Lock} type="password" />
-					<Input value={confirm} onChange={setConfirm} error={passError.confirm} label='Confirme sua senha' name='confirm-password' icon={Lock} type="password" />
+					<Input value={pass} onChange={setPass} error={passError.pass} label='Senha' name='password' startAdornmentIcon={<Lock/>} type="password" />
+					<Input value={confirm} onChange={setConfirm} error={passError.confirm} label='Confirme sua senha' name='confirm-password' startAdornmentIcon={<Lock/>} type="password" />
 					<ErrorMessage
 						className={'pass-error'}
 						icon={<ReportGmailerrorredIcon />}
 						text={textError}
 						error={passError.pass || passError.confirm}
 					/>
-					<Button onClick={onChangePassword} text='Atualizar sua senha' variant='primary' />
+					<Button onClick={onChangePassword} text='Atualizar sua senha' buttonStyle='primary' />
 				</form>
 
 				<div className='footer'>

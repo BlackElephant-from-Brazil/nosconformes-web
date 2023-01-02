@@ -9,7 +9,6 @@ export const Container = styled.div`
 	align-items: center;
 
 	h1 {
-		/* margin-top: 66px; */
 		font-family: 'Inter';
 		font-weight: bold;
 		font-size: 40px;

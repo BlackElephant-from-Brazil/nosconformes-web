@@ -1,44 +1,38 @@
 import React from 'react'
-import { DangerButton, PrimaryButton } from './styles'
+import { StyledButton } from './styles'
+
+export const BT_PRIMARY = 'primary'
+export const BT_SECONDARY = 'secondary'
+export const BT_PRIMARY_ORANGE = 'primary-orange'
+
+export type ButtonVariations = typeof BT_PRIMARY | typeof BT_SECONDARY | typeof BT_PRIMARY_ORANGE
 
 type ButtonProps = {
-	text: string,
-	variant: 'primary' | 'danger',
+	text: string
+	buttonStyle: ButtonVariations
 	onClick?: () => void
+	className?: string
+	icon?: JSX.Element
 }
 
-const Button: React.FC<ButtonProps> = ({ text, variant, onClick }) => {
+const Button: React.FC<ButtonProps> = ({ text, buttonStyle, onClick, className, icon }) => {
 	const onClickButton = (): void => {
 		onClick?.()
 	}
 
-	if (variant === 'primary') {
-		return (
-			<PrimaryButton
-				variant="contained"
-				disableElevation
-				onClick={() => { onClickButton() }}
-			>
-				{text}
-			</PrimaryButton>
-		)
-	} else if (variant === 'danger') {
-		return (
-			<DangerButton
-				variant="contained"
-				disableElevation
-				onClick={() => { onClickButton() }}
-			>
-				{text}
-			</DangerButton>
-		)
-	}
 	return (
-		<a
+		<StyledButton
+			variant="contained"
+			disableElevation
 			onClick={() => { onClickButton() }}
+			className={className}
+			buttonStyle={buttonStyle}
+			endIcon={
+				icon ? icon : null
+			}
 		>
 			{text}
-		</a>
+		</StyledButton>
 	)
 }
 
