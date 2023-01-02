@@ -77,39 +77,7 @@ export const RightSide = styled.div`
 			margin-top: 16px;
 			margin-bottom: 20px;
 			color: #1F4CD5;
-		}
-	}
-
-	.login-error {
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-start;
-		align-items: center;
-		padding: 6px 12px 6px 11px;
-		margin-bottom: 12px;
-		gap: 10px;
-
-		width: 481px;
-		height: 69px;
-
-		background: #FFADC6;
-		border-radius: 8px;
-
-		svg {
-			color: #FF2163;
-		}
-
-		span {
-			width: 383px;
-			height: 34px;
-
-			font-family: 'Inter';
-			font-style: normal;
-			font-weight: 600;
-			font-size: 14px;
-			line-height: 17px;
-
-			color: #FF2163;
+			cursor: pointer;
 		}
 	}
 

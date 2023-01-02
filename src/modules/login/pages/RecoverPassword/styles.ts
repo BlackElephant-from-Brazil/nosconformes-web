@@ -62,9 +62,7 @@ export const RightSide = styled.div`
 		align-items: center;
 		padding: 0px;
 		gap: 12px;
-
 		position: relative;
-
 		width: 97px;
 		height: 37px;
 		right: 180px;
@@ -72,14 +70,30 @@ export const RightSide = styled.div`
 		margin-top: 240px;
 		margin-bottom: 60px;
 
-		&:hover {
+		a.back-button {
+			background: #1F4CD5;
+			width: 38px;
+			height: 38px;
+			border-radius: 50%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 			cursor: pointer;
-		}
 
-		svg {
-			width: 37px;
-			height: 37px;
-			color: blue;
+			:hover {
+				background: #072788;
+			}
+
+			:active {
+				transition: none;
+				background: #1F4CD5;
+			}
+
+			svg {
+				width: 24px;
+				height: 24px;
+				color: #FFFFFF;
+			}
 		}
 
 		p {

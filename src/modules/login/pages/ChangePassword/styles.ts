@@ -77,16 +77,12 @@ export const RightSide = styled.div`
 		width: 481px;
 
 		p.pass-advise {
-			width: 481px;
-			height: 24px;
-
 			font-family: 'Inter';
 			font-style: normal;
 			font-weight: 500;
 			font-size: 20px;
-			line-height: 24px;
-
 			color: #323E57;
+			margin-bottom: 20px;
 		}
 	}
 
