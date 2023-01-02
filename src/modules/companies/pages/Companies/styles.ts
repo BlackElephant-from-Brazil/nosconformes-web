@@ -42,6 +42,7 @@ export const CardContainer = styled.div`
 export const AddNewCompanyContainerDrawer = styled.div`
 	display: flex;
 	flex-direction: column;
+	width: 880px;
 
 	.close-drawer-icon {
 		position: absolute;

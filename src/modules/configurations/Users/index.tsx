@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from '../../../components/Button'
 import { Input } from '../../../components/Input'
-import { Container } from './styles'
+import { AddNewUserContainer, Container } from './styles'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import { Table } from '../../../components/Table'
 import { AccessLevels, ACCESS_LEVEL_CONSULTANT } from '../../companies/components/AccessLevel'
+import { RightDrawer } from '../../../components/RightDrawer'
+import CloseIcon from '@mui/icons-material/Close'
+import { UserForm } from '../components/UserForm'
 
 type User = {
 	avatar: string
@@ -29,14 +32,20 @@ const users: User[] = [{
 }]
 
 export const Users: React.FC = () => {
+	const [drawerOpen, setDrawerOpen] = useState(false)
 	const handleAddNewUser = () => {
-		console.log('adicionando usuários')
+		toggleDrawer()
+	}
+
+	const handleUserRowClicked = () => {
+		console.log('Editando o perfil do usuário.')
+		toggleDrawer()
 	}
 
 	const renderTableBodyInfo = () => {
-		const renderedTableRow = users.map(user => {
+		const renderedTableRow = users.map((user, i) => {
 			return (
-				<>
+				<tr key={i} onClick={handleUserRowClicked} className='user-table-row'>
 					<td>
 						<img src={user.avatar} alt={`Foto de perfil de ${user.name}`} className='user-avatar' />
 						<p>
@@ -58,11 +67,20 @@ export const Users: React.FC = () => {
 							{user.accessLevel}
 						</p>
 					</td>
-				</>
+				</tr>
 			)
 		})
 
 		return renderedTableRow
+	}
+
+	const toggleDrawer = () => {
+		setDrawerOpen(!drawerOpen)
+	}
+
+	const handleSaveUser = () => {
+		toggleDrawer()
+		console.log('usuário salvo com sucesso')
 	}
 
 	return (
@@ -72,6 +90,17 @@ export const Users: React.FC = () => {
 				<Button buttonStyle='primary' text='Criar novo usuário +' className='new-user-button' onClick={handleAddNewUser} />
 			</div>
 			<Table headerTitles={tableTitles} tableRows={renderTableBodyInfo()} />
+			<RightDrawer toggleDrawer={toggleDrawer} drawerOpen={drawerOpen}>
+				<AddNewUserContainer>
+					<CloseIcon className='close-drawer-icon' onClick={toggleDrawer} />
+					<div className="drawer-body">
+						<h2>
+							Crie novos usuários 😁
+						</h2>
+						<UserForm saveUser={handleSaveUser} />
+					</div>
+				</AddNewUserContainer>
+			</RightDrawer>
 		</Container>
 	)
 }

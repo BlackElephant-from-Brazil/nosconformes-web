@@ -22,12 +22,8 @@ export const Table: React.FC<TableProps> = ({ headerTitles, tableRows }) => {
 			</thead>
 			<tbody>
 				{
-					tableRows.map((tableRow, i) => {
-						return (
-							<tr key={i}>
-								{tableRow}
-							</tr>
-						)
+					tableRows.map(tableRow => {
+						return tableRow
 					})
 				}
 			</tbody>

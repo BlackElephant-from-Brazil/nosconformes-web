@@ -32,6 +32,10 @@ export const Container = styled.div`
 	table {
 		margin-top: 24px;
 
+		.user-table-row {
+			cursor: pointer;
+		}
+
 		td {
 
 			p {
@@ -47,6 +51,33 @@ export const Container = styled.div`
 	table tr td > * {
 		vertical-align:middle
 	}
+`
 
+export const AddNewUserContainer = styled.div`
+	width: 652px;
 
+	.close-drawer-icon {
+		position: absolute;
+		left: 26px;
+		top: 26px;
+		width: 50px;
+		height: 50px;
+		cursor: pointer;
+	}
+
+	.drawer-body {
+		display: flex;
+		width: 480px;
+		margin: 0 auto;
+		align-items: center;
+		flex-direction: column;
+
+		h2 {
+			font-family: 'Inter';
+			font-weight: 700;
+			font-size: 30px;
+			color: #0F141E;
+			margin-top: 164px;
+		}
+	}
 `
