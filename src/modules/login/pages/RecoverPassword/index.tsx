@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import ncHorizontal from '../../../../assets/nc-horizontal.png'
 import dm11Logotipo from '../../../../assets/dm11-logotipo.png'
 import dashboardLogin from '../../../../assets/dashboard-login.png'
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft'
+import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined'
 
 const RecoverPassword: React.FC = () => {
 	const navigate = useNavigate()
@@ -14,6 +14,10 @@ const RecoverPassword: React.FC = () => {
 	const hideMail = (): string => {
 		const [name, type] = mail.split('@')
 		return name.substring(0, 2) + '**********@' + type
+	}
+
+	const handleBackToLoginPage = () => {
+		navigate('/login')
 	}
 
 	return (
@@ -26,8 +30,10 @@ const RecoverPassword: React.FC = () => {
 				<img src={dashboardLogin} alt="Dois computadores exibindo a tela de dashboard." className='dashboard-login' />
 			</LeftSide>
 			<RightSide>
-				<div className='back' onClick={() => navigate('/login')}>
-					<ArrowCircleLeftIcon />
+				<div className='back'>
+					<a className='back-button' onClick={handleBackToLoginPage}>
+						<KeyboardArrowLeftOutlinedIcon />
+					</a>
 					<p>
 						Voltar
 					</p>

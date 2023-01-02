@@ -4,11 +4,10 @@ import ncHorizontal from '../../../../assets/nc-horizontal.png'
 import dm11Logotipo from '../../../../assets/dm11-logotipo.png'
 import dm11RoundedLogo from '../../../../assets/dm11-rounded-logo.png'
 import dashboardLogin from '../../../../assets/dashboard-login.png'
-import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred'
 import Lock from '@mui/icons-material/Lock'
 import { Input } from '../../../../components/Input'
 import { Button } from '../../../../components/Button'
-import { ErrorMessage } from '../../../../components/ErrorMessage'
+import { Alert, ALERT_TYPE_ERROR } from '../../../../components/Alert'
 
 type passErrorType = {
 	pass: boolean,
@@ -92,13 +91,12 @@ const ChangePassword: React.FC = () => {
 				<p className="welcome">Bem vindo! 👋</p>
 				<form>
 					<p className="pass-advise">Digite sua nova senha nos campos abaixo:</p>
-					<Input value={pass} onChange={setPass} error={passError.pass} label='Senha' name='password' startAdornmentIcon={<Lock/>} type="password" />
-					<Input value={confirm} onChange={setConfirm} error={passError.confirm} label='Confirme sua senha' name='confirm-password' startAdornmentIcon={<Lock/>} type="password" />
-					<ErrorMessage
-						className={'pass-error'}
-						icon={<ReportGmailerrorredIcon />}
+					<Input value={pass} onChange={setPass} error={passError.pass} label='Senha' name='password' startAdornmentIcon={<Lock/>} type="password" placeholder='Digite a sua nova senha...' />
+					<Input value={confirm} onChange={setConfirm} error={passError.confirm} label='Confirme sua senha' name='confirm-password' startAdornmentIcon={<Lock/>} type="password" placeholder='Confirme a senha digitada...' />
+					<Alert
 						text={textError}
 						error={passError.pass || passError.confirm}
+						type={ALERT_TYPE_ERROR}
 					/>
 					<Button onClick={onChangePassword} text='Atualizar sua senha' buttonStyle='primary' />
 				</form>

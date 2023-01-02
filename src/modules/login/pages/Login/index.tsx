@@ -6,10 +6,9 @@ import dm11Logotipo from '../../../../assets/dm11-logotipo.png'
 import dashboardLogin from '../../../../assets/dashboard-login.png'
 import Mail from '@mui/icons-material/Mail'
 import Lock from '@mui/icons-material/Lock'
-import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred'
 import { useNavigate } from 'react-router-dom'
 import { Input } from '../../../../components/Input'
-import { ErrorMessage } from '../../../../components/ErrorMessage'
+import { Alert, ALERT_TYPE_ERROR } from '../../../../components/Alert'
 import { Button } from '../../../../components/Button'
 
 type loginErrorType = {
@@ -86,7 +85,7 @@ const Login: React.FC = () => {
 		 */
 	}
 
-	const recoverPassword = (): void => {
+	const handleRecoverPasswordCLick = (): void => {
 		if(!verifyMail()) {
 			setLoginError({
 				...loginError,
@@ -116,17 +115,16 @@ const Login: React.FC = () => {
 				<img src={nosconformesRoundedLogo} alt="Logotipo da empresa DM11" className='dm11-logo'/>
 				<p className="welcome">Bem vindo! 👋</p>
 				<form>
-					<Input value={mail} onChange={setMail} error={loginError.mail} label='Email' name='email' startAdornmentIcon={<Mail />} type="email" />
-					<Input value={pass} onChange={setPass} error={loginError.pass} label='Senha' name='password' startAdornmentIcon={<Lock />} type="password" />
+					<Input value={mail} onChange={setMail} error={loginError.mail} label='Email' name='email' startAdornmentIcon={<Mail />} type="email" placeholder='Digite aqui seu email...' />
+					<Input value={pass} onChange={setPass} error={loginError.pass} label='Senha' name='password' startAdornmentIcon={<Lock />} type="password" placeholder='Insira sua senha...' />
 					<a
-						onClick={recoverPassword}
+						onClick={handleRecoverPasswordCLick}
 						role="button"
 					>Esqueci a senha</a>
-					<ErrorMessage
-						className={'login-error'}
-						icon={<ReportGmailerrorredIcon />}
+					<Alert
 						text={textError}
 						error={loginError.mail || loginError.pass}
+						type={ALERT_TYPE_ERROR}
 					/>
 					<Button onClick={onLogin} text='Login' buttonStyle='primary' />
 				</form>
