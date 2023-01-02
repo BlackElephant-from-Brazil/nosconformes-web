@@ -6,7 +6,7 @@ type HeaderProps = {
 	title: string
 }
 
-const Header: React.FC<HeaderProps> = ({ icon, title }) => {
+export const Header: React.FC<HeaderProps> = ({ icon, title }) => {
 	return (
 		<Container>
 			{icon}
@@ -14,5 +14,3 @@ const Header: React.FC<HeaderProps> = ({ icon, title }) => {
 		</Container>
 	)
 }
-
-export { Header }

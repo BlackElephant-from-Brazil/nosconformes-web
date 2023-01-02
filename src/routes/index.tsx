@@ -1,6 +1,7 @@
 import React from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import { companiesRoutes } from '../modules/companies/companies.routes'
+import { configurationsRoutes } from '../modules/configurations/configurations.routes'
 import { loginRoutes } from '../modules/login/login.routes'
 import { Home } from '../modules/login/pages/Home'
 
@@ -10,7 +11,8 @@ const router = createBrowserRouter([
 		element: <Home />
 	},
 	...loginRoutes,
-	...companiesRoutes
+	...companiesRoutes,
+	...configurationsRoutes
 ])
 
 export { router }
