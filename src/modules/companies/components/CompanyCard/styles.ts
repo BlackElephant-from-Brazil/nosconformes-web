@@ -8,7 +8,6 @@ type ContainerProps = {
 export const Container = styled.div<ContainerProps>`
 	background: #FFFFFF;
 	width: 386px;
-	/* height: 480px; */
 	margin-bottom: 40px;
 	border-radius: 16px;
 	padding: 32px;
