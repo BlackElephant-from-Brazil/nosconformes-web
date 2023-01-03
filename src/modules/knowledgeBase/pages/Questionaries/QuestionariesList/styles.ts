@@ -18,11 +18,14 @@ export const Container = styled.div`
 		}
 
 		.new-questionary-button {
-			width: 220px;
+			width: 260px;
 		}
 	}
 
 	.all-questionaries {
 		padding-top: 16px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
 	}
 `

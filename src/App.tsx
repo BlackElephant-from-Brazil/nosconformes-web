@@ -5,10 +5,10 @@ import { router } from './routes'
 
 const App: React.FC = () =>
 	(
-		<>
+		<div onContextMenu={e => e.preventDefault()}>
 			<RouterProvider router={router} />
 			<GlobalStyles />
-		</>
+		</div>
 	)
 
 

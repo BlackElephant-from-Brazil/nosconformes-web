@@ -46,10 +46,8 @@ export const Configurations: React.FC = () => {
 
 	return (
 		<Container>
-			<>
-				<HeaderWithTabs icon={<SettingsIcon/>} title="Configurações" tabs={tabs} active={tabActive} openTab={handleOpenTab} />
-				{renderBody()}
-			</>
+			<HeaderWithTabs icon={<SettingsIcon/>} title="Configurações" tabs={tabs} active={tabActive} openTab={handleOpenTab} />
+			{renderBody()}
 		</Container>
 	)
 }

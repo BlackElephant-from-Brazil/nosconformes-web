@@ -10,21 +10,18 @@ export type ButtonVariations = typeof BT_PRIMARY | typeof BT_SECONDARY | typeof 
 type ButtonProps = {
 	text: string
 	buttonStyle: ButtonVariations
-	onClick?: () => void
+	onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void
 	className?: string
 	icon?: JSX.Element
 }
 
 const Button: React.FC<ButtonProps> = ({ text, buttonStyle, onClick, className, icon }) => {
-	const onClickButton = (): void => {
-		onClick?.()
-	}
 
 	return (
 		<StyledButton
 			variant="contained"
 			disableElevation
-			onClick={() => { onClickButton() }}
+			onClick={(e) => { onClick?.(e) }}
 			className={className}
 			buttonStyle={buttonStyle}
 			endIcon={

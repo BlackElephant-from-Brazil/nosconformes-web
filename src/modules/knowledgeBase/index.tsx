@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import CommentBankIcon from '@mui/icons-material/CommentBank'
 import { HeaderWithTabs, Tab } from '../../components/HeaderWithTabs'
-import { Container } from './styles'
-import { Questionaries } from './Questionaries'
-import { Questions } from './Questions'
+import { Container, Body } from './styles'
+import { Questionaries } from './pages/Questionaries'
+import { Questions } from './pages/Questions'
 
 
 const tabs: Tab[] = [
@@ -37,10 +37,10 @@ export const KnowledgeBase: React.FC = () => {
 
 	return (
 		<Container>
-			<>
-				<HeaderWithTabs icon={<CommentBankIcon/>} title="Configurações" tabs={tabs} active={tabActive} openTab={handleOpenTab} />
+			<HeaderWithTabs icon={<CommentBankIcon/>} title="Base de conhecimento" tabs={tabs} active={tabActive} openTab={handleOpenTab} />
+			<Body>
 				{renderBody()}
-			</>
+			</Body>
 		</Container>
 	)
 }

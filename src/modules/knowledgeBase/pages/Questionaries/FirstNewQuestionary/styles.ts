@@ -9,7 +9,7 @@ export const Container = styled.div`
 	padding: 60px 48px;
 `
 
-export const AddFirstNewQuestionarieButton = styled.div`
+export const AddFirstNewQuestionaryButton = styled.div`
 	cursor: pointer;
 	border: 1px solid #1F4CD4;
 	width: 386px;

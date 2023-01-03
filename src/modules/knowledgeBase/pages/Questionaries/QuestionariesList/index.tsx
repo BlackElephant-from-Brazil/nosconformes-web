@@ -1,9 +1,9 @@
 import React from 'react'
-import { Button } from '../../../../components/Button'
-import { Input } from '../../../../components/Input'
+import { Button } from '../../../../../components/Button'
+import { Input } from '../../../../../components/Input'
 import { Container } from './styles'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
-import { Client, QuestionaryCardy } from '../components/QuestionaryCard'
+import { Client, QuestionaryCardy } from '../../../components/QuestionaryCard'
 
 const clients: Client[] = [
 	{
@@ -20,18 +20,22 @@ const clients: Client[] = [
 	}
 ]
 
-export const QuestionariesList: React.FC = () => {
-	const handleAddNewQuestionary = () => {
-		console.log('adicionando questionario')
-	}
+type QuestionariesListProps = {
+	openAddNewQuestionary: () => void
+}
+
+export const QuestionariesList: React.FC<QuestionariesListProps> = ({ openAddNewQuestionary }) => {
 
 	return (
 		<Container>
 			<div className="questionaries-header-components">
 				<Input name='searchCompany' placeholder='Pesquise pelo nome do questionário' endAdornmentIcon={<SearchRoundedIcon />} className='search-input' />
-				<Button buttonStyle='primary' text='Criar nova empresa +' className='new-questionary-button' onClick={handleAddNewQuestionary} />
+				<Button buttonStyle='primary' text='Criar novo questionário +' className='new-questionary-button' onClick={openAddNewQuestionary} />
 			</div>
 			<div className="all-questionaries">
+				<QuestionaryCardy title='Análise de política da empresa' clients={clients} />
+				<QuestionaryCardy title='Análise de política da empresa' clients={clients} />
+				<QuestionaryCardy title='Análise de política da empresa' clients={clients} />
 				<QuestionaryCardy title='Análise de política da empresa' clients={clients} />
 			</div>
 		</Container>
