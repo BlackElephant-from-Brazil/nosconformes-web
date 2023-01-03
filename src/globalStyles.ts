@@ -21,7 +21,7 @@ const GlobalStyles = createGlobalStyle`
 		display: flex;
 		flex-direction: column;
 		padding: 0;
-		overflow-y: hidden;
+		overflow-x: hidden;
 	}
 `
 

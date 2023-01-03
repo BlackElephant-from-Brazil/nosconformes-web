@@ -13,9 +13,10 @@ type InputProps = {
 	value?: string,
 	onChange?: (value: string) => void,
 	className?: string
+	autoFocus?: boolean
 }
 
-const Input: React.FC<InputProps> = ({ startAdornmentIcon, endAdornmentIcon, label, name, type, error, value, onChange, placeholder, className }) => {
+const Input: React.FC<InputProps> = ({ startAdornmentIcon, endAdornmentIcon, label, name, type, error, value, onChange, placeholder, className, autoFocus }) => {
 
 
 	const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -24,6 +25,7 @@ const Input: React.FC<InputProps> = ({ startAdornmentIcon, endAdornmentIcon, lab
 
 	return (
 		<PrimaryInput
+			autoFocus={autoFocus}
 			className={className}
 			variant="outlined"
 			label={label}
