@@ -29,6 +29,8 @@ const PasswordInput: React.FC<InputProps> = ({ startAdornmentIcon, endAdornmentI
 	if (startAdornmentIcon) {
 		return (
 			<PrimaryInput
+				autoComplete={''}
+
 				variant="outlined"
 				label={label}
 				placeholder={placeholder}

@@ -25,6 +25,7 @@ const Input: React.FC<InputProps> = ({ startAdornmentIcon, endAdornmentIcon, lab
 
 	return (
 		<PrimaryInput
+			autoComplete={''}
 			autoFocus={autoFocus}
 			className={className}
 			variant="outlined"

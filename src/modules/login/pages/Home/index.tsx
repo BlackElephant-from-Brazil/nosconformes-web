@@ -1,27 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import api from '../../../../api'
+import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../../../hooks/authentication.hook'
 
 const Home: React.FC = () => {
-	const [user, setUser] = useState<any | undefined>()
+	const { user } = useAuth()
+	const navigate = useNavigate()
 
 	useEffect(() => {
-		api
-			.get('/users')
-			.then((response) => setUser(response.data[0]))
-			.catch((err) => {
-				console.error('ops! ocorreu um erro' + err)
-			})
-	}, [])
+		if (Object.keys(user).length === 0) {
+			navigate('/login')
+		} else {
+			navigate('/dashboard')
+		}
+	}, [user])
 
-
-
-	return (
-		<div>
-			{
-				user?.name
-			}
-		</div>
-	)
+	return <></>
 }
 
 export { Home }
