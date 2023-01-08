@@ -32,8 +32,8 @@ type AuthState = {
 	user: User
 }
 
-const STORAGE_USER_KEY = '@nosconformes:user'
-const STORAGE_TOKEN_KEY = '@nosconformes:token'
+export const STORAGE_USER_KEY = '@nosconformes:user'
+export const STORAGE_TOKEN_KEY = '@nosconformes:token'
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
