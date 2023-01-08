@@ -7,7 +7,7 @@ const Home: React.FC = () => {
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		if (Object.keys(user).length === 0) {
+		if (!user || Object.keys(user).length === 0) {
 			navigate('/login')
 		} else {
 			navigate('/dashboard')
