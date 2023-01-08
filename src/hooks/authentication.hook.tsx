@@ -27,10 +27,29 @@ type AuthProviderProps = {
 	children: JSX.Element
 }
 
+type AuthState = {
+	token: string
+	user: User
+}
+
+export const STORAGE_USER_KEY = '@nosconformes:user'
+export const STORAGE_TOKEN_KEY = '@nosconformes:token'
+
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 export const AuthProvider : React.FC<AuthProviderProps> = ({ children }) => {
-	const [user, setUser] = useState<User>({} as User)
+	const [data, setData] = useState<AuthState>(() => {
+		const storagedUser = localStorage.getItem(STORAGE_USER_KEY)
+		const storagedToken = localStorage.getItem(STORAGE_TOKEN_KEY)
+
+		if (storagedToken && storagedUser) {
+			console.log(storagedUser)
+			api.defaults.headers.authorization = `Bearer ${storagedToken}`
+
+			return { token: storagedToken, user: JSON.parse(storagedUser) }
+		}
+		return {} as AuthState
+	})
 
 	const signIn = async ({ email, password }: SignInCredentials) => {
 		const response = await api.post('auth/login', {
@@ -38,17 +57,30 @@ export const AuthProvider : React.FC<AuthProviderProps> = ({ children }) => {
 			password
 		})
 
-		const { _success, token, user } = response.data
+		const { _success, accessToken, user } = response.data
 
-		if (!_success) console.log('deu bug, mostrar um toast')
+		if (!_success) {
+			console.log('deu bug, mostrar um toast')
+			return
+		}
 
-		api.defaults.headers.authorization = `Bearer ${token}`
+		localStorage.setItem(STORAGE_TOKEN_KEY, accessToken)
+		localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(user))
+		api.defaults.headers.authorization = `Bearer ${accessToken}`
 
-		setUser(user)
+		setData({
+			token: accessToken,
+			user
+		})
 	}
 
 	const updateUser = (user: User) => {
-		setUser(user)
+		localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(user))
+
+		setData({
+			...data,
+			user
+		})
 	}
 
 	const signOut = async () => {
@@ -56,15 +88,21 @@ export const AuthProvider : React.FC<AuthProviderProps> = ({ children }) => {
 
 		const { _success } = response.data
 
-		if (!_success) console.log('deu ruinzao')
+		if (!_success) {
+			console.log('deu ruinzao')
+			return
+		}
 
-		setUser({} as User)
+		localStorage.removeItem(STORAGE_TOKEN_KEY)
+		localStorage.removeItem(STORAGE_USER_KEY)
+		api.defaults.headers.authorization = ''
+		setData({} as AuthState)
 	}
 
 
 	return (
 		<AuthContext.Provider value={{
-			signIn, signOut, user, updateUser
+			signIn, signOut, user: data.user, updateUser
 		}}>
 			{children}
 		</AuthContext.Provider>

@@ -10,6 +10,8 @@ import { useNavigate } from 'react-router-dom'
 import { Input } from '../../../../components/Input'
 import { Alert, ALERT_TYPE_ERROR } from '../../../../components/Alert'
 import { Button } from '../../../../components/Button'
+import api from '../../../../api'
+import { useAuth } from '../../../../hooks/authentication.hook'
 
 type loginErrorType = {
 	mail: boolean,
@@ -25,6 +27,7 @@ const errors = {
 
 const Login: React.FC = () => {
 	const navigate = useNavigate()
+	const { signIn } = useAuth()
 
 	const [loginError, setLoginError] = useState<loginErrorType>({
 		mail: false,
@@ -45,40 +48,48 @@ const Login: React.FC = () => {
 	 * -> incorrect (ex: incorrect/inexistent mail or incorrect password)
 	 */
 
-	const onLogin = (): void => {
-		setLoginError({
-			mail: false,
-			pass: false
+	const onLogin = async () => {
+		await signIn({
+			email: mail,
+			password: pass
 		})
+		navigate('/dashboard')
+		// const response = api.post('auth/login', {
 
-		if(!mail || !pass) {
-			setLoginError({
-				mail: !mail,
-				pass: !pass
-			})
-			setTextError(`${!mail ? errors.unfilledMail : ''} ${!pass ? errors.unfilledPass : ''}`)
-			return
-		}
+		// })
+		// 	setLoginError({
+		// 		mail: false,
+		// 		pass: false
+		// 	})
 
-		if(!verifyMail()) {
-			setLoginError({
-				mail: true,
-				pass: true
-			})
-			setTextError(errors.invalidMail)
-			return
-		}
+		// 	if(!mail || !pass) {
+		// 		setLoginError({
+		// 			mail: !mail,
+		// 			pass: !pass
+		// 		})
+		// 		setTextError(`${!mail ? errors.unfilledMail : ''} ${!pass ? errors.unfilledPass : ''}`)
+		// 		return
+		// 	}
 
-		const validAccess = false
+		// 	if(!verifyMail()) {
+		// 		setLoginError({
+		// 			mail: true,
+		// 			pass: true
+		// 		})
+		// 		setTextError(errors.invalidMail)
+		// 		return
+		// 	}
 
-		if(!validAccess) { // if email/pass are incorrect
-			setLoginError({
-				mail: true,
-				pass: true
-			})
-			setTextError(errors.invalidUser)
-			return
-		}
+		// 	const validAccess = false
+
+		// 	if(!validAccess) { // if email/pass are incorrect
+		// 		setLoginError({
+		// 			mail: true,
+		// 			pass: true
+		// 		})
+		// 		setTextError(errors.invalidUser)
+		// 		return
+		// }
 
 		/**
 		 * Redirect to next page
