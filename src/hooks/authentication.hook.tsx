@@ -52,27 +52,32 @@ export const AuthProvider : React.FC<AuthProviderProps> = ({ children, authentic
 
 	const signIn = async ({ email, password }: SignInCredentials) => {
 
-		const response = await api.post('auth/login', {
-			email,
-			password
-		})
+		try {
+			const response = await api.post('auth/login', {
+				email,
+				password
+			})
 
-		const { _success, accessToken, user } = response.data
+			const { _success, accessToken, user } = response.data
 
-		if (!_success) {
-			console.log('deu bug, mostrar um toast')
-			return
+			if (!_success) {
+				// TODO: COLOCAR UM TOAST
+				console.log('deu bug, mostrar um toast')
+				throw new Error(response.data.errors[0].message)
+			}
+
+			authenticateUser()
+			localStorage.setItem(STORAGE_TOKEN_KEY, accessToken)
+			localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(user))
+			api.defaults.headers.authorization = `Bearer ${accessToken}`
+
+			setData({
+				token: accessToken,
+				user
+			})
+		} catch (err) {
+			console.log('deu algum erro, // TODO: TRATAR')
 		}
-
-		authenticateUser()
-		localStorage.setItem(STORAGE_TOKEN_KEY, accessToken)
-		localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(user))
-		api.defaults.headers.authorization = `Bearer ${accessToken}`
-
-		setData({
-			token: accessToken,
-			user
-		})
 	}
 
 	const updateUser = (user: User) => {

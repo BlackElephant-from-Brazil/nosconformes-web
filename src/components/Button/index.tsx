@@ -13,12 +13,14 @@ type ButtonProps = {
 	onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void
 	className?: string
 	icon?: JSX.Element
+	type?: 'submit' | 'button' | 'reset'
 }
 
-const Button: React.FC<ButtonProps> = ({ text, buttonStyle, onClick, className, icon }) => {
+const Button: React.FC<ButtonProps> = ({ text, buttonStyle, onClick, className, icon, type }) => {
 
 	return (
 		<StyledButton
+			type={type}
 			variant="contained"
 			disableElevation
 			onClick={(e) => { onClick?.(e) }}
