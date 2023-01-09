@@ -9,7 +9,7 @@ import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeft
 const RecoverPassword: React.FC = () => {
 	const navigate = useNavigate()
 	const { state } = useLocation()
-	const mail = state?.mail
+	const mail = state?.email
 
 	const hideMail = (): string => {
 		const [name, type] = mail.split('@')

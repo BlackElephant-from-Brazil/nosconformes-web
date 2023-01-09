@@ -1,7 +1,8 @@
 import { InputAdornment, IconButton } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { useField } from '@unform/core'
 
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { PrimaryInput } from './styles'
 
 type InputProps = {
@@ -11,28 +12,43 @@ type InputProps = {
 	startAdornmentIcon?: JSX.Element,
 	endAdornmentIcon?: JSX.Element,
 	type?: string,
-	error?: boolean,
-	value?: string,
-	onChange?: (value: string) => void,
 	className?: string
 	autoFocus?: boolean
 }
 
-const Input: React.FC<InputProps> = ({ startAdornmentIcon, endAdornmentIcon, label, name, type, error, value, onChange, placeholder, className, autoFocus }) => {
-	const [showPassword, setShowPassword] = React.useState(false)
+const Input: React.FC<InputProps> = ({ startAdornmentIcon, endAdornmentIcon, label, name, type, placeholder, className, autoFocus }) => {
+	const [showPassword, setShowPassword] = useState(false)
+	const inputRef = useRef()
+	const { fieldName, defaultValue, registerField, clearError, error } = useField(name)
+
+	useEffect(() => {
+		registerField({
+			name: fieldName,
+			ref: inputRef,
+			getValue: ref => {
+				return ref.current.value
+			},
+			setValue: (ref, value) => {
+				ref.current.value = value
+			},
+			clearValue: ref => {
+				ref.current.value = ''
+			},
+		})
+	}, [fieldName, registerField])
+
 	const handleClickShowPassword = () => setShowPassword((show) => !show)
 
 	const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
 	}
 
-	const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		onChange?.(event.target.value)
-	}
+	// TODO: DISPLAY ERROR MESSAGE
 
 	return (
 		<PrimaryInput
-			autoComplete={''}
+			inputRef={inputRef}
+			defaultValue={defaultValue}
 			autoFocus={autoFocus}
 			className={className}
 			variant="outlined"
@@ -41,9 +57,7 @@ const Input: React.FC<InputProps> = ({ startAdornmentIcon, endAdornmentIcon, lab
 			name={name}
 			id={name}
 			type={type === 'password' && showPassword ? 'text' : type}
-			value={value}
-			onChange={onChangeInput}
-			error={error}
+			error={!!error}
 			InputProps={{
 				startAdornment: startAdornmentIcon ? (
 					<InputAdornment position='start'>

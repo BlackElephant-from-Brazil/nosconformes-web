@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { AlertTypes, ALERT_TYPE_ERROR } from '.'
+import { AlertTypes } from '.'
 
 type ContainerProps = {
 	type: AlertTypes
@@ -30,7 +30,7 @@ export const Container = styled.div<ContainerProps>`
 		}
 
 		${({ type }) => {
-		if (type === ALERT_TYPE_ERROR) {
+		if (type === 'error') {
 			return `
 					background: #FFADC6;
 

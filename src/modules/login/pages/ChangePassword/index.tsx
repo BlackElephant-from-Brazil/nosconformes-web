@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Container, LeftSide, RightSide } from './styles'
 import ncHorizontal from '../../../../assets/nc-horizontal.png'
 import dm11Logotipo from '../../../../assets/dm11-logotipo.png'
@@ -7,74 +7,65 @@ import dashboardLogin from '../../../../assets/dashboard-login.png'
 import Lock from '@mui/icons-material/Lock'
 import { Input } from '../../../../components/Input'
 import { Button } from '../../../../components/Button'
-import { Alert, ALERT_TYPE_ERROR } from '../../../../components/Alert'
+import { Alert } from '../../../../components/Alert'
+import { Form } from '@unform/web'
+import { FormHandles, SubmitHandler } from '@unform/core'
+import * as Yup from 'yup'
 
-type passErrorType = {
-	pass: boolean,
-	confirm: boolean
+const errorMessages = {
+	unfilledPassword: 'Preencha o campo de senha. ',
+	unfilledPasswordConfirmation: 'Preencha o campo de confirmação da senha. ',
+	invalidPassword: 'Sua senha precisa ter: 8 caracteres, 1 letra maiúscula, 1 letra minúscula e 1 caracter especial. ',
+	passwordsDontMatch: 'Os campos de senha e confirmação precisam ser iguais. ',
 }
 
-const errors = {
-	unfilledField: 'Todos os campos precisam estar preenchidos',
-	invalidPass: 'Sua senha precisa ter: 8 caracteres, 1 letra maiúscula, 1 letra minúscula e 1 caracter especial.',
-	diffPass: 'Os campos de senha e confirmação precisam ser iguais.',
+type ChangePasswordForm = {
+	password: string
+	passwordConfirmation: string
 }
 
 const ChangePassword: React.FC = () => {
-	const [pass, setPass] = useState<string>('')
-	const [confirm, setConfirm] = useState<string>('')
-	const [passError, setPassError] = useState<passErrorType>({
-		pass: false,
-		confirm: false
-	})
-	const [textError, setTextError] = useState<string>('')
+	const [displayErrors, setDisplayErrors] = useState('')
+	const formRef = useRef<FormHandles>(null)
 
-	const isValidPass = (): boolean => {
-		return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g.test(pass)
-	}
-
-	/**
-	 * error order:
-	 * -> unfilled 	(ex: '')
-	 * -> invalid 	(ex: '123456')
-	 * -> different (ex: different pass and confirm)
-	 */
-
-	const onChangePassword = (): void => {
-		setPassError({
-			pass: false,
-			confirm: false
-		})
-
-		if(!pass || !confirm) {
-			setPassError({
-				pass: !pass,
-				confirm: !confirm
+	const handleChangePasswordFormSubmit:SubmitHandler<ChangePasswordForm> = async (data) => {
+		setDisplayErrors('')
+		try {
+			const schema = Yup.object().shape({
+				password: Yup.string()
+					.required(errorMessages.unfilledPassword)
+					.matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g, {
+						message: errorMessages.invalidPassword
+					}),
+				passwordConfirmation: Yup.string()
+					.required(errorMessages.unfilledPasswordConfirmation)
+					.oneOf([Yup.ref('password'), null], errorMessages.passwordsDontMatch)
 			})
-			setTextError(errors.unfilledField)
-			return
+
+			await schema.validate(data, {
+				abortEarly: false
+			})
+
+		} catch (errors) {
+			let allErrors = ''
+			if (errors instanceof Yup.ValidationError) {
+
+				const validationErrors: {[key: string]: string} = {}
+				errors.inner.forEach(error => {
+					if(error.path)
+						validationErrors[error.path] = error.message
+					allErrors += error.message
+				})
+				formRef.current?.setErrors(validationErrors)
+				setDisplayErrors(allErrors)
+				return
+			} else {
+				console.log(errors)
+				return
+			}
 		}
 
-		if(!isValidPass()) {
-			setPassError({
-				pass: true,
-				confirm: true
-			})
-			setTextError(errors.invalidPass)
-			return
-		}
-
-		if(pass != confirm) {
-			setPassError({
-				pass: true,
-				confirm: true
-			})
-			setTextError(errors.diffPass)
-		}
-
-		/**
-		 * Change password in the back-end
-		 */
+		// TODO: SEND CHANGE PASSWORD TO DATABASE
 	}
 
 	return (
@@ -89,17 +80,16 @@ const ChangePassword: React.FC = () => {
 			<RightSide>
 				<img src={dm11RoundedLogo} alt="Logotipo DM11" className='dm11-rounded-logo' />
 				<p className="welcome">Bem vindo! 👋</p>
-				<form>
+				<Form onSubmit={handleChangePasswordFormSubmit} ref={formRef}>
 					<p className="pass-advise">Digite sua nova senha nos campos abaixo:</p>
-					<Input value={pass} onChange={setPass} error={passError.pass} label='Senha' name='password' startAdornmentIcon={<Lock/>} type="password" placeholder='Digite a sua nova senha...' />
-					<Input value={confirm} onChange={setConfirm} error={passError.confirm} label='Confirme sua senha' name='confirm-password' startAdornmentIcon={<Lock/>} type="password" placeholder='Confirme a senha digitada...' />
+					<Input label='Senha' name='password' startAdornmentIcon={<Lock/>} type="password" placeholder='Digite a sua nova senha...' />
+					<Input label='Confirme sua senha' name='passwordConfirmation' startAdornmentIcon={<Lock/>} type="password" placeholder='Confirme a senha digitada...' />
 					<Alert
-						text={textError}
-						error={passError.pass || passError.confirm}
-						type={ALERT_TYPE_ERROR}
+						text={displayErrors}
+						type='error'
 					/>
-					<Button onClick={onChangePassword} text='Atualizar sua senha' buttonStyle='primary' />
-				</form>
+					<Button text='Atualizar sua senha' buttonStyle='primary' type='submit' />
+				</Form>
 
 				<div className='footer'>
 					<img src={ncHorizontal} alt="Logotipo NosConformes horizontal." />
