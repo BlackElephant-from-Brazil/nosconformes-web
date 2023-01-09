@@ -67,7 +67,6 @@ const Login: React.FC = () => {
 		}
 
 		try {
-
 			await signIn({
 				email: data.email,
 				password: data.password

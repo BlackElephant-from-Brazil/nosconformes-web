@@ -23,6 +23,16 @@ const GlobalStyles = createGlobalStyle`
 		padding: 0;
 		overflow-x: hidden;
 	}
+
+	::-moz-selection { /* Code for Firefox */
+		color: #FFFFFF;
+		background: #1F4CD5;
+	}
+
+	::selection {
+		color: #FFFFFF;
+		background: #1F4CD5;
+	}
 `
 
 export { GlobalStyles }
