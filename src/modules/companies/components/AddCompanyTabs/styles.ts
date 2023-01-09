@@ -208,6 +208,7 @@ export const AddManagerData = styled.li<AddManagerDataProps>`
 
 	.form-manager-button-container {
 		display: flex;
+		width: 100%;
 
 		.jump-buttom {
 			max-width: 148px;

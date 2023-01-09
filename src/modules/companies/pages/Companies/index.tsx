@@ -9,6 +9,12 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import { RightDrawer } from '../../../../components/RightDrawer'
 import CloseIcon from '@mui/icons-material/Close'
 import { AddCompanyTabs } from '../../components/AddCompanyTabs'
+import { Form } from '@unform/web'
+import {  SubmitHandler } from '@unform/core'
+
+type SearchForm = {
+	search: string
+}
 
 export const Companies:React.FC = () => {
 	const [drawerOpen, setDrawerOpen] = useState(false)
@@ -19,12 +25,18 @@ export const Companies:React.FC = () => {
 		toggleDrawer()
 	}
 
+	const handleSearchSubmit: SubmitHandler<SearchForm> = (data) => {
+		return
+	}
+
 	return (
 		<Container>
 			<Header icon={<BusinessIcon />} title="Empresas"/>
 			<Body>
 				<div className="companies-list-utilities">
-					<Input name='searchCompany' placeholder='Pesquise pelo nome da empresa ou do gestor' endAdornmentIcon={<SearchRoundedIcon />} className='search-input' />
+					<Form onSubmit={handleSearchSubmit}>
+						<Input name='searchCompany' placeholder='Pesquise pelo nome da empresa ou do gestor' endAdornmentIcon={<SearchRoundedIcon />} className='search-input' />
+					</Form>
 					<Button buttonStyle='primary' text='Criar nova empresa +' className='new-company-button' onClick={handleAddNewCompany} />
 				</div>
 				<CardContainer>
