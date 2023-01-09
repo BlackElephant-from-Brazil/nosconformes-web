@@ -25,6 +25,7 @@ type AuthContextData = {
 
 type AuthProviderProps = {
 	children: JSX.Element
+	authenticateUser: () => void
 }
 
 type AuthState = {
@@ -37,21 +38,20 @@ export const STORAGE_TOKEN_KEY = '@nosconformes:token'
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
-export const AuthProvider : React.FC<AuthProviderProps> = ({ children }) => {
+export const AuthProvider : React.FC<AuthProviderProps> = ({ children, authenticateUser }) => {
 	const [data, setData] = useState<AuthState>(() => {
 		const storagedUser = localStorage.getItem(STORAGE_USER_KEY)
 		const storagedToken = localStorage.getItem(STORAGE_TOKEN_KEY)
 
 		if (storagedToken && storagedUser) {
-			console.log(storagedUser)
 			api.defaults.headers.authorization = `Bearer ${storagedToken}`
-
 			return { token: storagedToken, user: JSON.parse(storagedUser) }
 		}
 		return {} as AuthState
 	})
 
 	const signIn = async ({ email, password }: SignInCredentials) => {
+
 		const response = await api.post('auth/login', {
 			email,
 			password
@@ -64,6 +64,7 @@ export const AuthProvider : React.FC<AuthProviderProps> = ({ children }) => {
 			return
 		}
 
+		authenticateUser()
 		localStorage.setItem(STORAGE_TOKEN_KEY, accessToken)
 		localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(user))
 		api.defaults.headers.authorization = `Bearer ${accessToken}`

@@ -5,6 +5,8 @@ import { configurationsRoutes } from '../modules/configurations/configurations.r
 import { dashboardRoutes } from '../modules/dashboard/dashboard.routes'
 import { knowledgeBaseRoutes } from '../modules/knowledgeBase/knowledge-base.routes'
 import { redirect } from 'react-router-dom'
+import { SideBar } from '../components/SideBar'
+import { RouteContainer } from './styles'
 
 
 const validateLogin = () => {
@@ -25,7 +27,13 @@ const allPrivateRoutes = [
 const privateRoutes = allPrivateRoutes.map(route => {
 	return {
 		...route,
-		loader: validateLogin
+		loader: validateLogin,
+		element: <>
+			<SideBar />
+			<RouteContainer>
+				{route.element}
+			</RouteContainer>
+		</>
 	}
 })
 
