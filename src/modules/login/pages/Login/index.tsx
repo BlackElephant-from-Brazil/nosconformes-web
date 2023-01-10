@@ -80,6 +80,7 @@ const Login: React.FC = () => {
 	}
 
 	const handleRecoverPasswordCLick = async () => {
+
 		setDisplayError('')
 		const emailValue = formRef.current?.getFieldValue('email')
 		try {
@@ -109,13 +110,13 @@ const Login: React.FC = () => {
 				return
 			}
 		}
-
-		// TODO: SÓ ENTRARÁ NA PÁGINA DE MUDAR A SENHA CASO ENTRE PELO LINK COM UM PROTOCOLO VÁLIDO
 		navigate('/recuperar-senha', {
 			state: {
 				email: emailValue
 			}
 		})
+		// TODO: SÓ ENTRARÁ NA PÁGINA DE MUDAR A SENHA CASO ENTRE PELO LINK COM UM PROTOCOLO VÁLIDO
+
 	}
 
 	return (

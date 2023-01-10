@@ -2,7 +2,7 @@ import { Button, styled } from '@mui/material'
 import { BT_PRIMARY_ORANGE, BT_SECONDARY, ButtonVariations } from '.'
 
 type PrimaryButtonProps = {
-	buttonStyle: ButtonVariations,
+	buttonstyle: ButtonVariations,
 }
 
 export const StyledButton = styled(Button)<PrimaryButtonProps>`
@@ -25,7 +25,7 @@ export const StyledButton = styled(Button)<PrimaryButtonProps>`
 		background: #1F4CD5;
 	}
 
-	${({ buttonStyle }) => {
+	${({ buttonstyle: buttonStyle }) => {
 		if (buttonStyle === BT_SECONDARY) {
 			return `
 						background: #FFFFFF;
