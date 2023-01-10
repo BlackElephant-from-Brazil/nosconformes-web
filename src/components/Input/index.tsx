@@ -43,7 +43,7 @@ const Input: React.FC<InputProps> = ({ startAdornmentIcon, endAdornmentIcon, lab
 		event.preventDefault()
 	}
 
-	// TODO: DISPLAY ERROR MESSAGE
+	// TODO: DISPLAY ERROR MESSAGE (?)
 
 	return (
 		<PrimaryInput

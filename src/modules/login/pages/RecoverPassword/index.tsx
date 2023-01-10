@@ -31,7 +31,7 @@ const RecoverPassword: React.FC = () => {
 			</LeftSide>
 			<RightSide>
 				<div className='back'>
-					<a className='back-button' onClick={handleBackToLoginPage}>
+					<a className='back-button' onClick={handleBackToLoginPage} data-testid="back-button">
 						<KeyboardArrowLeftOutlinedIcon />
 					</a>
 					<p>

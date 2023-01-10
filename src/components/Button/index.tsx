@@ -25,7 +25,7 @@ const Button: React.FC<ButtonProps> = ({ text, buttonStyle, onClick, className, 
 			disableElevation
 			onClick={(e) => { onClick?.(e) }}
 			className={className}
-			buttonStyle={buttonStyle}
+			buttonstyle={buttonStyle}
 			endIcon={
 				icon ? icon : null
 			}
