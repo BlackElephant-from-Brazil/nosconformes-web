@@ -11,6 +11,8 @@ import { Alert } from '../../../../components/Alert'
 import { Form } from '@unform/web'
 import { FormHandles, SubmitHandler } from '@unform/core'
 import * as Yup from 'yup'
+import { useNavigate } from 'react-router-dom'
+import { api } from '../../../../api'
 
 const errorMessages = {
 	unfilledPassword: 'Preencha o campo de senha. ',
@@ -27,6 +29,7 @@ type ChangePasswordForm = {
 const ChangePassword: React.FC = () => {
 	const [displayErrors, setDisplayErrors] = useState('')
 	const formRef = useRef<FormHandles>(null)
+	const navigate = useNavigate()
 
 	const handleChangePasswordFormSubmit:SubmitHandler<ChangePasswordForm> = async (data) => {
 		setDisplayErrors('')
@@ -34,7 +37,7 @@ const ChangePassword: React.FC = () => {
 			const schema = Yup.object().shape({
 				password: Yup.string()
 					.required(errorMessages.unfilledPassword)
-					.matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g, {
+					.matches(/^(?=.*[a-z])(?=.*[0-9].*)(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g, {
 						message: errorMessages.invalidPassword
 					}),
 				passwordConfirmation: Yup.string()
@@ -65,7 +68,18 @@ const ChangePassword: React.FC = () => {
 			}
 		}
 
-		// TODO: SEND CHANGE PASSWORD TO DATABASE
+		try {
+			await api.post('/auth/change-password', {
+				email: 'valid@email.com',
+				password: data.password,
+				passwordConfirmation: data.passwordConfirmation,
+				_protocol: 'valid-protocol'
+			})
+		} catch (serverErrors) {
+			console.log(serverErrors)
+			return
+		}
+		navigate('/login')
 	}
 
 	return (
@@ -88,7 +102,7 @@ const ChangePassword: React.FC = () => {
 						text={displayErrors}
 						type='error'
 					/>
-					<Button text='Atualizar sua senha' buttonStyle='primary' type='submit' />
+					<Button text='Atualizar senha' buttonStyle='primary' type='submit' />
 				</Form>
 
 				<div className='footer'>
