@@ -1,12 +1,5 @@
 import styled from 'styled-components'
 
-type AddCompanyDataProps = {
-	active: boolean
-}
-type AddManagerDataProps = {
-	active: boolean
-}
-
 export const Container = styled.ul`
 	width: 724px;
 	margin: 0 auto;
@@ -16,9 +9,9 @@ export const Container = styled.ul`
 	list-style: none;
 `
 
-export const AddCompanyData = styled.li<AddCompanyDataProps>`
+export const AddCompanyData = styled.li`
 	width: 513px;
-	display: ${({ active }) => active ? 'flex' : 'none'};
+	display: flex;
 	flex-direction: column;
 	align-items: center;
 	margin-bottom: 40px;
@@ -109,9 +102,9 @@ export const AddCompanyData = styled.li<AddCompanyDataProps>`
 	}
 `
 
-export const AddManagerData = styled.li<AddManagerDataProps>`
+export const AddManagerData = styled.li`
 	width: 513px;
-	display: ${({ active }) => active ? 'flex' : 'none'};
+	display: flex;
 	flex-direction: column;
 	align-items: center;
 	margin-bottom: 40px;

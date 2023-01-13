@@ -11,6 +11,7 @@ import BusinessIcon from '@mui/icons-material/Business'
 import CommentBankIcon from '@mui/icons-material/CommentBank'
 import PeopleIcon from '@mui/icons-material/People'
 import { redirect, useNavigate } from 'react-router-dom'
+import { useSnackbar } from 'notistack'
 
 const DASHBOARD = 'dashboard'
 const COMPANIES = 'companies'
@@ -21,6 +22,7 @@ export const SideBar: React.FC = () => {
 	const [open, setOpen] = useState(false)
 	const [active, setActive] = useState(DASHBOARD)
 	const navigate = useNavigate()
+	const { enqueueSnackbar } = useSnackbar()
 
 	const renderBottomFixedContent = () => {
 		if(open) {
@@ -48,7 +50,7 @@ export const SideBar: React.FC = () => {
 		} else {
 			return (
 				<>
-					<div className="user-tag">
+					<div className="user-tag" onClick={handleShowSnackbarExample}>
 						<img src={avatarExample} alt="Avatar do usuário" />
 					</div>
 					<div className='bottom-menu'>
@@ -60,6 +62,10 @@ export const SideBar: React.FC = () => {
 				</>
 			)
 		}
+	}
+
+	const handleShowSnackbarExample = () => {
+		enqueueSnackbar('Olá, mundo! Sou uma snack. Eu sou uma snack grande, preciso ser quebrada em duas linhas ou mais.', { variant: 'error' })
 	}
 
 	const handleOpenMenu = (menu: string) => {

@@ -6,10 +6,11 @@ export type AlertTypes = 'error' | 'warning' | 'success'
 
 type AlertProps = {
 	text: string,
-	type: AlertTypes
+	type: AlertTypes,
+	testid?: string
 }
 
-const Alert: React.FC<AlertProps> = ({ text, type }) => {
+const Alert: React.FC<AlertProps> = ({ text, type, testid }) => {
 
 	const renderIcon = () => {
 		if (type === 'error') {
@@ -23,7 +24,7 @@ const Alert: React.FC<AlertProps> = ({ text, type }) => {
 				!!text && (
 					<Container type={type}>
 						{renderIcon()}
-						<span>{text}</span>
+						<span data-testid={testid}>{text}</span>
 					</Container>
 				)
 			}

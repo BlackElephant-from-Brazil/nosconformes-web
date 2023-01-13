@@ -11,6 +11,7 @@ export const Container = styled.div`
 	margin-left: 12px;
 	margin-top: 12px;
 	z-index: 2;
+	position: fixed;
 
 	.toggle-menu-button {
 		background: #323E57;

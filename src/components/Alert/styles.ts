@@ -16,6 +16,7 @@ export const Container = styled.div<ContainerProps>`
 		padding-bottom: 18px;
 		margin-bottom: 8px;
 		margin-top: 8px;
+		width: 100%;
 
 		svg {
 			width: 24px;
@@ -27,6 +28,7 @@ export const Container = styled.div<ContainerProps>`
 			font-weight: 600;
 			font-size: 14px;
 			margin-left: 12px;
+			max-width: 80%;
 		}
 
 		${({ type }) => {
