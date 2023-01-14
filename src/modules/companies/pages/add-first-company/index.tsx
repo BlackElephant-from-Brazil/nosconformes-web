@@ -1,7 +1,7 @@
 import React, {  useState } from 'react'
 import BusinessIcon from '@mui/icons-material/Business'
 import { Header } from '../../../../components/Header'
-import { AddCompanyTabs } from '../../components/AddCompanyTabs'
+import { AddCompanyTabs } from '../../components/add-company-tabs'
 import { Body, Container, CreateYourFirstCompanyScreen } from './styles'
 import { Button } from '../../../../components/Button'
 

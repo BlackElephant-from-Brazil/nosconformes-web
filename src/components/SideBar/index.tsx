@@ -65,7 +65,7 @@ export const SideBar: React.FC = () => {
 	}
 
 	const handleShowSnackbarExample = () => {
-		enqueueSnackbar('Olá, mundo! Sou uma snack. Eu sou uma snack grande, preciso ser quebrada em duas linhas ou mais.', { variant: 'error' })
+		enqueueSnackbar('Olá, mundo! Sou uma snack. Eu sou uma snack grande, preciso ser quebrada em duas linhas ou mais.', { variant: 'success' })
 	}
 
 	const handleOpenMenu = (menu: string) => {

@@ -1,8 +1,8 @@
 import React from 'react'
 import '@testing-library/jest-dom'
 import { cleanup, fireEvent, render, RenderResult } from '@testing-library/react'
-import { AddFirstCompany } from '../../../../modules/companies/pages/AddFirstCompany'
 import { act } from 'react-dom/test-utils'
+import { AddFirstCompany } from '../../../../modules/companies/pages/add-first-company'
 
 
 const mockedUseNavigate = jest.fn()

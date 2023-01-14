@@ -10,7 +10,7 @@ import InsertPhotoOutlinedIcon from '@mui/icons-material/InsertPhotoOutlined'
 import { Input } from '../../../../components/Input'
 import { Dialog } from '../../../../components/Dialog'
 import CloseIcon from '@mui/icons-material/Close'
-import { AccessLevel, ACCESS_LEVEL_MASTER } from '../../components/AccessLevel'
+import { AccessLevel, ACCESS_LEVEL_MASTER } from '../../components/access-level'
 
 export const TAB_COMPANY_DATA = 0
 export const TAB_MANAGER_DATA = 1

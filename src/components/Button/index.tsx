@@ -14,12 +14,14 @@ type ButtonProps = {
 	className?: string
 	icon?: JSX.Element
 	type?: 'submit' | 'button' | 'reset'
+	testid?: string
 }
 
-const Button: React.FC<ButtonProps> = ({ text, buttonStyle, onClick, className, icon, type }) => {
+const Button: React.FC<ButtonProps> = ({ text, buttonStyle, onClick, className, icon, type, testid }) => {
 
 	return (
 		<StyledButton
+			data-testid={testid}
 			type={type}
 			variant="contained"
 			disableElevation

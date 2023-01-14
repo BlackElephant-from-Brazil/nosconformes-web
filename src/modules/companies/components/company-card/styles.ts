@@ -23,8 +23,7 @@ export const Container = styled.div<ContainerProps>`
 			height: 66px;
 			border-radius: 50%;
 			border: 2px solid #1F4CD4;
-			object-fit: cover;
-			padding: 8px
+			object-fit: contain;
 		}
 
 		.details {

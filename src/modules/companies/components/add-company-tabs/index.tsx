@@ -51,7 +51,7 @@ const errorMessages = {
 			unfilled: 'Preencha o nome do gestor. '
 		},
 		office: {
-			unfilled:  'Coloque o cargo do gestor. '
+			unfilled: 'Coloque o cargo do gestor. '
 		},
 		department: {
 			unfilled: 'Insira o departamento de atuação do gestor na empresa. '
@@ -67,7 +67,11 @@ const errorMessages = {
 	}
 }
 
-export const AddCompanyTabs: React.FC = () => {
+type AddCompanyTabsProps = {
+	finishRegisteringCallback?: () => void
+}
+
+export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({ finishRegisteringCallback }) => {
 	const [activeTab, setActiveTab] = useState(TAB_ADD_COMPANY_DATA)
 	const formRef = useRef<FormHandles>(null)
 	const [displayCompanyErrors, setDisplayCompanyErrors] = useState('')
@@ -79,7 +83,7 @@ export const AddCompanyTabs: React.FC = () => {
 
 	const handleButtonNextClick = async () => {
 		setDisplayCompanyErrors('')
-		const cnpj = formRef.current?.getFieldValue('company.cnpj').replace(/\D/g,'')
+		const cnpj = formRef.current?.getFieldValue('company.cnpj').replace(/\D/g, '')
 		const companyFormData: Company = {
 			name: formRef.current?.getFieldValue('company.name'),
 			cnpj,
@@ -98,9 +102,9 @@ export const AddCompanyTabs: React.FC = () => {
 		} catch (err) {
 			let allErrors = ''
 			if (err instanceof Yup.ValidationError) {
-				const validationErrors: {[key: string]: string} = {}
+				const validationErrors: { [key: string]: string } = {}
 				err.inner.forEach(error => {
-					if(error.path)
+					if (error.path)
 						validationErrors[`company.${error.path}`] = error.message
 					allErrors += error.message
 				})
@@ -139,9 +143,9 @@ export const AddCompanyTabs: React.FC = () => {
 		} catch (err) {
 			let allErrors = ''
 			if (err instanceof Yup.ValidationError) {
-				const validationErrors: {[key: string]: string} = {}
+				const validationErrors: { [key: string]: string } = {}
 				err.inner.forEach(error => {
-					if(error.path)
+					if (error.path)
 						validationErrors[`manager.${error.path}`] = error.message
 					allErrors += error.message
 				})
@@ -153,22 +157,25 @@ export const AddCompanyTabs: React.FC = () => {
 				return
 			}
 		}
+		finishRegisteringCallback?.()
 		navigate('/empresas')
 		// TODO: SEND DATA TO DB VIA AXIOS API
 	}
 
 	const handleSaveWithoutManagerData = () => {
 		// TODO: SEND DATA TO DATABASE
+
+		finishRegisteringCallback?.()
 		navigate('/empresas')
 	}
 
 	const handleCNPJChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = ({ target: { value } }) => {
-		if(!value)
+		if (!value)
 			return
 
 		const cnpjValueWithouNANChars = value.replace(/[^\d]/g, '')
 		let formattedCNPJValue = cnpjValueWithouNANChars
-		if(cnpjValueWithouNANChars.length >= 15)
+		if (cnpjValueWithouNANChars.length >= 15)
 			formattedCNPJValue = cnpjValueWithouNANChars.substring(0, cnpjValueWithouNANChars.length - 1)
 
 		formRef.current?.setFieldValue('company.cnpj', formattedCNPJValue.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5')
@@ -176,20 +183,20 @@ export const AddCompanyTabs: React.FC = () => {
 	}
 
 	const handlePhoneChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = ({ target: { value } }) => {
-		if(!value)
+		if (!value)
 			return
 
 		const phoneValueWithoutNANChars = value.replace(/[^\d]/g, '')
 		let formattedPhoneValue = phoneValueWithoutNANChars
-		if(phoneValueWithoutNANChars.length >= 12)
+		if (phoneValueWithoutNANChars.length >= 12)
 			formattedPhoneValue = phoneValueWithoutNANChars.substring(0, phoneValueWithoutNANChars.length - 1)
 
 		formRef.current?.setFieldValue('manager.phone', formattedPhoneValue)
 
-		if(phoneValueWithoutNANChars.length === 10)
+		if (phoneValueWithoutNANChars.length === 10)
 			formRef.current?.setFieldValue('manager.phone', formattedPhoneValue.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3'))
 
-		if(phoneValueWithoutNANChars.length === 11)
+		if (phoneValueWithoutNANChars.length === 11)
 			formRef.current?.setFieldValue('manager.phone', formattedPhoneValue.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3'))
 
 
@@ -207,22 +214,22 @@ export const AddCompanyTabs: React.FC = () => {
 						<p><span>2</span>Dados do gestor</p>
 					</div>
 					<h2>
-							Adicione os dados da empresa:
+						Adicione os dados da empresa:
 					</h2>
 					<div className="company-photo">
 						<InsertPhotoOutlinedIcon />
 						<p>Clique para <br /> adicionar uma foto</p>
 					</div>
 					<Scope path='company'>
-						<Input label='Nome da empresa' name='name'/>
-						<Input label='CNPJ' name='cnpj' onChange={handleCNPJChange}/>
-						<Input label='Site' name="site"/>
+						<Input label='Nome da empresa' name='name' />
+						<Input label='CNPJ' name='cnpj' onChange={handleCNPJChange} />
+						<Input label='Site' name="site" />
 						<Alert
 							text={displayCompanyErrors}
 							type='error'
 							testid="company-errors"
 						/>
-						<Button text='Próximo' buttonStyle='primary' onClick={handleButtonNextClick}/>
+						<Button text='Próximo' buttonStyle='primary' onClick={handleButtonNextClick} />
 					</Scope>
 				</AddCompanyData>
 			)
@@ -230,7 +237,7 @@ export const AddCompanyTabs: React.FC = () => {
 			return (
 				<AddManagerData data-testid="add-manager-data-tab">
 					<h1>
-							Cadastre novas empresas 🏭
+						Cadastre novas empresas 🏭
 					</h1>
 					<div className="form-steps">
 						<p><span>1</span>Dados da empresa</p>
@@ -241,23 +248,23 @@ export const AddCompanyTabs: React.FC = () => {
 							<KeyboardArrowLeftOutlinedIcon />
 						</a>
 						<h2>
-								Adicione os dados do gestor:
+							Adicione os dados do gestor:
 						</h2>
 					</div>
 					<Scope path='manager'>
-						<Input label='Nome' name='name'/>
-						<Input label='Cargo' name='office'/>
-						<Input label='Departamento' name='department'/>
-						<Input label='Email' name='email'/>
-						<Input label='Telefone' name='phone' onChange={handlePhoneChange}/>
+						<Input label='Nome' name='name' />
+						<Input label='Cargo' name='office' />
+						<Input label='Departamento' name='department' />
+						<Input label='Email' name='email' />
+						<Input label='Telefone' name='phone' onChange={handlePhoneChange} />
 						<Alert
 							text={displayCompanyErrors}
 							type='error'
 							testid="company-errors"
 						/>
 						<div className="form-manager-button-container">
-							<Button text="Pular etapa" buttonStyle='secondary' onClick={handleSaveWithoutManagerData} className="jump-buttom"/>
-							<Button text='Cadastrar empresa' buttonStyle='primary' type='submit'/>
+							<Button text="Pular etapa" buttonStyle='secondary' onClick={handleSaveWithoutManagerData} className="jump-buttom" />
+							<Button text='Cadastrar empresa' buttonStyle='primary' type='submit' />
 						</div>
 					</Scope>
 				</AddManagerData>
