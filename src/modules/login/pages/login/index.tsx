@@ -1,19 +1,19 @@
 import React, { useRef, useState } from 'react'
 import { Container, LeftSide, RightSide } from './styles'
-import nosconformesRoundedLogo from '../../../../assets/nosconformes-rounded-logo.png'
-import ncHorizontal from '../../../../assets/nc-horizontal.png'
-import dm11Logotipo from '../../../../assets/dm11-logotipo.png'
-import dashboardLogin from '../../../../assets/dashboard-login.png'
+import nosconformesRoundedLogo from 'assets/nosconformes-rounded-logo.png'
+import ncHorizontal from 'assets/nc-horizontal.png'
+import dm11Logotipo from 'assets/dm11-logotipo.png'
+import dashboardLogin from 'assets/dashboard-login.png'
 import Mail from '@mui/icons-material/Mail'
 import Lock from '@mui/icons-material/Lock'
 import { useNavigate } from 'react-router-dom'
-import { Input } from '../../../../components/Input'
-import { Alert } from '../../../../components/Alert'
-import { Button } from '../../../../components/Button'
-import { useAuth } from '../../../../hooks/authentication.hook'
+import { Alert } from 'components/Alert'
+import { Button } from 'components/Button'
+import { useAuth } from 'hooks/authentication.hook'
 import { Form } from '@unform/web'
 import * as Yup from 'yup'
 import { FormHandles, SubmitHandler } from '@unform/core'
+import { Input } from 'components/Input'
 
 
 const errorMessages = {
@@ -51,9 +51,9 @@ const Login: React.FC = () => {
 			let allErrors = ''
 			if (errors instanceof Yup.ValidationError) {
 
-				const validationErrors: {[key: string]: string} = {}
+				const validationErrors: { [key: string]: string } = {}
 				errors.inner.forEach(error => {
-					if(error.path)
+					if (error.path)
 						validationErrors[error.path] = error.message
 					allErrors += error.message
 				})
@@ -96,9 +96,9 @@ const Login: React.FC = () => {
 
 			if (err instanceof Yup.ValidationError) {
 
-				const validationErrors: {[key: string]: string} = {}
+				const validationErrors: { [key: string]: string } = {}
 				err.inner.forEach(error => {
-					if(error.path)
+					if (error.path)
 						validationErrors[error.path] = error.message
 					allErrors += error.message
 				})
@@ -129,7 +129,7 @@ const Login: React.FC = () => {
 				<img src={dashboardLogin} alt="Dois computadores exibindo a tela de dashboard." className='dashboard-login' />
 			</LeftSide>
 			<RightSide>
-				<img src={nosconformesRoundedLogo} alt="Logotipo da empresa DM11" className='dm11-logo'/>
+				<img src={nosconformesRoundedLogo} alt="Logotipo da empresa DM11" className='dm11-logo' />
 				<p className="welcome">Bem vindo! 👋</p>
 				<Form ref={formRef} onSubmit={handleSubmitFormLogin} autoComplete="off">
 
