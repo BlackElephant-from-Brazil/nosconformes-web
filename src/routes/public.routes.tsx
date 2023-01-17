@@ -1,11 +1,11 @@
 import React from 'react'
+import { STORAGE_USER_KEY } from 'hooks/authentication.hook'
+import { loginRoutes } from 'modules/login/login.routes'
 import { redirect } from 'react-router-dom'
-import { STORAGE_USER_KEY } from '../hooks/authentication.hook'
-import { loginRoutes } from '../modules/login/login.routes'
 
 const validateLoggedUser = () => {
 	const storagedUser = localStorage.getItem(STORAGE_USER_KEY)
-	if(storagedUser) {
+	if (storagedUser) {
 		return redirect('/dashboard')
 	}
 	return null
