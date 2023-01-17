@@ -1,4 +1,3 @@
-import { ServerException } from 'interfaces/server-exception.type'
 import { enqueueSnackbar } from 'notistack'
 import React, { createContext, useContext, useState } from 'react'
 import { api } from '../api'
@@ -20,9 +19,9 @@ type SignInCredentials = {
 
 type AuthContextData = {
 	user: User
-	signIn(credentials: SignInCredentials): Promise<boolean>
-	signOut(): void
-	updateUser(user: User): void
+	signIn: (credentials: SignInCredentials) => Promise<boolean>
+	signOut: () => void
+	updateUser: (user: User) => void
 }
 
 type AuthProviderProps = {
@@ -88,14 +87,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children, authentica
 	}
 
 	const signOut = async () => {
-		const response = await api.get('auth/logout')
-
-		const { _success } = response.data
-
-		if (!_success) {
-			console.log('deu ruinzao')
-			return
-		}
+		await api.get('auth/logout')
 
 		localStorage.removeItem(STORAGE_TOKEN_KEY)
 		localStorage.removeItem(STORAGE_USER_KEY)
