@@ -17,6 +17,7 @@ export const PrimaryInput = styled(TextField)(props => ({
 		'& fieldset': {
 			borderColor: props.error ? '#FF2163' : '#FFFFFF',
 		},
+
 		'&:hover fieldset': {
 			borderColor: '#1F4CD5',
 		},
@@ -30,6 +31,10 @@ export const PrimaryInput = styled(TextField)(props => ({
 		borderRadius: 8,
 		fontFamily: 'Inter',
 		fontWeight: 500,
+	},
+
+	'& input:not(:placeholder-shown) ~ fieldset': {
+		border: '1px solid #99A7C2'
 	},
 
 	'& label': {

@@ -52,7 +52,7 @@ const Input: React.FC<InputProps> = ({ startAdornmentIcon, endAdornmentIcon, lab
 			className={className}
 			variant="outlined"
 			label={label}
-			placeholder={placeholder}
+			placeholder={placeholder ? placeholder : ' '}
 			name={name}
 			id={name}
 			type={type === 'password' && showPassword ? 'text' : type}
