@@ -78,10 +78,9 @@ export const TabCompanyDetails = styled.ul<TabCompanyDetailsProps>`
 			}
 		}
 
-		${
-			({ active }) => {
-				if(active === TAB_COMPANY_DATA) {
-					return `	.company-data-title {
+		${({ active }) => {
+		if (active === TAB_COMPANY_DATA) {
+			return `	.company-data-title {
 											p {
 												font-weight: 700;
 												font-size: 24px;
@@ -90,8 +89,8 @@ export const TabCompanyDetails = styled.ul<TabCompanyDetailsProps>`
 											border-bottom: 4px solid #1F4CD4;
 										}
 									`
-				} else if (active === TAB_MANAGER_DATA) {
-					return `	.manager-data-title {
+		} else if (active === TAB_MANAGER_DATA) {
+			return `	.manager-data-title {
 						p {
 							font-weight: 700;
 							font-size: 24px;
@@ -100,13 +99,15 @@ export const TabCompanyDetails = styled.ul<TabCompanyDetailsProps>`
 						border-bottom: 4px solid #1F4CD4;
 					}
 				`
-				}
-			}
 		}
+	}
+	}
 	}
 
 	li {
-		margin-top: 66px
+		margin: 0 auto;
+		margin-top: 66px;
+		max-width: 482px;
 	}
 
 	.company-data {

@@ -14,7 +14,7 @@ const companiesRoutes: RouteObject[] = [
 		element: <Companies />
 	},
 	{
-		path: '/detalhes-da-empresa',
+		path: '/detalhes-da-empresa/:companyId',
 		element: <CompanyDetails />
 	},
 ]

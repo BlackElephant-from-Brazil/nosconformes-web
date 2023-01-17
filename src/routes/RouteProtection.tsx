@@ -17,7 +17,7 @@ export const RouteProtection: React.FC<RouteProtectionProps> = ({ children }) =>
 
 	return (
 		<>
-			{ children }
+			{children}
 		</>
 	)
 }

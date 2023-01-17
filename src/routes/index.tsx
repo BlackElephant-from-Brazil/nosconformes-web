@@ -1,6 +1,6 @@
+import { Home } from 'modules/login/pages/home'
 import React from 'react'
 import { createBrowserRouter } from 'react-router-dom'
-import { Home } from '../modules/login/pages/Home'
 import { privateRoutes } from './private.routes'
 import { publicRoutes } from './public.routes'
 
