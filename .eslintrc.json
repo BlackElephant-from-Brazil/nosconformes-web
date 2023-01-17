@@ -38,7 +38,8 @@
 		"object-curly-spacing": [
 			"error",
 			"always"
-		]
+		],
+		"@typescript-eslint/no-explicit-any": "off"
 	},
 	"ignorePatterns": [
 		"/assets"

@@ -7,11 +7,19 @@ import { knowledgeBaseRoutes } from '../modules/knowledgeBase/knowledge-base.rou
 import { redirect } from 'react-router-dom'
 import { SideBar } from '../components/SideBar'
 import { RouteContainer } from './styles'
+import { api } from 'api'
+import { enqueueSnackbar } from 'notistack'
 
 
 const validateLogin = () => {
+	api.get('/auth/validate').catch(() => {
+		enqueueSnackbar('Não autorizado, faça login para continuar.', { variant: 'error' })
+		localStorage.clear()
+		redirect('/login')
+	})
+
 	const storagedUser = localStorage.getItem(STORAGE_USER_KEY)
-	if(!storagedUser) {
+	if (!storagedUser) {
 		return redirect('/login')
 	}
 	return null
