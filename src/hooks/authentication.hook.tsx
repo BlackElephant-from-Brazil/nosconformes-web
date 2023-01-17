@@ -1,3 +1,5 @@
+import { ServerException } from 'interfaces/server-exception.type'
+import { enqueueSnackbar } from 'notistack'
 import React, { createContext, useContext, useState } from 'react'
 import { api } from '../api'
 import { AccessLevel } from '../enums/access-level.enum'
@@ -18,7 +20,7 @@ type SignInCredentials = {
 
 type AuthContextData = {
 	user: User
-	signIn(credentials: SignInCredentials): Promise<void>
+	signIn(credentials: SignInCredentials): Promise<boolean>
 	signOut(): void
 	updateUser(user: User): void
 }
@@ -58,17 +60,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children, authentica
 				password
 			})
 
-			const { _success, accessToken, user } = response.data
-
-			if (!_success) {
-				// TODO: COLOCAR UM TOAST
-				console.log('deu bug, mostrar um toast')
-				throw new Error(response.data.errors[0].message)
-			}
-
-			console.log(
-				_success, accessToken, user
-			)
+			const { accessToken, user } = response.data
 
 			authenticateUser()
 			localStorage.setItem(STORAGE_TOKEN_KEY, accessToken)
@@ -79,8 +71,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children, authentica
 				token: accessToken,
 				user
 			})
-		} catch (err) {
-			console.log('deu algum erro, // TODO: TRATAR')
+			return true
+		} catch (err: any) {
+			enqueueSnackbar(err.response.data.message, { variant: 'error' })
+			return false
 		}
 	}
 
