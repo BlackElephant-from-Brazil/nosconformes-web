@@ -1,7 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom'
 import { cleanup, fireEvent, render, RenderResult, waitFor } from '@testing-library/react'
-import { Login } from '../../../../modules/login/pages/Login'
+import { Login } from '../../../../modules/login/pages/login'
 
 const mockedSignIn = jest.fn()
 

@@ -14,11 +14,12 @@ type MenuProps = {
 	menuItems: MenuItem[]
 	menuId: string
 	anchorEl: null | HTMLElement
+	className?: string
 }
 
-export const Menu: React.FC<MenuProps> = ({ menuItems, open, closeMenu, menuId, anchorEl }) => {
+export const Menu: React.FC<MenuProps> = ({ menuItems, open, closeMenu, menuId, anchorEl, className }) => {
 	return (
-		<Container open={open} onClose={closeMenu} id={menuId} anchorEl={anchorEl}>
+		<Container open={open} onClose={closeMenu} id={menuId} anchorEl={anchorEl} className={className}>
 			{
 				menuItems.map((menuItem, i) => {
 					return (

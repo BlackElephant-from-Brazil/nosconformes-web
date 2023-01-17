@@ -1,7 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom'
 import { cleanup, fireEvent, render, RenderResult, waitFor } from '@testing-library/react'
-import { ChangePassword } from '../../../../modules/login/pages/ChangePassword'
+import { ChangePassword } from '../../../../modules/login/pages/change-password'
 
 const mockedUseNavigate = jest.fn()
 

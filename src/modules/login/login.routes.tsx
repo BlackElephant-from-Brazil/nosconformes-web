@@ -1,8 +1,8 @@
 import React from 'react'
 import { RouteObject } from 'react-router-dom'
-import { ChangePassword } from './pages/ChangePassword'
-import { Login } from './pages/Login'
-import { RecoverPassword } from './pages/RecoverPassword'
+import { ChangePassword } from './pages/change-password'
+import { Login } from './pages/login'
+import { RecoverPassword } from './pages/recover-password'
 
 const loginRoutes: RouteObject[] = [
 	{

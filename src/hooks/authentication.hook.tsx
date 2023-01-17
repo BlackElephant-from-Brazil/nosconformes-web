@@ -38,7 +38,7 @@ export const STORAGE_TOKEN_KEY = '@nosconformes:token'
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
-export const AuthProvider : React.FC<AuthProviderProps> = ({ children, authenticateUser }) => {
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children, authenticateUser }) => {
 	const [data, setData] = useState<AuthState>(() => {
 		const storagedUser = localStorage.getItem(STORAGE_USER_KEY)
 		const storagedToken = localStorage.getItem(STORAGE_TOKEN_KEY)
@@ -65,6 +65,10 @@ export const AuthProvider : React.FC<AuthProviderProps> = ({ children, authentic
 				console.log('deu bug, mostrar um toast')
 				throw new Error(response.data.errors[0].message)
 			}
+
+			console.log(
+				_success, accessToken, user
+			)
 
 			authenticateUser()
 			localStorage.setItem(STORAGE_TOKEN_KEY, accessToken)

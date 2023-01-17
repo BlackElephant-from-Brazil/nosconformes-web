@@ -1,16 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Header } from '../../../../components/Header'
 import { Container, Body, TabCompanyDetails, AuditorsDialogContent } from './styles'
 import BusinessIcon from '@mui/icons-material/Business'
 import { BT_PRIMARY, Button } from '../../../../components/Button'
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
 import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import InsertPhotoOutlinedIcon from '@mui/icons-material/InsertPhotoOutlined'
 import { Input } from '../../../../components/Input'
 import { Dialog } from '../../../../components/Dialog'
 import CloseIcon from '@mui/icons-material/Close'
-import { AccessLevel, ACCESS_LEVEL_MASTER } from '../../components/AccessLevel'
+import { AccessLevel, ACCESS_LEVEL_MASTER } from '../../components/access-level'
+import { Form } from '@unform/web'
 
 export const TAB_COMPANY_DATA = 0
 export const TAB_MANAGER_DATA = 1
@@ -19,6 +20,11 @@ export const CompanyDetails: React.FC = () => {
 	const navigate = useNavigate()
 	const [active, setActive] = useState(TAB_COMPANY_DATA)
 	const [auditorsDialogOpen, setAuditorsDialogOpen] = useState(false)
+	const { companyId } = useParams()
+
+	useEffect(() => {
+		console.log(companyId)
+	}, [])
 
 	const handleBackToCompanyData = () => {
 		navigate('/empresas')
@@ -48,11 +54,19 @@ export const CompanyDetails: React.FC = () => {
 		setAuditorsDialogOpen(!auditorsDialogOpen)
 	}
 
+	const handleSubmitCompanyData = () => {
+		console.log('aoskaos')
+	}
+
+	const handleSubmitManagerData = () => {
+		console.log('aoskasasaos')
+	}
+
 	return (
 		<Container>
-			<Header icon={<BusinessIcon />} title="Empresas"/>
+			<Header icon={<BusinessIcon />} title="Empresas" />
 			<Body>
-				<Button text='Auditores' buttonStyle='primary-orange' icon={<PeopleAltIcon/>} className={'auditors-button'} onClick={handleShowAuditorsDialog} />
+				<Button text='Auditores' buttonStyle='primary-orange' icon={<PeopleAltIcon />} className={'auditors-button'} onClick={handleShowAuditorsDialog} />
 				<TabCompanyDetails active={active}>
 					<div className="tab-header">
 						<a className='back-button' onClick={handleBackToCompanyData}>
@@ -70,29 +84,30 @@ export const CompanyDetails: React.FC = () => {
 							<InsertPhotoOutlinedIcon />
 							<p>Clique para <br /> adicionar uma foto</p>
 						</div>
-						<form action="#" className="add-company-data-form">
-							<Input label='Nome da empresa' name='name'/>
-							<Input label='CNPJ' name='cnpj'/>
-							<Input label='Site' name="site"/>
-							<Button text='Salvar alterações' buttonStyle='primary' onClick={handleUploadCompanyData}/>
-						</form>
+						<Form className='add-company-data-form' onSubmit={handleSubmitCompanyData} >
+
+							<Input label='Nome da empresa' name='name' />
+							<Input label='CNPJ' name='cnpj' />
+							<Input label='Site' name="site" />
+							<Button text='Salvar alterações' buttonStyle='primary' onClick={handleUploadCompanyData} type="submit" />
+						</Form>
 					</li>
 					<li className="manager-data">
-						<form action="#" className="add-manager-data-form">
-							<Input label='Nome' name='name'/>
-							<Input label='Cargo' name='office'/>
-							<Input label='Departamento' name='department'/>
-							<Input label='Email' name='email'/>
-							<Input label='Telefone' name='phone'/>
-							<Button text='Salvar alterações' buttonStyle='primary' onClick={handleUploadManagerData}/>
-						</form>
+						<Form className='add-manager-data-form' onSubmit={handleSubmitManagerData} >
+							<Input label='Nome' name='name' />
+							<Input label='Cargo' name='office' />
+							<Input label='Departamento' name='department' />
+							<Input label='Email' name='email' />
+							<Input label='Telefone' name='phone' />
+							<Button text='Salvar alterações' buttonStyle='primary' onClick={handleUploadManagerData} type="submit" />
+						</Form>
 					</li>
 				</TabCompanyDetails>
 				<Dialog open={auditorsDialogOpen} toggleOpen={toggleAuditorsDialogOpen}>
 					<AuditorsDialogContent>
 						<CloseIcon className='close-dialog-icon' onClick={toggleAuditorsDialogOpen} />
 						<div className="dialog-header">
-							<PeopleAltIcon/>
+							<PeopleAltIcon />
 							<h2>
 								Auditores
 							</h2>

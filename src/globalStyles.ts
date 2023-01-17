@@ -33,6 +33,7 @@ const GlobalStyles = createGlobalStyle`
 		color: #FFFFFF;
 		background: #1F4CD5;
 	}
+
 `
 
 export { GlobalStyles }

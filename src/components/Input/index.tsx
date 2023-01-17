@@ -2,7 +2,7 @@ import { InputAdornment, IconButton } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { useField } from '@unform/core'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { ChangeEventHandler, useEffect, useRef, useState } from 'react'
 import { PrimaryInput } from './styles'
 
 type InputProps = {
@@ -14,9 +14,10 @@ type InputProps = {
 	type?: string,
 	className?: string
 	autoFocus?: boolean
+	onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 
-const Input: React.FC<InputProps> = ({ startAdornmentIcon, endAdornmentIcon, label, name, type, placeholder, className, autoFocus }) => {
+const Input: React.FC<InputProps> = ({ startAdornmentIcon, endAdornmentIcon, label, name, type, placeholder, className, autoFocus, onChange }) => {
 	const [showPassword, setShowPassword] = useState(false)
 	const inputRef = useRef()
 	const { fieldName, defaultValue, registerField, clearError, error } = useField(name)
@@ -43,8 +44,6 @@ const Input: React.FC<InputProps> = ({ startAdornmentIcon, endAdornmentIcon, lab
 		event.preventDefault()
 	}
 
-	// TODO: DISPLAY ERROR MESSAGE (?)
-
 	return (
 		<PrimaryInput
 			inputRef={inputRef}
@@ -53,11 +52,12 @@ const Input: React.FC<InputProps> = ({ startAdornmentIcon, endAdornmentIcon, lab
 			className={className}
 			variant="outlined"
 			label={label}
-			placeholder={placeholder}
+			placeholder={placeholder ? placeholder : ' '}
 			name={name}
 			id={name}
 			type={type === 'password' && showPassword ? 'text' : type}
 			error={!!error}
+			onChange={onChange}
 			InputProps={{
 				startAdornment: startAdornmentIcon ? (
 					<InputAdornment position='start'>

@@ -1,7 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom'
 import { cleanup, fireEvent, render, RenderResult, waitFor } from '@testing-library/react'
-import { RecoverPassword } from '../../../../modules/login/pages/RecoverPassword'
+import { RecoverPassword } from '../../../../modules/login/pages/recover-password'
 
 const mockedUseNavigate = jest.fn()
 // const mockedUseLocation = jest.fn().mockReturnValue({ state: { email: 'valid-user@email.com' } })

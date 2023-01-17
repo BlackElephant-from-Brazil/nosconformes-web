@@ -5,8 +5,11 @@ import AppProvider from './hooks'
 import { STORAGE_USER_KEY } from './hooks/authentication.hook'
 import { router } from './routes'
 import { AppContainer } from './styles'
-
-
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import WarningIcon from '@mui/icons-material/Warning'
+import ReportIcon from '@mui/icons-material/Report'
+import { SnackbarProvider } from 'notistack'
+import { ErrorSnack, SuccessSnack, WarningSnack } from './components/Snack'
 
 const App: React.FC = () =>{
 	const [authenticated, setAuthenticated] = useState(false)
@@ -26,11 +29,27 @@ const App: React.FC = () =>{
 
 	return (
 		<div onContextMenu={e => e.preventDefault()}>
-			<AppProvider authenticateUser={authenticateUser}>
-				<AppContainer authenticated={authenticated}>
-					<RouterProvider router={router} />
-				</AppContainer>
-			</AppProvider>
+			<SnackbarProvider maxSnack={6}
+				iconVariant={{
+					success: <CheckCircleIcon />,
+					warning: <WarningIcon />,
+					error: <ReportIcon />,
+				}}
+				Components={{
+					success: SuccessSnack,
+					warning: WarningSnack,
+					error: ErrorSnack
+				}}
+				style={{
+					marginLeft: 120
+				}}
+			>
+				<AppProvider authenticateUser={authenticateUser}>
+					<AppContainer authenticated={authenticated}>
+						<RouterProvider router={router} />
+					</AppContainer>
+				</AppProvider>
+			</SnackbarProvider>
 			<GlobalStyles />
 		</div>
 	)
