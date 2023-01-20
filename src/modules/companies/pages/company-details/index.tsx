@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Header } from '../../../../components/Header'
 import { Container, Body, TabCompanyDetails, AuditorsDialogContent } from './styles'
 import BusinessIcon from '@mui/icons-material/Business'
@@ -12,19 +12,69 @@ import { Dialog } from '../../../../components/Dialog'
 import CloseIcon from '@mui/icons-material/Close'
 import { AccessLevel, ACCESS_LEVEL_MASTER } from '../../components/access-level'
 import { Form } from '@unform/web'
+import { api } from 'api'
+import { enqueueSnackbar } from 'notistack'
+import { Company } from 'interfaces/company.type'
+import { FormHandles, SubmitHandler } from '@unform/core'
 
 export const TAB_COMPANY_DATA = 0
 export const TAB_MANAGER_DATA = 1
 
+type CompanyDataForm = {
+	name: string
+	cnpj: string
+	site: string
+}
+
+type ManagerDataForm = {
+	name: string
+	office: string
+	department: string
+	email: string
+	phone: string
+}
+
+
 export const CompanyDetails: React.FC = () => {
 	const navigate = useNavigate()
+	const [company, setCompany] = useState({} as Company)
 	const [active, setActive] = useState(TAB_COMPANY_DATA)
 	const [auditorsDialogOpen, setAuditorsDialogOpen] = useState(false)
 	const { companyId } = useParams()
+	const formCompanyRef = useRef<FormHandles>(null)
+	const formManagerRef = useRef<FormHandles>(null)
 
 	useEffect(() => {
-		console.log(companyId)
+		(async () => {
+			try {
+				const { data: companyData } = await api.get(`/companies/${companyId}`)
+				formCompanyRef.current?.setData({ name: companyData.name, cnpj: companyData.cnpj, site: companyData.site })
+				setCompany(companyData)
+			} catch (err: any) {
+				enqueueSnackbar(err.response.data.message, { variant: 'error' })
+			}
+		})()
 	}, [])
+
+	useEffect(() => {
+		if (active === TAB_COMPANY_DATA) {
+			formCompanyRef.current?.setData({
+				name: company.name || '',
+				cnpj: company.cnpj || '',
+				site: company.site || ''
+			})
+		}
+		if (active === TAB_MANAGER_DATA) {
+			formManagerRef.current?.setData({
+				name: company.manager?.name || '',
+				office: company.manager?.office || '',
+				department: company.manager?.department || '',
+				email: company.manager?.email || '',
+				phone: company.manager?.phone || ''
+			})
+		}
+	}, [active])
+
 
 	const handleBackToCompanyData = () => {
 		navigate('/empresas')
@@ -38,38 +88,28 @@ export const CompanyDetails: React.FC = () => {
 		setActive(TAB_MANAGER_DATA)
 	}
 
-	const handleUploadCompanyData = () => {
-		console.log('atualizando')
-	}
-
-	const handleUploadManagerData = () => {
-		console.log('atualizando')
-	}
-
-	const handleShowAuditorsDialog = () => {
-		toggleAuditorsDialogOpen()
-	}
-
 	const toggleAuditorsDialogOpen = () => {
 		setAuditorsDialogOpen(!auditorsDialogOpen)
 	}
 
-	const handleSubmitCompanyData = () => {
-		console.log('aoskaos')
+	const handleSubmitCompanyData: SubmitHandler<CompanyDataForm> = (data) => {
+		console.log(data)
+		return
 	}
 
-	const handleSubmitManagerData = () => {
-		console.log('aoskasasaos')
+	const handleSubmitManagerData: SubmitHandler<ManagerDataForm> = (data) => {
+		console.log(data)
+		return
 	}
 
 	return (
 		<Container>
 			<Header icon={<BusinessIcon />} title="Empresas" />
-			<Body>
-				<Button text='Auditores' buttonStyle='primary-orange' icon={<PeopleAltIcon />} className={'auditors-button'} onClick={handleShowAuditorsDialog} />
+			<Body data-testid="company-details-body">
+				<Button text='Auditores' buttonStyle='primary-orange' icon={<PeopleAltIcon />} className={'auditors-button'} onClick={toggleAuditorsDialogOpen} />
 				<TabCompanyDetails active={active}>
 					<div className="tab-header">
-						<a className='back-button' onClick={handleBackToCompanyData}>
+						<a className='back-button' onClick={handleBackToCompanyData} data-testid="back-button">
 							<KeyboardArrowLeftOutlinedIcon />
 						</a>
 						<div className="company-data-title" onClick={handleActiveCompanyData}>
@@ -79,29 +119,34 @@ export const CompanyDetails: React.FC = () => {
 							<p>Dados do gestor</p>
 						</div>
 					</div>
-					<li className="company-data">
-						<div className="company-photo">
-							<InsertPhotoOutlinedIcon />
-							<p>Clique para <br /> adicionar uma foto</p>
-						</div>
-						<Form className='add-company-data-form' onSubmit={handleSubmitCompanyData} >
-
-							<Input label='Nome da empresa' name='name' />
-							<Input label='CNPJ' name='cnpj' />
-							<Input label='Site' name="site" />
-							<Button text='Salvar alterações' buttonStyle='primary' onClick={handleUploadCompanyData} type="submit" />
-						</Form>
-					</li>
-					<li className="manager-data">
-						<Form className='add-manager-data-form' onSubmit={handleSubmitManagerData} >
-							<Input label='Nome' name='name' />
-							<Input label='Cargo' name='office' />
-							<Input label='Departamento' name='department' />
-							<Input label='Email' name='email' />
-							<Input label='Telefone' name='phone' />
-							<Button text='Salvar alterações' buttonStyle='primary' onClick={handleUploadManagerData} type="submit" />
-						</Form>
-					</li>
+					{
+						active === TAB_COMPANY_DATA &&
+						<li className="company-data" data-testid="tab-company-form">
+							<div className="company-photo">
+								<InsertPhotoOutlinedIcon />
+								<p>Clique para <br /> adicionar uma foto</p>
+							</div>
+							<Form className='add-company-data-form' onSubmit={handleSubmitCompanyData} ref={formCompanyRef}>
+								<Input label='Nome da empresa' name='name' />
+								<Input label='CNPJ' name='cnpj' />
+								<Input label='Site' name="site" />
+								<Button text='Salvar alterações' buttonStyle='primary' type="submit" />
+							</Form>
+						</li>
+					}
+					{
+						active === TAB_MANAGER_DATA &&
+						<li className="manager-data" data-testid="tab-manager-form">
+							<Form className='add-manager-data-form' onSubmit={handleSubmitManagerData} ref={formManagerRef}>
+								<Input label='Nome' name='name' />
+								<Input label='Cargo' name='office' />
+								<Input label='Departamento' name='department' />
+								<Input label='Email' name='email' />
+								<Input label='Telefone' name='phone' />
+								<Button text='Salvar alterações' buttonStyle='primary' type="submit" />
+							</Form>
+						</li>
+					}
 				</TabCompanyDetails>
 				<Dialog open={auditorsDialogOpen} toggleOpen={toggleAuditorsDialogOpen}>
 					<AuditorsDialogContent>
