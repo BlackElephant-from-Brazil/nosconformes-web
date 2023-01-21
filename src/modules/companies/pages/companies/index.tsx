@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import { Header } from '../../../../components/Header'
+import React, { useEffect, useRef, useState } from 'react'
+import { Header } from 'components/Header'
 import { Container, Body, CardContainer, AddNewCompanyContainerDrawer } from './styles'
 import BusinessIcon from '@mui/icons-material/Business'
-import { CompanyCard } from '../../components/company-card'
-import { Input } from '../../../../components/Input'
-import { Button } from '../../../../components/Button'
+import { Input } from 'components/Input'
+import { Button } from 'components/Button'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
-import { RightDrawer } from '../../../../components/RightDrawer'
+import { RightDrawer } from 'components/RightDrawer'
 import CloseIcon from '@mui/icons-material/Close'
-import { AddCompanyTabs } from '../../components/add-company-tabs'
 import { Form } from '@unform/web'
-import { SubmitHandler } from '@unform/core'
-import { api } from '../../../../api'
-import { Company } from '../../../../@types/company.type'
+import { FormHandles, SubmitHandler } from '@unform/core'
+import { api } from 'api'
 import { useNavigate } from 'react-router-dom'
+import { Company } from 'interfaces/company.type'
+import { CompanyCard } from 'modules/companies/components/company-card'
+import { AddCompanyTabs } from 'modules/companies/components/add-company-tabs'
 
 type SearchForm = {
 	search: string
@@ -23,6 +23,7 @@ export const Companies: React.FC = () => {
 	const [drawerOpen, setDrawerOpen] = useState(false)
 	const [companies, setCompanies] = useState<Company[]>([])
 	const navigate = useNavigate()
+	const formSearchInputRef = useRef<FormHandles>(null)
 
 	useEffect(() => {
 		(async () => {
@@ -45,9 +46,14 @@ export const Companies: React.FC = () => {
 		toggleDrawer()
 	}
 
-	const handleSearchSubmit: SubmitHandler<SearchForm> = (data) => {
-		console.log(data)
+	const handleSearchSubmit: SubmitHandler<SearchForm> = () => {
 		return
+	}
+
+	const handleSearchInputChange = async () => {
+		const searchInputValue = formSearchInputRef.current?.getFieldValue('searchCompany')
+		const { data: findCompanies } = await api.get(`/companies?query=${searchInputValue}`)
+		setCompanies(findCompanies)
 	}
 
 	return (
@@ -55,8 +61,8 @@ export const Companies: React.FC = () => {
 			<Header icon={<BusinessIcon />} title="Empresas" />
 			<Body>
 				<div className="companies-list-utilities">
-					<Form onSubmit={handleSearchSubmit}>
-						<Input name='searchCompany' placeholder='Pesquise pelo nome da empresa ou do gestor' endAdornmentIcon={<SearchRoundedIcon />} className='search-input' />
+					<Form onSubmit={handleSearchSubmit} ref={formSearchInputRef}>
+						<Input onChange={handleSearchInputChange} name='searchCompany' placeholder='Pesquise pelo nome da empresa ou do gestor' endAdornmentIcon={<SearchRoundedIcon />} className='search-input' />
 					</Form>
 					<Button buttonStyle='primary' text='Criar nova empresa +' className='new-company-button' onClick={handleAddNewCompany} />
 				</div>
@@ -65,12 +71,7 @@ export const Companies: React.FC = () => {
 						companies.map(company => (
 							<CompanyCard
 								key={company._eq}
-								companyId={company._eq}
-								companyLogo={company.logo}
-								companyName={company.name}
-								managerName={company.manager}
-								status={company.status}
-								auditors={company.auditors}
+								company={company}
 								testid="company-card"
 							/>
 						))

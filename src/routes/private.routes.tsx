@@ -11,12 +11,13 @@ import { api } from 'api'
 import { enqueueSnackbar } from 'notistack'
 
 
+// TODO: FINISH LOGIN VALIDATION
 const validateLogin = () => {
-	api.get('/auth/validate').catch(() => {
-		enqueueSnackbar('Não autorizado, faça login para continuar.', { variant: 'error' })
-		localStorage.clear()
-		redirect('/login')
-	})
+	// api.get('/auth/validate').catch(() => {
+	// 	enqueueSnackbar('Não autorizado, faça login para continuar.', { variant: 'error' })
+	// 	localStorage.clear()
+	// 	redirect('/login')
+	// })
 
 	const storagedUser = localStorage.getItem(STORAGE_USER_KEY)
 	if (!storagedUser) {

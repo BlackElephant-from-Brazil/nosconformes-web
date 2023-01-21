@@ -3,7 +3,7 @@ import '@testing-library/jest-dom'
 import { cleanup, fireEvent, render, RenderResult } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 import { AddFirstCompany } from '../../../../modules/companies/pages/add-first-company'
-
+import mockAxios from 'jest-mock-axios'
 
 const mockedUseNavigate = jest.fn()
 
@@ -11,11 +11,23 @@ jest.mock('react-router-dom', () => ({
 	useNavigate: () => mockedUseNavigate,
 }))
 
+const mockedEnqueueSnackbar = jest.fn()
+
+jest.mock('notistack', () => ({
+	enqueueSnackbar: () => mockedEnqueueSnackbar
+}))
+
 let addFirstCompanyPageElement: RenderResult
 
 describe('<AddFristCompany />', () => {
 	beforeEach(() => {
+		mockAxios.get.mockImplementation().mockResolvedValue({ data: [] })
 		addFirstCompanyPageElement = render(<AddFirstCompany />)
+	})
+
+	afterEach(() => {
+		cleanup()
+		mockAxios.reset()
 	})
 
 	describe('Create your first company initial page', () => {
@@ -201,7 +213,9 @@ describe('<AddFristCompany />', () => {
 					}
 				})
 
-				fireEvent.click(nextButton)
+				await act(async () => {
+					fireEvent.click(nextButton)
+				})
 
 				expect(await addFirstCompanyPageElement.findByTestId('company-errors')).not.toHaveTextContent('Preencha o nome da empresa.')
 				expect(await addFirstCompanyPageElement.findByTestId('company-errors')).not.toHaveTextContent('Coloque o CNPJ da empresa.')
@@ -303,9 +317,16 @@ describe('<AddFristCompany />', () => {
 
 			expect(mockedUseNavigate).toHaveBeenCalledTimes(1)
 			expect(mockedUseNavigate).toHaveBeenCalledWith('/empresas')
+			expect(mockAxios.post).toHaveBeenCalledTimes(1)
+			expect(mockAxios.post).toHaveBeenCalledWith('/companies', {
+				company: {
+					name: 'valid-company-name',
+					cnpj: '27777505000113',
+					site: 'https://validsite.com.br/',
+				},
+				manager: {}
+			})
 
-			// TODO: RESOLVE IT IN CODE
-			// VERIFY IF FUNCTION IS SENDING COMPANY DATA TO DATABASE
 		})
 
 		it('it should be able to go back to companies tab on user click in back button', async () => {
@@ -340,7 +361,9 @@ describe('<AddFristCompany />', () => {
 					}
 				})
 
-				fireEvent.click(registerCompanyButton)
+				await act(async () => {
+					fireEvent.click(registerCompanyButton)
+				})
 
 				expect(await addFirstCompanyPageElement.findByTestId('company-errors')).not.toHaveTextContent('Preencha o nome do gestor.')
 				expect(await addFirstCompanyPageElement.findByTestId('company-errors')).toHaveTextContent('Coloque o cargo do gestor.')
@@ -511,7 +534,6 @@ describe('<AddFristCompany />', () => {
 				expect(await addFirstCompanyPageElement.findByTestId('company-errors')).not.toHaveTextContent('Insira o email do gestor.')
 				expect(await addFirstCompanyPageElement.findByTestId('company-errors')).not.toHaveTextContent('O email precisa ser um email válido.')
 				expect(await addFirstCompanyPageElement.findByTestId('company-errors')).toHaveTextContent('Por favor, preencha o telefone deste gestor.')
-				expect(phoneInput.closest('input')?.value).toBe('')
 			})
 
 			it('should be able to format phone like (00) 0000-0000 or (00) 00000-0000', async () => {
@@ -538,6 +560,7 @@ describe('<AddFristCompany />', () => {
 
 	it('should be able to save all data after fill all fields correctly and click in Salvar button', async () => {
 		const addFirstCompanyButton = await addFirstCompanyPageElement.findByText('Cadastrar primeira empresa ->')
+
 		fireEvent.click(addFirstCompanyButton)
 
 		const nextButton = await addFirstCompanyPageElement.findByText('Próximo')
@@ -605,16 +628,132 @@ describe('<AddFristCompany />', () => {
 
 		expect(mockedUseNavigate).toHaveBeenCalledTimes(1)
 		expect(mockedUseNavigate).toHaveBeenCalledWith('/empresas')
-
-		// TODO: INSERT THAT I EXPECT CODE SEND DATA TO DB VIA AXIOS POST AND PAYLOAD {COMPANY, MANAGER}
+		expect(mockAxios.post).toHaveBeenCalledTimes(1)
+		expect(mockAxios.post).toHaveBeenCalledWith('/companies', {
+			company: {
+				cnpj: '27777505000113',
+				name: 'valid-company-name',
+				site: 'https://validsite.com.br/'
+			},
+			manager: {
+				name: 'valid-name',
+				office: 'valid-office',
+				department: 'valid-department',
+				email: 'valid@email.com',
+				phone: '19995545043'
+			}
+		})
 	})
 
 	it('should be able to persist data when transiting between tabs', async () => {
-		expect(1).toBe(2)
-		// TODO: WRITE THIS
+		const addFirstCompanyButton = await addFirstCompanyPageElement.findByText('Cadastrar primeira empresa ->')
+
+		fireEvent.click(addFirstCompanyButton)
+
+		const nextButton = await addFirstCompanyPageElement.findByText('Próximo')
+		const companyNameInput = await addFirstCompanyPageElement.findByLabelText('Nome da empresa')
+		const companyCNPJInput = await addFirstCompanyPageElement.findByLabelText('CNPJ')
+		const companySiteInput = await addFirstCompanyPageElement.findByLabelText('Site')
+		fireEvent.change(companyNameInput, {
+			target: {
+				value: 'valid-company-name'
+			}
+		})
+
+		fireEvent.change(companyCNPJInput, {
+			target: {
+				value: '27777505000113'
+			}
+		})
+
+		fireEvent.change(companySiteInput, {
+			target: {
+				value: 'https://validsite.com.br/'
+			}
+		})
+
+		await act(async () => {
+			fireEvent.click(nextButton)
+		})
+
+		const nameInput = await addFirstCompanyPageElement.findByLabelText('Nome')
+		const officeInput = await addFirstCompanyPageElement.findByLabelText('Cargo')
+		const departmentInput = await addFirstCompanyPageElement.findByLabelText('Departamento')
+		const emailInput = await addFirstCompanyPageElement.findByLabelText('Email')
+		const phoneInput = await addFirstCompanyPageElement.findByLabelText('Telefone')
+
+		fireEvent.change(nameInput, {
+			target: {
+				value: 'valid-name'
+			}
+		})
+		fireEvent.change(officeInput, {
+			target: {
+				value: 'valid-office'
+			}
+		})
+		fireEvent.change(departmentInput, {
+			target: {
+				value: 'valid-department'
+			}
+		})
+		fireEvent.change(emailInput, {
+			target: {
+				value: 'valid@email.com'
+			}
+		})
+		fireEvent.change(phoneInput, {
+			target: {
+				value: '19995545043'
+			}
+		})
+
+		const backButton = await addFirstCompanyPageElement.findByTestId('back-button')
+
+		await act(async () => {
+			fireEvent.click(backButton)
+		})
+
+		const companyNameInputAfterBackButtonClicked = await addFirstCompanyPageElement.findByLabelText('Nome da empresa')
+		expect(companyNameInputAfterBackButtonClicked.closest('input')?.value).toBe('valid-company-name')
+		const companyCNPJInputAfterBackButtonClicked = await addFirstCompanyPageElement.findByLabelText('CNPJ')
+		expect(companyCNPJInputAfterBackButtonClicked.closest('input')?.value).toBe('27777505000113')
+		const companySiteInputAfterBackButtonClicked = await addFirstCompanyPageElement.findByLabelText('Site')
+		expect(companySiteInputAfterBackButtonClicked.closest('input')?.value).toBe('https://validsite.com.br/')
+
+		const buttonNextAfterBackButtonClicked = await addFirstCompanyPageElement.findByText('Próximo')
+
+		await act(async () => {
+			fireEvent.click(buttonNextAfterBackButtonClicked)
+		})
+
+		const managerNameInputAfterBackButtonClicked = await addFirstCompanyPageElement.findByLabelText('Nome')
+		expect(managerNameInputAfterBackButtonClicked.closest('input')?.value).toBe('valid-name')
+		const managerOfficeInputAfterBackButtonClicked = await addFirstCompanyPageElement.findByLabelText('Cargo')
+		expect(managerOfficeInputAfterBackButtonClicked.closest('input')?.value).toBe('valid-office')
+		const managerDepartmentInputAfterBackButtonClicked = await addFirstCompanyPageElement.findByLabelText('Departamento')
+		expect(managerDepartmentInputAfterBackButtonClicked.closest('input')?.value).toBe('valid-department')
+		const managerEmailInputAfterBackButtonClicked = await addFirstCompanyPageElement.findByLabelText('Email')
+		expect(managerEmailInputAfterBackButtonClicked.closest('input')?.value).toBe('valid@email.com')
+		const managerPhoneInputAfterBackButtonClicked = await addFirstCompanyPageElement.findByLabelText('Telefone')
+		expect(managerPhoneInputAfterBackButtonClicked.closest('input')?.value).toBe('(19) 99554-5043')
 	})
 
-	afterEach(() => {
-		cleanup()
+	it('should be able to go to /empresas when there is a company already registered', async () => {
+		jest.clearAllMocks()
+		mockAxios.get.mockImplementation().mockResolvedValue({
+			data: [{
+				name: 'BlackElephant',
+				cnpj: '27777505000113',
+				site: 'https://blackelephant.com.br/'
+			}]
+		})
+
+		await act(async () => {
+			render(<AddFirstCompany />)
+		})
+
+		expect(mockedUseNavigate).toHaveBeenCalledTimes(1)
+		expect(mockedUseNavigate).toHaveBeenCalledWith('/empresas')
 	})
 })

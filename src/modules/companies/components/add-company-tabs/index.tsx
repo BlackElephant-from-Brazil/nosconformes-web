@@ -1,14 +1,20 @@
-import React, { ChangeEventHandler, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { AddCompanyData, AddManagerData, Container } from './styles'
 import InsertPhotoOutlinedIcon from '@mui/icons-material/InsertPhotoOutlined'
-import { Input } from '../../../../components/Input'
-import { Button } from '../../../../components/Button'
+import { Input } from 'components/Input'
+import { Button } from 'components/Button'
 import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined'
 import { Form } from '@unform/web'
 import { FormHandles, Scope, SubmitHandler } from '@unform/core'
 import * as Yup from 'yup'
-import { Alert } from '../../../../components/Alert'
+import { Alert } from 'components/Alert'
 import { useNavigate } from 'react-router-dom'
+import { enqueueApiError } from 'utils/enqueueApiError'
+import { api } from 'api'
+import { enqueueSnackbar } from 'notistack'
+import { handleYupErrors } from 'utils/handleYupErrors'
+import { handlePhoneChange, revertPhone } from 'utils/handlePhoneChange'
+import { handleCNPJChange, revertCnpj } from 'utils/handleCNPJChange'
 
 const TAB_ADD_COMPANY_DATA = 0
 const TAB_ADD_MANAGER_DATA = 1
@@ -71,19 +77,66 @@ type AddCompanyTabsProps = {
 	finishRegisteringCallback?: () => void
 }
 
+const initialFormDataValue: NewCompanyForm = {
+	company: {
+		cnpj: '',
+		name: '',
+		site: ''
+	},
+	manager: {
+		department: '',
+		email: '',
+		name: '',
+		office: '',
+		phone: ''
+	}
+}
+
 export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({ finishRegisteringCallback }) => {
 	const [activeTab, setActiveTab] = useState(TAB_ADD_COMPANY_DATA)
 	const formRef = useRef<FormHandles>(null)
 	const [displayCompanyErrors, setDisplayCompanyErrors] = useState('')
 	const navigate = useNavigate()
+	const [formData, setFormData] = useState<NewCompanyForm>(initialFormDataValue)
+
+	useEffect(() => {
+		if (activeTab === TAB_ADD_COMPANY_DATA) {
+			formRef.current?.setFieldValue('company.name', formData.company.name)
+			formRef.current?.setFieldValue('company.cnpj', formData.company.cnpj)
+			formRef.current?.setFieldValue('company.site', formData.company.site)
+		}
+		if (activeTab === TAB_ADD_MANAGER_DATA) {
+			formRef.current?.setFieldValue('manager.name', formData.manager.name)
+			formRef.current?.setFieldValue('manager.office', formData.manager.office)
+			formRef.current?.setFieldValue('manager.department', formData.manager.department)
+			formRef.current?.setFieldValue('manager.email', formData.manager.email)
+			formRef.current?.setFieldValue('manager.phone', formData.manager.phone)
+		}
+	}, [activeTab])
+
+
 
 	const handleBackToCompanyData = () => {
+		setDisplayCompanyErrors('')
 		setActiveTab(TAB_ADD_COMPANY_DATA)
+		const formManagerData: Manager = {
+			name: formRef.current?.getFieldValue('manager.name'),
+			email: formRef.current?.getFieldValue('manager.email'),
+			phone: formRef.current?.getFieldValue('manager.phone'),
+			department: formRef.current?.getFieldValue('manager.department'),
+			office: formRef.current?.getFieldValue('manager.office')
+		}
+
+		setFormData(prev => ({
+			company: prev.company,
+			manager: formManagerData
+		}))
 	}
+
 
 	const handleButtonNextClick = async () => {
 		setDisplayCompanyErrors('')
-		const cnpj = formRef.current?.getFieldValue('company.cnpj').replace(/\D/g, '')
+		const cnpj = revertCnpj(formRef.current?.getFieldValue('company.cnpj'))
 		const companyFormData: Company = {
 			name: formRef.current?.getFieldValue('company.name'),
 			cnpj,
@@ -100,33 +153,25 @@ export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({ finishRegisterin
 				abortEarly: false
 			})
 		} catch (err) {
-			let allErrors = ''
-			if (err instanceof Yup.ValidationError) {
-				const validationErrors: { [key: string]: string } = {}
-				err.inner.forEach(error => {
-					if (error.path)
-						validationErrors[`company.${error.path}`] = error.message
-					allErrors += error.message
-				})
-				formRef.current?.setErrors(validationErrors)
-				setDisplayCompanyErrors(allErrors)
-				return
-			} else {
-				console.log(err)
-				return
-			}
+			handleYupErrors(err, formRef, setDisplayCompanyErrors, 'company.')
+			return
 		}
+		setFormData(prev => ({
+			manager: prev.manager,
+			company: companyFormData
+		}))
 		setActiveTab(TAB_ADD_MANAGER_DATA)
 	}
 
 	const handleSubmitFormWithManagerData: SubmitHandler<NewCompanyForm> = async (data) => {
 		setDisplayCompanyErrors('')
+		const phone = revertPhone(data.manager.phone)
 		const managerFormData: Manager = {
 			name: data.manager.name,
 			email: data.manager.email,
 			department: data.manager.department,
 			office: data.manager.office,
-			phone: data.manager.phone
+			phone
 		}
 		try {
 			const schema = Yup.object().shape({
@@ -141,65 +186,36 @@ export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({ finishRegisterin
 				abortEarly: false
 			})
 		} catch (err) {
-			let allErrors = ''
-			if (err instanceof Yup.ValidationError) {
-				const validationErrors: { [key: string]: string } = {}
-				err.inner.forEach(error => {
-					if (error.path)
-						validationErrors[`manager.${error.path}`] = error.message
-					allErrors += error.message
-				})
-				formRef.current?.setErrors(validationErrors)
-				setDisplayCompanyErrors(allErrors)
-				return
-			} else {
-				console.log(err)
-				return
-			}
+			handleYupErrors(err, formRef, setDisplayCompanyErrors, 'manager.')
+			return
 		}
+		try {
+			api.post('/companies', {
+				company: formData.company,
+				manager: managerFormData
+			})
+			enqueueSnackbar('Empresa cadastrada com sucesso!', { variant: 'success' })
+			finishRegisteringCallback?.()
+			navigate('/empresas')
+		} catch (err) {
+			enqueueApiError(err)
+			return
+		}
+	}
+
+	const handleSubmitWithoutManagerData = () => {
+		try {
+			api.post('/companies', {
+				company: formData.company,
+				manager: {}
+			})
+		} catch (err: any) {
+			enqueueApiError(err)
+			return
+		}
+		enqueueSnackbar('Empresa cadastrada com sucesso!', { variant: 'success' })
 		finishRegisteringCallback?.()
 		navigate('/empresas')
-		// TODO: SEND DATA TO DB VIA AXIOS API
-	}
-
-	const handleSaveWithoutManagerData = () => {
-		// TODO: SEND DATA TO DATABASE
-
-		finishRegisteringCallback?.()
-		navigate('/empresas')
-	}
-
-	const handleCNPJChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = ({ target: { value } }) => {
-		if (!value)
-			return
-
-		const cnpjValueWithouNANChars = value.replace(/[^\d]/g, '')
-		let formattedCNPJValue = cnpjValueWithouNANChars
-		if (cnpjValueWithouNANChars.length >= 15)
-			formattedCNPJValue = cnpjValueWithouNANChars.substring(0, cnpjValueWithouNANChars.length - 1)
-
-		formRef.current?.setFieldValue('company.cnpj', formattedCNPJValue.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5')
-		)
-	}
-
-	const handlePhoneChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = ({ target: { value } }) => {
-		if (!value)
-			return
-
-		const phoneValueWithoutNANChars = value.replace(/[^\d]/g, '')
-		let formattedPhoneValue = phoneValueWithoutNANChars
-		if (phoneValueWithoutNANChars.length >= 12)
-			formattedPhoneValue = phoneValueWithoutNANChars.substring(0, phoneValueWithoutNANChars.length - 1)
-
-		formRef.current?.setFieldValue('manager.phone', formattedPhoneValue)
-
-		if (phoneValueWithoutNANChars.length === 10)
-			formRef.current?.setFieldValue('manager.phone', formattedPhoneValue.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3'))
-
-		if (phoneValueWithoutNANChars.length === 11)
-			formRef.current?.setFieldValue('manager.phone', formattedPhoneValue.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3'))
-
-
 	}
 
 	const renderTab = () => {
@@ -222,7 +238,7 @@ export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({ finishRegisterin
 					</div>
 					<Scope path='company'>
 						<Input label='Nome da empresa' name='name' />
-						<Input label='CNPJ' name='cnpj' onChange={handleCNPJChange} />
+						<Input label='CNPJ' name='cnpj' onChange={e => handleCNPJChange(e.target.value, formRef, 'company.cnpj')} />
 						<Input label='Site' name="site" />
 						<Alert
 							text={displayCompanyErrors}
@@ -256,14 +272,14 @@ export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({ finishRegisterin
 						<Input label='Cargo' name='office' />
 						<Input label='Departamento' name='department' />
 						<Input label='Email' name='email' />
-						<Input label='Telefone' name='phone' onChange={handlePhoneChange} />
+						<Input label='Telefone' name='phone' onChange={e => handlePhoneChange(e.target.value, formRef, 'manager.phone')} />
 						<Alert
 							text={displayCompanyErrors}
 							type='error'
 							testid="company-errors"
 						/>
 						<div className="form-manager-button-container">
-							<Button text="Pular etapa" buttonStyle='secondary' onClick={handleSaveWithoutManagerData} className="jump-buttom" />
+							<Button text="Pular etapa" buttonStyle='secondary' onClick={handleSubmitWithoutManagerData} className="jump-buttom" />
 							<Button text='Cadastrar empresa' buttonStyle='primary' type='submit' />
 						</div>
 					</Scope>

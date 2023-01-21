@@ -6,6 +6,7 @@ import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded'
 import { useNavigate } from 'react-router-dom'
 import { AuditorsMenu, MenuItem } from './auditors-menu'
+import { Company } from 'interfaces/company.type'
 
 export const STATUS_LATE = 'late'
 export const STATUS_IN_PROGRESS = 'inprogress'
@@ -14,28 +15,14 @@ export const STATUS_FINISHED = 'finished'
 export type StatusTypes = typeof STATUS_LATE | typeof STATUS_IN_PROGRESS | typeof STATUS_FINISHED
 
 type CompanyCardProps = {
-	companyId: string
-	companyLogo: string
-	companyName: string
-	managerName?: string
-	status: StatusTypes
 	testid: string
-	auditors: {
-		_eq: string
-		name: string
-		photo: string
-	}[]
+	company: Company
 }
 
 
 export const CompanyCard: React.FC<CompanyCardProps> = ({
-	companyId,
-	companyLogo,
-	companyName,
-	managerName,
-	status,
 	testid,
-	auditors
+	company
 }) => {
 	const navigate = useNavigate()
 	const [menuOpen, setMenuOpen] = useState(false)
@@ -44,16 +31,15 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({
 
 	useEffect(() => {
 		const auditorToLoad: MenuItem[] = []
-		auditors.forEach(auditor => {
+		company.auditors.forEach(auditor => {
 			auditorToLoad.push({
-				// TODO: RESOLVE THIS CONSOLE LOG
-				click: () => console.log('clicando'),
+				click: () => navigate(`/usuarios/${auditor._eq}`),
 				label: auditor.name,
 				avatar: auditor.photo
 			})
 		})
 		setMenuItems(auditorToLoad)
-	}, [auditors])
+	}, [company])
 
 	const renderStatusComponent = () => {
 		if (status === STATUS_LATE) {
@@ -98,7 +84,7 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({
 	}
 
 	const handleOpenCompanyDetails = () => {
-		navigate(`/detalhes-da-empresa/${companyId}`)
+		navigate(`/detalhes-da-empresa/${company._eq}`)
 	}
 
 	const toggleMenu = (event?: React.MouseEvent<HTMLDivElement>) => {
@@ -113,19 +99,19 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({
 	// TODO: TO PREVENT INPROGRESS MOCK STATUS SET
 
 	return (
-		<Container status={status ? status : 'inprogress'} data-testid={testid}>
+		<Container status={company.status} data-testid={testid}>
 			<div className="company-infos" onClick={handleOpenCompanyDetails}>
-				<img src={companyLogo} alt="Logo da empresa" />
+				<img src={company.logo} alt="Logo da empresa" />
 				<div className="details">
-					<p className='company-name'>{companyName}</p>
-					{managerName && <p className="manager-name">Gestor: {managerName}</p>}
+					<p className='company-name'>{company.name}</p>
+					{company.manager?.name && <p className="manager-name">Gestor: {company.manager.name}</p>}
 				</div>
 			</div>
 			<div className="auditors" data-testid="auditors" onClick={(e) => toggleMenu(e)}>
 				<p>Auditores</p>
 				<div className='auditors-photos'>
 					{
-						auditors.map((auditor, i) => {
+						company.auditors.map((auditor, i) => {
 							if (i > 1) return
 							return (
 								<img key={i} src={auditor.photo} alt={`Foto do auditor: ${auditor.name}`} />

@@ -1,9 +1,9 @@
 import React from 'react'
 import '@testing-library/jest-dom'
 import { act, cleanup, fireEvent, render, RenderResult } from '@testing-library/react'
-import { Companies } from '../../../../modules/companies/pages/companies'
-import { Company } from '../../../../@types/company.type'
 import mockAxios from 'jest-mock-axios'
+import { Company } from 'interfaces/company.type'
+import { Companies } from 'modules/companies/pages/companies'
 
 let companiesPageElement: RenderResult
 
@@ -12,8 +12,16 @@ const companies: Company[] = [
 		_eq: 'id-company-1',
 		logo: 'https://s.yimg.com/ny/api/res/1.2/a19vkjSUoD4hVV0djOpSLw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD02Nzc-/https://s.yimg.com/os/creatr-uploaded-images/2020-07/20e95610-d02d-11ea-9f0c-81042fd4c51a',
 		name: 'Casas Bahia',
-		manager: 'Daniel Ribeiro',
+		manager: {
+			name: 'Daniel Ribeiro',
+			office: 'Chefe de TI',
+			department: 'TI',
+			email: 'daniel@casasbahia.com.br',
+			phone: '19995545043'
+		},
 		status: 'late',
+		cnpj: '27777505000113',
+		site: 'https://casasbahia.com.br',
 		auditors: [
 			{
 				_eq: 'id-auditor-1',
@@ -32,6 +40,8 @@ const companies: Company[] = [
 		logo: 'https://www.anacouto.com.br/wp-content/uploads/2021/07/GALERIA-SITE-AMERICANAS.png',
 		name: 'Americanas',
 		status: 'inprogress',
+		cnpj: '27777505000113',
+		site: 'https://casasbahia.com.br',
 		auditors: [
 			{
 				_eq: 'id-auditor-2',
@@ -44,8 +54,16 @@ const companies: Company[] = [
 		_eq: 'id-company-3',
 		logo: 'https://upload.wikimedia.org/wikipedia/commons/1/1b/Magalu_-_novo_logo.png',
 		name: 'Magalu',
-		manager: 'Roberta Campos',
+		manager: {
+			name: 'Daniel Ribeiro',
+			office: 'Chefe de TI',
+			department: 'TI',
+			email: 'daniel@casasbahia.com.br',
+			phone: '19995545043'
+		},
 		status: 'finished',
+		cnpj: '27777505000113',
+		site: 'https://casasbahia.com.br',
 		auditors: [
 			{
 				_eq: 'id-auditor-1',
@@ -62,6 +80,12 @@ jest.mock('react-router-dom', () => ({
 	useNavigate: () => mockedUseNavigate,
 }))
 
+const mockedEnqueueSnackbar = jest.fn()
+
+jest.mock('notistack', () => ({
+	enqueueSnackbar: () => mockedEnqueueSnackbar
+}))
+
 describe('<Companies />', () => {
 
 	afterEach(() => {
@@ -74,6 +98,7 @@ describe('<Companies />', () => {
 		await act(async () => {
 			companiesPageElement = render(<Companies />)
 		})
+		expect(mockAxios.get).toHaveBeenCalledWith('/companies')
 		expect(await companiesPageElement.findByText('Empresas')).toBeInTheDocument()
 		expect(await companiesPageElement.findByPlaceholderText('Pesquise pelo nome da empresa ou do gestor')).toBeInTheDocument()
 		expect(await companiesPageElement.findByText('Criar nova empresa +')).toBeInTheDocument()
@@ -102,7 +127,7 @@ describe('<Companies />', () => {
 		expect(companyCards).toHaveLength(3)
 		expect(companyCards[0]).toHaveTextContent('Casas Bahia')
 		expect(companyCards[1]).not.toHaveTextContent('Gestor:')
-		expect(companyCards[2]).toHaveTextContent('Roberta Campos')
+		expect(companyCards[2]).toHaveTextContent('Daniel Ribeiro')
 
 	})
 
@@ -143,10 +168,24 @@ describe('<Companies />', () => {
 			companiesPageElement = render(<Companies />)
 		})
 
-		// TODO: RESOLVE THIS
-		// const searchInput = await companiesPageElement.findByPlaceholderText('Pesquise pelo nome da empresa ou do gestor')
+		mockAxios.get.mockImplementation().mockResolvedValue({ data: [companies[1]] })
 
-		expect(1).toBe(2)
+		const searchInput = await companiesPageElement.findByPlaceholderText('Pesquise pelo nome da empresa ou do gestor')
+		await act(async () => {
+			fireEvent.change(searchInput, {
+				target: {
+					value: 'Americanas'
+				}
+			})
+		})
+
+		expect(mockAxios.get).toHaveBeenCalledWith('/companies?query=Americanas')
+
+		const companyCards = await companiesPageElement.findAllByTestId('company-card')
+
+		expect(companyCards.length).toBe(1)
+		expect(companyCards[0]).toHaveTextContent('Americanas')
+
 	})
 
 	it('should be able to open the company data when click in company name in the card title', async () => {
@@ -183,7 +222,7 @@ describe('<Companies />', () => {
 			})
 			setTimeout(() => {
 				expect(companiesPageElement.queryByTestId('create-company-drawer')).not.toBeInTheDocument()
-			}, 500)
+			}, 1000)
 		})
 
 		it('should be able to close drawer when save company without manager data', async () => {
@@ -314,6 +353,4 @@ describe('<Companies />', () => {
 			}, 500)
 		})
 	})
-
-
 })
