@@ -534,7 +534,6 @@ describe('<AddFristCompany />', () => {
 				expect(await addFirstCompanyPageElement.findByTestId('company-errors')).not.toHaveTextContent('Insira o email do gestor.')
 				expect(await addFirstCompanyPageElement.findByTestId('company-errors')).not.toHaveTextContent('O email precisa ser um email válido.')
 				expect(await addFirstCompanyPageElement.findByTestId('company-errors')).toHaveTextContent('Por favor, preencha o telefone deste gestor.')
-				expect(phoneInput.closest('input')?.value).toBe('')
 			})
 
 			it('should be able to format phone like (00) 0000-0000 or (00) 00000-0000', async () => {

@@ -164,6 +164,7 @@ export const AuditorsDialogContent = styled.div`
 		display: flex;
 		flex-direction: row;
 		margin-top: 40px;
+		margin-bottom: 34px;
 		align-items: center;
 
 		svg {
@@ -195,6 +196,7 @@ export const AuditorsDialogContent = styled.div`
 			font-weight: 700;
 			font-size: 16px;
 			color: #6D7C99;
+			margin-top: 28px;
 		}
 
 		.auditor {

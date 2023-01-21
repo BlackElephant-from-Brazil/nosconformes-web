@@ -80,6 +80,12 @@ jest.mock('react-router-dom', () => ({
 	useNavigate: () => mockedUseNavigate,
 }))
 
+const mockedEnqueueSnackbar = jest.fn()
+
+jest.mock('notistack', () => ({
+	enqueueSnackbar: () => mockedEnqueueSnackbar
+}))
+
 describe('<Companies />', () => {
 
 	afterEach(() => {

@@ -7,7 +7,7 @@ export const handleYupErrors = (err: any, formRef: React.RefObject<FormHandles>,
 		const validationErrors: { [key: string]: string } = {}
 		err.inner.forEach(error => {
 			if (error.path)
-				validationErrors[`${complexPath}${error.path}`] = error.message
+				validationErrors[`${complexPath || ''}${error.path}`] = error.message
 			allErrors += error.message
 		})
 		formRef.current?.setErrors(validationErrors)

@@ -6,16 +6,22 @@ export const handlePhoneChange = (value: string, formRef: React.RefObject<FormHa
 
 	const phoneValueWithoutNANChars = value.replace(/[^\d]/g, '')
 	let formattedPhoneValue = phoneValueWithoutNANChars
-	if (phoneValueWithoutNANChars.length >= 12)
+	console.log(phoneValueWithoutNANChars.substring(0, phoneValueWithoutNANChars.length - 1))
+	if (phoneValueWithoutNANChars.length >= 12){
 		formattedPhoneValue = phoneValueWithoutNANChars.substring(0, phoneValueWithoutNANChars.length - 1)
-
-	formRef.current?.setFieldValue(fieldName, formattedPhoneValue)
-
-	if (phoneValueWithoutNANChars.length === 10)
-		formRef.current?.setFieldValue(fieldName, formattedPhoneValue.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3'))
-
-	if (phoneValueWithoutNANChars.length === 11)
 		formRef.current?.setFieldValue(fieldName, formattedPhoneValue.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3'))
+		return
+	}
+
+	if (phoneValueWithoutNANChars.length === 10){
+		formRef.current?.setFieldValue(fieldName, formattedPhoneValue.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3'))
+		return
+	}
+
+	if (phoneValueWithoutNANChars.length === 11){
+		formRef.current?.setFieldValue(fieldName, formattedPhoneValue.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3'))
+		return
+	}
 }
 
 export const revertPhone = (phone: string) => {
