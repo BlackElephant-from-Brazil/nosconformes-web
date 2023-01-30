@@ -7,15 +7,15 @@ import { CompanyDetails } from './pages/company-details'
 const companiesRoutes: RouteObject[] = [
 	{
 		path: '/cadastre-sua-primeira-empresa',
-		element: <AddFirstCompany />
+		element: <AddFirstCompany />,
 	},
 	{
 		path: '/empresas',
-		element: <Companies />
+		element: <Companies />,
 	},
 	{
 		path: '/detalhes-da-empresa/:companyId',
-		element: <CompanyDetails />
+		element: <CompanyDetails />,
 	},
 ]
 

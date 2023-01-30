@@ -17,7 +17,7 @@ export const Container = styled.div<ContainerProps>`
 		font-family: 'Inter';
 		font-weight: 700;
 		font-size: 16px;
-		color: #FFFFFF;
+		color: #ffffff;
 		margin-left: 12px;
 		margin-right: 12px;
 	}
@@ -25,30 +25,28 @@ export const Container = styled.div<ContainerProps>`
 	svg {
 		width: 24px;
 		height: 24px;
-		color: #FFFFFF;
+		color: #ffffff;
 
 		:last-child {
 			cursor: pointer;
 		}
 	}
 
-
 	${({ type }) => {
 		if (type === 'success') {
-			return 	`
+			return `
 								background: #69B345;
 							`
 		}
 		if (type === 'warning') {
-			return 	`
+			return `
 								background: #FF991C;
 							`
 		}
 		if (type === 'error') {
-			return 	`
+			return `
 								background: #FF2163;
 							`
 		}
-	}
-}
+	}}
 `

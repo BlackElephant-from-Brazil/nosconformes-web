@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const Container = styled.div`
 	display: flex;
 	flex-direction: column;
-	background: #E9EFF5;
+	background: #e9eff5;
 	width: 100vw;
 	min-height: 168px;
 
@@ -20,15 +20,13 @@ export const Container = styled.div`
 			font-weight: bold;
 			font-size: 40px;
 			margin-left: 8px;
-			color: #0F141E;
+			color: #0f141e;
 		}
 
 		svg {
 			font-size: 40px;
 		}
 	}
-
-
 `
 
 export const Tabs = styled.ul`
@@ -45,18 +43,17 @@ export const Tabs = styled.ul`
 			font-family: 'Inter';
 			font-weight: 500;
 			font-size: 24px;
-			color: #6D7C99;
+			color: #6d7c99;
 			margin-bottom: 18px;
 		}
-
 	}
 
 	.active {
-		border-bottom: 4px solid #1F4CD4;
+		border-bottom: 4px solid #1f4cd4;
 
 		p {
 			font-weight: 700;
-			color: #0F141E;
+			color: #0f141e;
 		}
 	}
 `

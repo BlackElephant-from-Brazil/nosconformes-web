@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const Container = styled.div`
 	display: flex;
 	flex-direction: column;
-	background: #0F141E;
+	background: #0f141e;
 	border-radius: 16px;
 	width: 72px;
 	min-width: 72px;
@@ -14,8 +14,8 @@ export const Container = styled.div`
 	position: fixed;
 
 	.toggle-menu-button {
-		background: #323E57;
-		color: #FFFFFF;
+		background: #323e57;
+		color: #ffffff;
 		width: 38px;
 		height: 38px;
 		border-radius: 50%;
@@ -37,7 +37,6 @@ export const Container = styled.div`
 	}
 
 	.app-menu {
-
 	}
 
 	.bottom {
@@ -50,7 +49,7 @@ export const Container = styled.div`
 			justify-content: center;
 			align-items: center;
 			margin: 0 auto;
-			background: #323E57;
+			background: #323e57;
 			border-radius: 8px;
 			margin-bottom: 38px;
 			cursor: pointer;
@@ -73,7 +72,7 @@ export const Container = styled.div`
 			p {
 				margin-top: 8px;
 				font-size: 8px;
-				color: #FFFFFF;
+				color: #ffffff;
 				opacity: 50%;
 			}
 		}
@@ -88,29 +87,28 @@ type MenuItemProps = {
 export const MenuItem = styled.div<MenuItemProps>`
 	display: flex;
 	height: 48px;
-	color: ${({ active }) => active ? '#FFFFFF' : '#6D7C99' };
+	color: ${({ active }) => (active ? '#FFFFFF' : '#6D7C99')};
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
 	margin-top: 12px;
 
-
 	svg {
 		height: 24px;
 		width: 24px;
-		${({ active }) => active && 'transform: translateX(-4px);' };
+		${({ active }) => active && 'transform: translateX(-4px);'};
 	}
 
 	p {
-		display: ${({ open }) => open ? 'block' : 'none' };
+		display: ${({ open }) => (open ? 'block' : 'none')};
 	}
 
 	.side-border {
 		height: 100%;
 		width: 6px;
 		border-radius: 0 6px 6px 0;
-		background: #1F4CD4;
-		display: ${({ active }) => active ? 'block' : 'none' };
+		background: #1f4cd4;
+		display: ${({ active }) => (active ? 'block' : 'none')};
 		position: relative;
 		left: -21px;
 	}

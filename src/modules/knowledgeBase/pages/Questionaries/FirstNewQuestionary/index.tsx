@@ -1,7 +1,7 @@
 import React from 'react'
-import { AddFirstNewQuestionaryButton, Container } from './styles'
 import AddIcon from '@mui/icons-material/Add'
 import { useNavigate } from 'react-router-dom'
+import { AddFirstNewQuestionaryButton, Container } from './styles'
 
 export const FirstNewQuestionary: React.FC = () => {
 	const navigate = useNavigate()
@@ -13,9 +13,7 @@ export const FirstNewQuestionary: React.FC = () => {
 	return (
 		<Container>
 			<AddFirstNewQuestionaryButton onClick={handleAddNewQuestionary}>
-				<p>
-					Cadastrar novo questionário
-				</p>
+				<p>Cadastrar novo questionário</p>
 				<AddIcon />
 			</AddFirstNewQuestionaryButton>
 		</Container>

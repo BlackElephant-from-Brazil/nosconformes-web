@@ -37,19 +37,18 @@ export const Container = styled.div`
 		}
 
 		td {
-
 			p {
 				font-family: 'Arial';
 				font-weight: 400;
 				font-size: 16px;
-				color: #6F7987;
+				color: #6f7987;
 				display: inline;
 			}
 		}
 	}
 
 	table tr td > * {
-		vertical-align:middle
+		vertical-align: middle;
 	}
 `
 
@@ -76,7 +75,7 @@ export const AddNewUserContainer = styled.div`
 			font-family: 'Inter';
 			font-weight: 700;
 			font-size: 30px;
-			color: #0F141E;
+			color: #0f141e;
 			margin-top: 164px;
 		}
 	}

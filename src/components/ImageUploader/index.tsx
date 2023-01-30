@@ -6,7 +6,9 @@ export const ImageUploader: React.FC = () => {
 	return (
 		<Container>
 			<InsertPhotoOutlinedIcon />
-			<p>Clique para <br /> adicionar uma foto</p>
+			<p>
+				Clique para <br /> adicionar uma foto
+			</p>
 		</Container>
 	)
 }

@@ -5,7 +5,7 @@ export const Container = styled(Menu)(() => ({
 		minWidth: 700,
 		borderRadius: 8,
 		marginTop: 20,
-		marginLeft: '-28px'
+		marginLeft: '-28px',
 	},
 
 	'.MuiMenuItem-root': {
@@ -15,11 +15,10 @@ export const Container = styled(Menu)(() => ({
 		fontFamily: 'Inter',
 		fontWeight: 400,
 		fontSize: 20,
-		color: '#0F141E'
+		color: '#0F141E',
 	},
 
 	'.primary': {
-		color: '#1F4CD4'
+		color: '#1F4CD4',
 	},
-
 }))

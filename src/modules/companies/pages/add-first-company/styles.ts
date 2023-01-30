@@ -5,7 +5,7 @@ type CreateYourFirstCompanyScreenProps = {
 }
 
 export const Container = styled.div`
-	background: #FFFFFF;
+	background: #ffffff;
 	display: flex;
 	width: 100vw;
 	min-height: 100vh;
@@ -23,16 +23,15 @@ export const Body = styled.ul`
 
 export const CreateYourFirstCompanyScreen = styled.li<CreateYourFirstCompanyScreenProps>`
 	width: 100%;
-	display: ${({ isRegistering }) => isRegistering ? 'none' : 'flex'};
+	display: ${({ isRegistering }) => (isRegistering ? 'none' : 'flex')};
 	flex-direction: column;
 	align-items: center;
-
 
 	h1 {
 		font-family: 'Inter';
 		font-weight: 700;
 		font-size: 30px;
-		color: #0F141E;
+		color: #0f141e;
 		margin-top: 200px;
 	}
 
@@ -49,15 +48,15 @@ export const CreateYourFirstCompanyScreen = styled.li<CreateYourFirstCompanyScre
 			font-family: 'Inter';
 			font-weight: 700;
 			font-size: 18px;
-			color: #3366FF;
+			color: #3366ff;
 			align-items: center;
 
 			span {
 				width: 64px;
 				height: 64px;
-				background: #84A9FF;
+				background: #84a9ff;
 				border-radius: 12px;
-				color: #1F4CD5;
+				color: #1f4cd5;
 				font-family: 'Inter';
 				font-weight: 700;
 				font-size: 26px;
@@ -74,5 +73,3 @@ export const CreateYourFirstCompanyScreen = styled.li<CreateYourFirstCompanyScre
 		max-width: 292px;
 	}
 `
-
-

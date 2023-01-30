@@ -9,7 +9,7 @@ export const Container = styled.div<ContainerProps>`
 	height: 100vh;
 	display: flex;
 	flex-direction: column;
-	background: #E9EFF5;
+	background: #e9eff5;
 `
 
 export const Body = styled.div`

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const Container = styled.div`
 	display: flex;
 	flex-direction: row;
-	background: #E9EFF5;
+	background: #e9eff5;
 	width: 100vw;
 	height: 168px;
 	align-items: center;
@@ -13,7 +13,7 @@ export const Container = styled.div`
 		font-weight: bold;
 		font-size: 40px;
 		margin-left: 8px;
-		color: #0F141E;
+		color: #0f141e;
 	}
 
 	svg {

@@ -11,14 +11,12 @@ const validateLoggedUser = () => {
 	return null
 }
 
-const allPublicRoutes = [
-	...loginRoutes,
-]
+const allPublicRoutes = [...loginRoutes]
 
 const publicRoutes = allPublicRoutes.map(route => {
 	return {
 		...route,
-		loader: validateLoggedUser
+		loader: validateLoggedUser,
 	}
 })
 

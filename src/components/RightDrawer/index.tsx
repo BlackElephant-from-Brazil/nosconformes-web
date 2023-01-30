@@ -8,16 +8,14 @@ type RightDrawerProps = {
 	children: JSX.Element
 }
 
-export const RightDrawer: React.FC<RightDrawerProps> = ({ drawerOpen, toggleDrawer, children }) => {
+export const RightDrawer: React.FC<RightDrawerProps> = ({
+	drawerOpen,
+	toggleDrawer,
+	children,
+}) => {
 	return (
-		<Drawer
-			anchor='right'
-			open={drawerOpen}
-			onClose={toggleDrawer}
-		>
-			<Container>
-				{children}
-			</Container>
+		<Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer}>
+			<Container>{children}</Container>
 		</Drawer>
 	)
 }

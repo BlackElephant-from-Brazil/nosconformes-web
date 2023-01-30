@@ -11,7 +11,7 @@ export const Container = styled.div`
 
 export const AddFirstNewQuestionaryButton = styled.div`
 	cursor: pointer;
-	border: 1px solid #1F4CD4;
+	border: 1px solid #1f4cd4;
 	width: 386px;
 	height: 320px;
 	border-radius: 16px;
@@ -23,13 +23,13 @@ export const AddFirstNewQuestionaryButton = styled.div`
 		font-family: 'Inter';
 		font-weight: 500;
 		font-size: 24px;
-		color: #1F4CD5;
+		color: #1f4cd5;
 	}
 
 	svg {
 		width: 78px;
 		height: 78px;
-		color: #1F4CD5;
+		color: #1f4cd5;
 		margin: auto;
 	}
 `

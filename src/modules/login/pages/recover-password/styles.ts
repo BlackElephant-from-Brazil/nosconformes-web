@@ -11,7 +11,7 @@ export const Container = styled.div`
 `
 
 export const LeftSide = styled.div`
-	background: #0F141E;
+	background: #0f141e;
 	display: flex;
 	flex-direction: column;
 	flex: 1;
@@ -24,7 +24,7 @@ export const LeftSide = styled.div`
 	}
 
 	p {
-		color: #FFFFFF;
+		color: #ffffff;
 		font-weight: bold;
 		font-family: 'Inter', sans-serif;
 		font-size: 30px;
@@ -36,13 +36,11 @@ export const LeftSide = styled.div`
 		position: relative;
 		left: 250px;
 		top: 100px;
-
 	}
 `
 
-
 export const RightSide = styled.div`
-	background: #FFFFFF;
+	background: #ffffff;
 	display: flex;
 	flex-direction: column;
 	width: 642px;
@@ -70,32 +68,6 @@ export const RightSide = styled.div`
 		margin-top: 240px;
 		margin-bottom: 60px;
 
-		a.back-button {
-			background: #1F4CD5;
-			width: 38px;
-			height: 38px;
-			border-radius: 50%;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			cursor: pointer;
-
-			:hover {
-				background: #072788;
-			}
-
-			:active {
-				transition: none;
-				background: #1F4CD5;
-			}
-
-			svg {
-				width: 24px;
-				height: 24px;
-				color: #FFFFFF;
-			}
-		}
-
 		p {
 			font-family: 'Inter';
 			font-style: normal;
@@ -103,7 +75,7 @@ export const RightSide = styled.div`
 			font-size: 16px;
 			line-height: 170.4%;
 
-			color: #1F4CD5;
+			color: #1f4cd5;
 		}
 	}
 
@@ -124,7 +96,7 @@ export const RightSide = styled.div`
 			line-height: 48px;
 			text-align: center;
 
-			color: #0F141E;
+			color: #0f141e;
 
 			margin-bottom: 30px;
 		}
@@ -136,7 +108,7 @@ export const RightSide = styled.div`
 			font-size: 20px;
 			line-height: 24px;
 
-			color: #323E57;
+			color: #323e57;
 			margin-bottom: 60px;
 		}
 
@@ -147,7 +119,7 @@ export const RightSide = styled.div`
 			font-size: 24px;
 			line-height: 29px;
 
-			color: #323E57;
+			color: #323e57;
 		}
 	}
 
@@ -171,4 +143,3 @@ export const RightSide = styled.div`
 		}
 	}
 `
-

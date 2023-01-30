@@ -5,7 +5,10 @@ export const BT_PRIMARY = 'primary'
 export const BT_SECONDARY = 'secondary'
 export const BT_PRIMARY_ORANGE = 'primary-orange'
 
-export type ButtonVariations = typeof BT_PRIMARY | typeof BT_SECONDARY | typeof BT_PRIMARY_ORANGE
+export type ButtonVariations =
+	| typeof BT_PRIMARY
+	| typeof BT_SECONDARY
+	| typeof BT_PRIMARY_ORANGE
 
 type ButtonProps = {
 	text: string
@@ -17,20 +20,27 @@ type ButtonProps = {
 	testid?: string
 }
 
-const Button: React.FC<ButtonProps> = ({ text, buttonStyle, onClick, className, icon, type, testid }) => {
-
+const Button: React.FC<ButtonProps> = ({
+	text,
+	buttonStyle,
+	onClick,
+	className,
+	icon,
+	type,
+	testid,
+}) => {
 	return (
 		<StyledButton
 			data-testid={testid}
 			type={type}
 			variant="contained"
 			disableElevation
-			onClick={(e) => { onClick?.(e) }}
+			onClick={e => {
+				onClick?.(e)
+			}}
 			className={className}
 			buttonstyle={buttonStyle}
-			endIcon={
-				icon ? icon : null
-			}
+			endIcon={icon || null}
 		>
 			{text}
 		</StyledButton>

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
 	max-width: 290px;
-	background: #FFFFFF;
+	background: #ffffff;
 	display: flex;
 	flex-direction: column;
 	border-radius: 16px;
@@ -12,7 +12,7 @@ export const Container = styled.div`
 		font-family: 'Inter';
 		font-weight: 700;
 		font-size: 20px;
-		color: #0F141E;
+		color: #0f141e;
 		margin-bottom: 40px;
 	}
 
@@ -20,17 +20,15 @@ export const Container = styled.div`
 		font-family: 'Inter';
 		font-weight: 600;
 		font-size: 18px;
-		color: #323E57;
+		color: #323e57;
 	}
 
 	.clients-list {
-
 		div {
-		margin-top: 16px;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-
+			margin-top: 16px;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
 
 			img {
 				width: 42px;
@@ -44,7 +42,7 @@ export const Container = styled.div`
 				font-family: 'Inter';
 				font-weight: 600;
 				font-size: 18px;
-				color: #0F141E;
+				color: #0f141e;
 			}
 		}
 	}

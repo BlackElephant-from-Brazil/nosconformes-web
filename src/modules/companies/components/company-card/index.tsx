@@ -1,29 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { Container } from './styles'
 import AssignmentLateRoundedIcon from '@mui/icons-material/AssignmentLateRounded'
 import WatchLaterRoundedIcon from '@mui/icons-material/WatchLaterRounded'
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded'
 import { useNavigate } from 'react-router-dom'
-import { AuditorsMenu, MenuItem } from './auditors-menu'
 import { Company } from 'interfaces/company.type'
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite'
-
-export const STATUS_LATE = 'late'
-export const STATUS_IN_PROGRESS = 'inprogress'
-export const STATUS_FINISHED = 'finished'
-
-export type StatusTypes = typeof STATUS_LATE | typeof STATUS_IN_PROGRESS | typeof STATUS_FINISHED
+import { AuditorsMenu, MenuItem } from './auditors-menu'
+import { Container } from './styles'
 
 type CompanyCardProps = {
 	testid: string
 	company: Company
 }
 
-
 export const CompanyCard: React.FC<CompanyCardProps> = ({
 	testid,
-	company
+	company,
 }) => {
 	const navigate = useNavigate()
 	const [menuOpen, setMenuOpen] = useState(false)
@@ -36,52 +29,43 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({
 			auditorToLoad.push({
 				click: () => navigate(`/usuarios/${auditor._eq}`),
 				label: auditor.name,
-				avatar: auditor.profilePicture
+				avatar: auditor.profilePicture,
 			})
 		})
 		setMenuItems(auditorToLoad)
-	}, [company])
+	}, [company, navigate])
 
 	const renderStatusComponent = () => {
-		if (status === STATUS_LATE) {
+		if (company.status === 'late') {
 			return (
 				<>
 					<AssignmentLateRoundedIcon />
-					<p>
-						Atrasado
-					</p>
-				</>
-			)
-		} else if (status === STATUS_IN_PROGRESS) {
-			{
-				return (
-					<>
-						<WatchLaterRoundedIcon />
-						<p>
-							Em progresso
-						</p>
-					</>
-				)
-			}
-		} else if (status === STATUS_FINISHED) {
-			return (
-				<>
-					<CheckCircleRoundedIcon />
-					<p>
-						Concluído
-					</p>
-				</>
-			)
-		} else {
-			return (
-				<>
-					<PlayCircleFilledWhiteIcon />
-					<p>
-						Iniciando
-					</p>
+					<p>Atrasado</p>
 				</>
 			)
 		}
+		if (company.status === 'inprogress') {
+			return (
+				<>
+					<WatchLaterRoundedIcon />
+					<p>Em progresso</p>
+				</>
+			)
+		}
+		if (company.status === 'finished') {
+			return (
+				<>
+					<CheckCircleRoundedIcon />
+					<p>Concluído</p>
+				</>
+			)
+		}
+		return (
+			<>
+				<PlayCircleFilledWhiteIcon />
+				<p>Iniciando</p>
+			</>
+		)
 	}
 
 	const handleOpenCompanyDetails = () => {
@@ -89,57 +73,65 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({
 	}
 
 	const toggleMenu = (event?: React.MouseEvent<HTMLDivElement>) => {
-		if (menuOpen)
-			setAnchorEl(null)
-		else
-			setAnchorEl(event?.currentTarget || null)
+		if (menuOpen) setAnchorEl(null)
+		else setAnchorEl(event?.currentTarget || null)
 
 		setMenuOpen(!menuOpen)
 	}
 
 	return (
 		<Container status={company.status} data-testid={testid}>
-			<div className="company-infos" onClick={handleOpenCompanyDetails}>
+			<div
+				className="company-infos"
+				onClick={handleOpenCompanyDetails}
+				role="presentation"
+			>
 				<img src={company.logo} alt="Logo da empresa" />
 				<div className="details">
-					<p className='company-name'>{company.name}</p>
-					{company.manager?.name && <p className="manager-name">Gestor: {company.manager.name}</p>}
+					<p className="company-name">{company.name}</p>
+					{company.manager?.name && (
+						<p className="manager-name">Gestor: {company.manager.name}</p>
+					)}
 				</div>
 			</div>
 
-			<div className="auditors" data-testid="auditors" onClick={(e) => toggleMenu(e)}>
-				{
-					company.auditors.length === 0 ?
-						<p className='no-registered-auditor'>Nenhum auditor cadastrado</p> :
-						<>
-							<p>Auditores</p>
-							<div className='auditors-photos'>
-								{
-									company.auditors.map((auditor, i) => {
-										if (i > 1) return
-										return (
-											<img key={i} src={auditor.profilePicture} alt={`Foto do auditor: ${auditor.name}`} />
-										)
-									})
-								}
-								<AuditorsMenu
-									anchorEl={anchorEl}
-									closeMenu={toggleMenu}
-									open={menuOpen}
-									menuItems={menuItems}
-									menuId='addNewGroupingButtonMenu'
-								/>
-							</div>
-							<KeyboardArrowDownRoundedIcon />
-						</>
-				}
-
+			<div
+				className="auditors"
+				data-testid="auditors"
+				onClick={e => toggleMenu(e)}
+				role="presentation"
+			>
+				{company.auditors.length === 0 ? (
+					<p className="no-registered-auditor">Nenhum auditor cadastrado</p>
+				) : (
+					<>
+						<p>Auditores</p>
+						<div className="auditors-photos">
+							{company.auditors.map((auditor, i) => {
+								if (i > 1) return
+								return (
+									<img
+										key={auditor._eq}
+										src={auditor.profilePicture}
+										alt={`Foto do auditor: ${auditor.name}`}
+									/>
+								)
+							})}
+							<AuditorsMenu
+								anchorEl={anchorEl}
+								closeMenu={toggleMenu}
+								open={menuOpen}
+								menuItems={menuItems}
+								menuId="addNewGroupingButtonMenu"
+							/>
+						</div>
+						<KeyboardArrowDownRoundedIcon />
+					</>
+				)}
 			</div>
 			<div className="status-container">
-				<p className='status-title'>Status</p>
-				<div className="status">
-					{renderStatusComponent()}
-				</div>
+				<p className="status-title">Status</p>
+				<div className="status">{renderStatusComponent()}</div>
 			</div>
 		</Container>
 	)

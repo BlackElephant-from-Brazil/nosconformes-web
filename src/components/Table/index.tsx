@@ -11,21 +11,15 @@ export const Table: React.FC<TableProps> = ({ headerTitles, tableRows }) => {
 		<Container>
 			<thead>
 				<tr>
-					{headerTitles.map((headerTitle, i) => {
-						return (
-							<th key={i}>
-								{headerTitle}
-							</th>
-						)
+					{headerTitles.map(headerTitle => {
+						return <th key={headerTitle}>{headerTitle}</th>
 					})}
 				</tr>
 			</thead>
 			<tbody>
-				{
-					tableRows.map(tableRow => {
-						return tableRow
-					})
-				}
+				{tableRows.map(tableRow => {
+					return tableRow
+				})}
 			</tbody>
 		</Container>
 	)

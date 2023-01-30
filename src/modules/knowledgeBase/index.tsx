@@ -5,17 +5,16 @@ import { Container, Body } from './styles'
 import { Questionaries } from './pages/Questionaries'
 import { Questions } from './pages/Questions'
 
-
 const tabs: Tab[] = [
 	{
 		title: 'Perguntas',
 		link: '/perguntas',
-		element: <Questions />
+		element: <Questions />,
 	},
 	{
 		title: 'Questionários',
 		link: '/questionarios',
-		element: <Questionaries />
+		element: <Questionaries />,
 	},
 ]
 
@@ -24,23 +23,27 @@ export const KnowledgeBase: React.FC = () => {
 
 	const handleOpenTab = (link: string) => {
 		setTabActive(link)
-		console.log(link)
 	}
 
 	const renderBody = () => {
-		for (let count = 0; count <= tabs.length; count++) {
+		for (let count = 0; count <= tabs.length; count += 1) {
 			if (tabs[count].link === tabActive) {
 				return tabs[count].element
 			}
 		}
+		return null
 	}
 
 	return (
 		<Container>
-			<HeaderWithTabs icon={<CommentBankIcon/>} title="Base de conhecimento" tabs={tabs} active={tabActive} openTab={handleOpenTab} />
-			<Body>
-				{renderBody()}
-			</Body>
+			<HeaderWithTabs
+				icon={<CommentBankIcon />}
+				title="Base de conhecimento"
+				tabs={tabs}
+				active={tabActive}
+				openTab={handleOpenTab}
+			/>
+			<Body>{renderBody()}</Body>
 		</Container>
 	)
 }

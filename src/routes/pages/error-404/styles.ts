@@ -17,10 +17,9 @@ export const Container = styled.div`
 			font-family: 'Inter';
 			font-weight: 900;
 			font-size: 200px;
-			color: #D6E4FF;
-			text-shadow: 7px 0 #1F4CD5, -7px 0 #1F4CD5, 0 7px #1F4CD5, 0 -7px #1F4CD5,
-             7px 7px #1F4CD5, -7px -7px #1F4CD5, 7px -7px #1F4CD5, -7px 7px #1F4CD5;
-
+			color: #d6e4ff;
+			text-shadow: 7px 0 #1f4cd5, -7px 0 #1f4cd5, 0 7px #1f4cd5, 0 -7px #1f4cd5,
+				7px 7px #1f4cd5, -7px -7px #1f4cd5, 7px -7px #1f4cd5, -7px 7px #1f4cd5;
 		}
 		img {
 			margin-top: auto;
@@ -37,7 +36,7 @@ export const Container = styled.div`
 			font-family: 'Inter';
 			font-weight: 900;
 			font-size: 50px;
-			color: #0F141E;
+			color: #0f141e;
 			margin-bottom: 24px;
 		}
 
@@ -45,7 +44,7 @@ export const Container = styled.div`
 			font-family: 'Inter';
 			font-weight: 700;
 			font-size: 30px;
-			color: #0F141E;
+			color: #0f141e;
 			margin-bottom: 18px;
 		}
 
@@ -53,7 +52,7 @@ export const Container = styled.div`
 			font-family: 'Inter';
 			font-weight: 500;
 			font-size: 30px;
-			color: #6D7C99;
+			color: #6d7c99;
 		}
 	}
 `

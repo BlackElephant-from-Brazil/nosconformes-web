@@ -20,7 +20,7 @@ export const AddCompanyData = styled.li`
 		font-family: 'Inter';
 		font-weight: 700;
 		font-size: 30px;
-		color: #0F141E;
+		color: #0f141e;
 		margin-top: 48px;
 	}
 
@@ -38,15 +38,15 @@ export const AddCompanyData = styled.li`
 			font-family: 'Inter';
 			font-weight: 700;
 			font-size: 18px;
-			color: #3366FF;
+			color: #3366ff;
 			align-items: center;
 
 			span {
 				width: 64px;
 				height: 64px;
-				background: #84A9FF;
+				background: #84a9ff;
 				border-radius: 12px;
-				color: #1F4CD5;
+				color: #1f4cd5;
 				font-family: 'Inter';
 				font-weight: 700;
 				font-size: 26px;
@@ -57,8 +57,8 @@ export const AddCompanyData = styled.li`
 			}
 
 			.active {
-				color: #FFFFFF;
-				background: #1F4CD5;
+				color: #ffffff;
+				background: #1f4cd5;
 			}
 		}
 	}
@@ -67,7 +67,7 @@ export const AddCompanyData = styled.li`
 		font-family: 'Inter';
 		font-weight: 600;
 		font-size: 24px;
-		color: #323E57;
+		color: #323e57;
 		margin-bottom: 46px;
 	}
 
@@ -85,13 +85,13 @@ export const AddCompanyData = styled.li`
 		svg {
 			width: 52px;
 			height: 52px;
-			color: #6D7C99;
+			color: #6d7c99;
 		}
 
 		p {
 			font-family: 'Inter';
 			font-size: 12px;
-			color: #FFFFFF;
+			color: #ffffff;
 			font-weight: 700;
 			text-align: center;
 		}
@@ -113,7 +113,7 @@ export const AddManagerData = styled.li`
 		font-family: 'Inter';
 		font-weight: 700;
 		font-size: 30px;
-		color: #0F141E;
+		color: #0f141e;
 		margin-top: 48px;
 	}
 
@@ -131,15 +131,15 @@ export const AddManagerData = styled.li`
 			font-family: 'Inter';
 			font-weight: 700;
 			font-size: 18px;
-			color: #3366FF;
+			color: #3366ff;
 			align-items: center;
 
 			span {
 				width: 64px;
 				height: 64px;
-				background: #84A9FF;
+				background: #84a9ff;
 				border-radius: 12px;
-				color: #1F4CD5;
+				color: #1f4cd5;
 				font-family: 'Inter';
 				font-weight: 700;
 				font-size: 26px;
@@ -150,8 +150,8 @@ export const AddManagerData = styled.li`
 			}
 
 			.active {
-				color: #FFFFFF;
-				background: #1F4CD5;
+				color: #ffffff;
+				background: #1f4cd5;
 			}
 		}
 	}
@@ -161,7 +161,7 @@ export const AddManagerData = styled.li`
 		width: 100%;
 
 		.back-button {
-			background: #1F4CD5;
+			background: #1f4cd5;
 			width: 38px;
 			height: 38px;
 			border-radius: 50%;
@@ -178,13 +178,13 @@ export const AddManagerData = styled.li`
 
 			:active {
 				transition: none;
-				background: #1F4CD5;
+				background: #1f4cd5;
 			}
 
 			svg {
 				width: 24px;
 				height: 24px;
-				color: #FFFFFF;
+				color: #ffffff;
 			}
 		}
 
@@ -193,7 +193,7 @@ export const AddManagerData = styled.li`
 			font-family: 'Inter';
 			font-weight: 600;
 			font-size: 24px;
-			color: #323E57;
+			color: #323e57;
 			margin-bottom: 46px;
 			vertical-align: middle;
 		}
@@ -208,5 +208,4 @@ export const AddManagerData = styled.li`
 			margin-right: 20px;
 		}
 	}
-
 `

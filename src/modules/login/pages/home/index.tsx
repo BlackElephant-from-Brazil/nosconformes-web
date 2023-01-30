@@ -1,6 +1,6 @@
+import { useAuth } from 'hooks/authentication.hook'
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../../../hooks/authentication.hook'
 
 const Home: React.FC = () => {
 	const { user } = useAuth()
@@ -12,9 +12,9 @@ const Home: React.FC = () => {
 		} else {
 			navigate('/dashboard')
 		}
-	}, [user])
+	}, [navigate, user])
 
-	return <></>
+	return null
 }
 
 export { Home }

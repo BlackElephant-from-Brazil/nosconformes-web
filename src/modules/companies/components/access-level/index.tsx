@@ -1,22 +1,19 @@
 import React from 'react'
-import { Container } from './styles'
 import AccountBoxIcon from '@mui/icons-material/AccountBox'
-
-export const ACCESS_LEVEL_MASTER = 'master'
-export const ACCESS_LEVEL_MANAGER = 'manager'
-export const ACCESS_LEVEL_CONSULTANT = 'consultant'
-export const ACCESS_LEVEL_AUDITOR = 'auditor'
-
-export type AccessLevels = typeof ACCESS_LEVEL_MASTER | typeof ACCESS_LEVEL_MANAGER | typeof ACCESS_LEVEL_CONSULTANT | typeof ACCESS_LEVEL_AUDITOR
+import { User } from 'interfaces/user.type'
+import { Container } from './styles'
 
 type AccessLevelProps = {
-	level: AccessLevels
+	level: User['accessLevel']
 	className?: string
 }
 
-export const AccessLevel: React.FC<AccessLevelProps> = ({ level, className }) => {
+export const AccessLevel: React.FC<AccessLevelProps> = ({
+	level,
+	className,
+}) => {
 	const renderComponent = () => {
-		if(level === ACCESS_LEVEL_MASTER) {
+		if (level === 'master') {
 			return (
 				<>
 					<AccountBoxIcon />
@@ -24,6 +21,7 @@ export const AccessLevel: React.FC<AccessLevelProps> = ({ level, className }) =>
 				</>
 			)
 		}
+		return null
 	}
 	return (
 		<Container level={level} className={className}>

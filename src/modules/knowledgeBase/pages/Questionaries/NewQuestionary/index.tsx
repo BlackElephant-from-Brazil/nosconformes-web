@@ -1,23 +1,22 @@
 import React, { useState } from 'react'
 import { BT_PRIMARY_ORANGE, Button, BT_PRIMARY } from 'components/Button'
-import { Container, Body } from './styles'
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
 import LockIcon from '@mui/icons-material/Lock'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import { Menu, MenuItem } from 'components/Menu'
 import { QuestionaryNameInput } from 'modules/knowledgeBase/components/QuestionaryNameInput'
-
+import { Container, Body } from './styles'
 
 const menuItems: MenuItem[] = [
 	{
 		label: 'Novo agrupamento +',
 		isPrimary: true,
-		click: () => console.log('testando')
+		click: () => console.log('testando'),
 	},
 	{
 		label: 'Agrupamento existente',
-		click: () => console.log('testando agrupamento existente')
-	}
+		click: () => console.log('testando agrupamento existente'),
+	},
 ]
 
 export const NewQuestionary: React.FC = () => {
@@ -25,10 +24,8 @@ export const NewQuestionary: React.FC = () => {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
 	const toggleMenu = (event?: React.MouseEvent<HTMLButtonElement>) => {
-		if (menuOpen)
-			setAnchorEl(null)
-		else
-			setAnchorEl(event?.currentTarget || null)
+		if (menuOpen) setAnchorEl(null)
+		else setAnchorEl(event?.currentTarget || null)
 
 		setMenuOpen(!menuOpen)
 	}
@@ -37,10 +34,18 @@ export const NewQuestionary: React.FC = () => {
 		<Container>
 			<div className="content">
 				<div className="add-new-questionary-header">
-					<QuestionaryNameInput className='questionary-name-input' />
+					<QuestionaryNameInput className="questionary-name-input" />
 					<div className="button-group">
-						<Button buttonStyle={BT_PRIMARY_ORANGE} icon={<PeopleAltIcon />} text="Auditores" />
-						<Button buttonStyle={BT_PRIMARY} icon={<LockIcon />} text="Compartilhar" />
+						<Button
+							buttonStyle={BT_PRIMARY_ORANGE}
+							icon={<PeopleAltIcon />}
+							text="Auditores"
+						/>
+						<Button
+							buttonStyle={BT_PRIMARY}
+							icon={<LockIcon />}
+							text="Compartilhar"
+						/>
 					</div>
 				</div>
 				<Body>
@@ -49,14 +54,15 @@ export const NewQuestionary: React.FC = () => {
 						text="Adicionar um agrupamento"
 						icon={<KeyboardArrowDownIcon />}
 						className="add-new-grouping-button"
-						onClick={(e) => toggleMenu(e)}
+						onClick={e => toggleMenu(e)}
 					/>
 					<Menu
 						anchorEl={anchorEl}
 						closeMenu={toggleMenu}
 						open={menuOpen}
 						menuItems={menuItems}
-						menuId='addNewGroupingButtonMenu' />
+						menuId="addNewGroupingButtonMenu"
+					/>
 				</Body>
 			</div>
 		</Container>

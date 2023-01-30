@@ -4,7 +4,7 @@ export const Container = styled.table`
 	border-collapse: collapse;
 
 	tr {
-		border-bottom: 1px solid #6F7987 !important;
+		border-bottom: 1px solid #6f7987 !important;
 	}
 
 	th {
