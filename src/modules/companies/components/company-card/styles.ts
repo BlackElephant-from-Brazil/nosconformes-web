@@ -22,7 +22,6 @@ export const Container = styled.div<ContainerProps>`
 			width: 66px;
 			height: 66px;
 			border-radius: 50%;
-			border: 2px solid #1F4CD4;
 			object-fit: contain;
 		}
 
@@ -59,6 +58,10 @@ export const Container = styled.div<ContainerProps>`
 			font-family: 'Inter';
 			font-weight: 700;
 			font-size: 16px;
+		}
+
+		.no-registered-auditor {
+			cursor: text;
 		}
 
 		.auditors-photos {
@@ -133,6 +136,11 @@ export const Container = styled.div<ContainerProps>`
 								background: #C7FAAE;
 								color: #69B345;
 							`
+		} else {
+			return `
+							background: #ADC8FF;
+							color: #1F4CD4;
+						`
 		}
 	}}
 		}

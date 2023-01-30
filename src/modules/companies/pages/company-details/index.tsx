@@ -24,6 +24,7 @@ import { handlePhoneChange, revertPhone } from 'utils/handlePhoneChange'
 import { enqueueApiError } from 'utils/enqueueApiError'
 import { Autocomplete, Box, TextField } from '@mui/material'
 import { Auditor } from 'interfaces/auditor.type'
+import { isObjectEmpty } from 'utils/is-object-empty'
 
 export const TAB_COMPANY_DATA = 0
 export const TAB_MANAGER_DATA = 1
@@ -89,12 +90,14 @@ export const CompanyDetails: React.FC = () => {
 	const [availableAuditors, setAvailableAuditors] = useState<Auditor[]>([])
 	const auditorsRef = useRef(null)
 	const [selectedAuditors, setSelectedAuditors] = useState<Auditor[]>([])
+	const [dataLoaded, setDataLoaded] = useState(false)
 
 	useEffect(() => {
 		(async () => {
 			try {
 				const { data: { company: companyData, availableAuditors: availableAuditorsData } } = await api.get(`/companies/${companyId}`)
-				formCompanyRef.current?.setData({ name: companyData.name, cnpj: companyData.cnpj, site: companyData.site })
+				setDataLoaded(true)
+				console.log(availableAuditorsData)
 				setCompany(companyData)
 				setAvailableAuditors(availableAuditorsData)
 			} catch (err: any) {
@@ -102,6 +105,19 @@ export const CompanyDetails: React.FC = () => {
 			}
 		})()
 	}, [])
+
+	useEffect(() => {
+		formCompanyRef.current?.setData({ name: company.name, cnpj: company.cnpj, site: company.site })
+		if (company.manager && !isObjectEmpty(company.manager)) {
+			formManagerRef.current?.setData({
+				name: company.manager?.name,
+				office: company.manager?.office,
+				department: company.manager?.department,
+				email: company.manager?.email,
+				phone: company.manager?.phone,
+			})
+		}
+	}, [company])
 
 	useEffect(() => {
 		if (active === TAB_COMPANY_DATA) {
@@ -241,17 +257,21 @@ export const CompanyDetails: React.FC = () => {
 								<InsertPhotoOutlinedIcon />
 								<p>Clique para <br /> adicionar uma foto</p>
 							</div>
-							<Form className='add-company-data-form' onSubmit={handleSubmitCompanyData} ref={formCompanyRef}>
-								<Input label='Nome da empresa' name='name' />
-								<Input label='CNPJ' name='cnpj' onChange={e => handleCNPJChange(e.target.value, formCompanyRef, 'cnpj')} />
-								<Input label='Site' name="site" />
-								<Alert
-									text={displayErrors}
-									type='error'
-									testid="display-errors"
-								/>
-								<Button text='Salvar alterações' buttonStyle='primary' type="submit" />
-							</Form>
+							{
+								dataLoaded &&
+								<Form className='add-company-data-form' onSubmit={handleSubmitCompanyData} ref={formCompanyRef}>
+									<Input label='Nome da empresa' name='name' />
+									<Input label='CNPJ' name='cnpj' onChange={e => handleCNPJChange(e.target.value, formCompanyRef, 'cnpj')} />
+									<Input label='Site' name="site" />
+
+									<Alert
+										text={displayErrors}
+										type='error'
+										testid="display-errors"
+									/>
+									<Button text='Salvar alterações' buttonStyle='primary' type="submit" />
+								</Form>
+							}
 						</li>
 					}
 					{
@@ -283,8 +303,6 @@ export const CompanyDetails: React.FC = () => {
 							</h2>
 						</div>
 						<div className="dialog-body">
-							{/* <Form onSubmit={e => e.preventDefault()}> */}
-
 
 							<Autocomplete
 								data-testid="auditors-select"
@@ -307,8 +325,8 @@ export const CompanyDetails: React.FC = () => {
 												height: 36,
 												objectFit: 'cover'
 											}}
-											src={auditor.photo}
-											alt="Foto de um auditor"
+											src={auditor.profilePicture}
+											alt={`Foto do auditor: ${auditor.name}`}
 										/>
 										<p
 											style={{
@@ -334,10 +352,6 @@ export const CompanyDetails: React.FC = () => {
 								)}
 							/>
 
-
-
-							{/* <Input name='auditor' placeholder='Adicione auditores' className='input-auditors' /> */}
-							{/* </Form> */}
 							<h3>
 								Pessoas com acesso
 							</h3>
@@ -346,7 +360,7 @@ export const CompanyDetails: React.FC = () => {
 									company.auditors?.map((auditor, i) => {
 										return (
 											<div className="auditor" key={i}>
-												<img src={auditor.photo} alt="Foto de um auditor" />
+												<img src={auditor.profilePicture} alt="Foto de um auditor" />
 												<p>{auditor.name}</p>
 												<AccessLevel level={ACCESS_LEVEL_MASTER} className='auditor-access-level' />
 											</div>

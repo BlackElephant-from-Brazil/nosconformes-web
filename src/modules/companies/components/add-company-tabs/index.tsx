@@ -23,6 +23,7 @@ type Company = {
 	name: string
 	cnpj: string
 	site: string
+	logo?: string
 }
 
 type Manager = {
@@ -190,7 +191,8 @@ export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({ finishRegisterin
 			return
 		}
 		try {
-			api.post('/companies', {
+			formData.company.logo = 'https://media.licdn.com/dms/image/C4D0BAQGAYL99EehE8w/company-logo_200_200/0/1673981963317?e=1682553600&v=beta&t=I1GVv1NaM_LXAbaglNo29n5_WasBsQIPaMfTEXCfgZA'
+			await api.post('/companies', {
 				company: formData.company,
 				manager: managerFormData
 			})
@@ -203,9 +205,9 @@ export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({ finishRegisterin
 		}
 	}
 
-	const handleSubmitWithoutManagerData = () => {
+	const handleSubmitWithoutManagerData = async () => {
 		try {
-			api.post('/companies', {
+			await api.post('/companies', {
 				company: formData.company,
 				manager: {}
 			})
