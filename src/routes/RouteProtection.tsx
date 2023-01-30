@@ -6,18 +6,15 @@ type RouteProtectionProps = {
 	children: JSX.Element
 }
 
-export const RouteProtection: React.FC<RouteProtectionProps> = ({ children }) => {
+export const RouteProtection: React.FC<RouteProtectionProps> = ({
+	children,
+}) => {
 	const { user } = useAuth()
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		if (Object.keys(user).length === 0)
-			navigate('/')
-	}, [user])
+		if (Object.keys(user).length === 0) navigate('/')
+	}, [navigate, user])
 
-	return (
-		<>
-			{children}
-		</>
-	)
+	return <>({children})</>
 }

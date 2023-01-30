@@ -2,12 +2,16 @@ import React from 'react'
 import { Container } from './styles'
 
 type DialogProps = {
-	open: boolean,
+	open: boolean
 	toggleOpen: () => void
 	children: JSX.Element
 }
 
-export const Dialog: React.FC<DialogProps> = ({ open, toggleOpen, children }) => {
+export const Dialog: React.FC<DialogProps> = ({
+	open,
+	toggleOpen,
+	children,
+}) => {
 	return (
 		<Container open={open} onClose={toggleOpen}>
 			{children}

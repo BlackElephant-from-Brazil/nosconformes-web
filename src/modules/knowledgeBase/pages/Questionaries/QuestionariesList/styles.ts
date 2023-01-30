@@ -14,7 +14,7 @@ export const Container = styled.div`
 
 		.search-input {
 			width: 440px;
-			background: #FFFFFF;
+			background: #ffffff;
 		}
 
 		.new-questionary-button {

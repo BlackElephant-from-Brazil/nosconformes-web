@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { RouterProvider } from 'react-router-dom'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import WarningIcon from '@mui/icons-material/Warning'
+import ReportIcon from '@mui/icons-material/Report'
+import { SnackbarProvider } from 'notistack'
 import { GlobalStyles } from './globalStyles'
 import AppProvider from './hooks'
 import { STORAGE_USER_KEY } from './hooks/authentication.hook'
 import { router } from './routes'
 import { AppContainer } from './styles'
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import WarningIcon from '@mui/icons-material/Warning'
-import ReportIcon from '@mui/icons-material/Report'
-import { SnackbarProvider } from 'notistack'
 import { ErrorSnack, SuccessSnack, WarningSnack } from './components/Snack'
 
-const App: React.FC = () =>{
+const App: React.FC = () => {
 	const [authenticated, setAuthenticated] = useState(false)
 
 	useEffect(() => {
@@ -29,7 +29,8 @@ const App: React.FC = () =>{
 
 	return (
 		<div onContextMenu={e => e.preventDefault()}>
-			<SnackbarProvider maxSnack={6}
+			<SnackbarProvider
+				maxSnack={6}
 				iconVariant={{
 					success: <CheckCircleIcon />,
 					warning: <WarningIcon />,
@@ -38,10 +39,10 @@ const App: React.FC = () =>{
 				Components={{
 					success: SuccessSnack,
 					warning: WarningSnack,
-					error: ErrorSnack
+					error: ErrorSnack,
 				}}
 				style={{
-					marginLeft: 120
+					marginLeft: 120,
 				}}
 			>
 				<AppProvider authenticateUser={authenticateUser}>

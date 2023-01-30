@@ -15,7 +15,13 @@ type HeaderWithTabsProps = {
 	openTab: (link: string) => void
 }
 
-export const HeaderWithTabs: React.FC<HeaderWithTabsProps> = ({ icon, title, tabs, active, openTab }) => {
+export const HeaderWithTabs: React.FC<HeaderWithTabsProps> = ({
+	icon,
+	title,
+	tabs,
+	active,
+	openTab,
+}) => {
 	return (
 		<Container>
 			<div className="header-header">
@@ -23,11 +29,14 @@ export const HeaderWithTabs: React.FC<HeaderWithTabsProps> = ({ icon, title, tab
 				<h1>{title}</h1>
 			</div>
 			<Tabs>
-				{tabs.map(({ link, title }, i) => (
-					<li onClick={() => openTab(link)} key={i} className={link === active ? 'active' : ''}>
-						<p>
-							{title}
-						</p>
+				{tabs.map(({ link, title: tabTitle }) => (
+					<li
+						onClick={() => openTab(link)}
+						key={tabTitle}
+						className={link === active ? 'active' : ''}
+						role="presentation"
+					>
+						<p>{tabTitle}</p>
 					</li>
 				))}
 			</Tabs>

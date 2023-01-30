@@ -17,21 +17,32 @@ type MenuProps = {
 	anchorEl: null | HTMLElement
 }
 
-export const AuditorsMenu: React.FC<MenuProps> = ({ menuItems, open, closeMenu, menuId, anchorEl }) => {
+export const AuditorsMenu: React.FC<MenuProps> = ({
+	menuItems,
+	open,
+	closeMenu,
+	menuId,
+	anchorEl,
+}) => {
 	return (
 		<Container open={open} onClose={closeMenu} id={menuId} anchorEl={anchorEl}>
-			{
-				menuItems.map((menuItem, i) => {
-					return (
-						<MenuItem key={i} onClick={menuItem.click} className={menuItem.isPrimary ? 'primary' : ''}>
-							<MenuItemContainer>
-								<img src={menuItem.avatar} alt={`Avatar do auditor: ${menuItem.label}`} />
-								{menuItem.label}
-							</MenuItemContainer>
-						</MenuItem>
-					)
-				})
-			}
+			{menuItems.map(menuItem => {
+				return (
+					<MenuItem
+						key={menuItem.label}
+						onClick={menuItem.click}
+						className={menuItem.isPrimary ? 'primary' : ''}
+					>
+						<MenuItemContainer>
+							<img
+								src={menuItem.avatar}
+								alt={`Avatar do auditor: ${menuItem.label}`}
+							/>
+							{menuItem.label}
+						</MenuItemContainer>
+					</MenuItem>
+				)
+			})}
 		</Container>
 	)
 }

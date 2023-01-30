@@ -2,11 +2,11 @@ import { Button, styled } from '@mui/material'
 import { BT_PRIMARY_ORANGE, BT_SECONDARY, ButtonVariations } from '.'
 
 type PrimaryButtonProps = {
-	buttonstyle: ButtonVariations,
+	buttonstyle: ButtonVariations
 }
 
 export const StyledButton = styled(Button)<PrimaryButtonProps>`
-	background: #1F4CD5;
+	background: #1f4cd5;
 	font-family: 'Inter';
 	border-radius: 8px;
 	font-size: 16px;
@@ -22,7 +22,7 @@ export const StyledButton = styled(Button)<PrimaryButtonProps>`
 	}
 
 	:active {
-		background: #1F4CD5;
+		background: #1f4cd5;
 	}
 
 	${({ buttonstyle: buttonStyle }) => {
@@ -39,7 +39,8 @@ export const StyledButton = styled(Button)<PrimaryButtonProps>`
 							background: #FFFFFF;
 						}
 					`
-		} else if (buttonStyle === BT_PRIMARY_ORANGE) {
+		}
+		if (buttonStyle === BT_PRIMARY_ORANGE) {
 			return `
 				background: #FF991C;
 				color: #FFFFFF;
@@ -53,8 +54,5 @@ export const StyledButton = styled(Button)<PrimaryButtonProps>`
 				}
 			`
 		}
-	}
-}
-
-
+	}}
 `

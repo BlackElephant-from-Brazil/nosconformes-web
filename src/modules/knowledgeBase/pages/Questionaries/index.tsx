@@ -17,23 +17,16 @@ export const Questionaries: React.FC = () => {
 	const renderQuestionaries = () => {
 		const query = location.search
 
-		if ('?novo-questionario' === query) {
+		if (query === '?novo-questionario') {
 			return <NewQuestionary />
 		}
 		if (questionaries === 0) {
-			return (
-				<FirstNewQuestionary />
-			)
-		} else {
-			console.log(query)
-			return <QuestionariesList openAddNewQuestionary={handleOpenAddNewQuestionary} />
+			return <FirstNewQuestionary />
 		}
+		return (
+			<QuestionariesList openAddNewQuestionary={handleOpenAddNewQuestionary} />
+		)
 	}
 
-	return (
-		<Container>
-			{renderQuestionaries()}
-		</Container>
-	)
-
+	return <Container>{renderQuestionaries()}</Container>
 }

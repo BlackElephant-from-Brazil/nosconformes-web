@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-	background: #E9EFF5;
+	background: #e9eff5;
 	width: 100vw;
 	min-height: 100vh;
 `
 
 export const Body = styled.div`
-	background: #E9EFF5;
+	background: #e9eff5;
 	width: 100%;
 	min-height: 100%;
 	display: flex;
@@ -22,7 +22,7 @@ export const Body = styled.div`
 
 		.search-input {
 			width: 440px;
-			background: #FFFFFF;
+			background: #ffffff;
 		}
 
 		.new-company-button {

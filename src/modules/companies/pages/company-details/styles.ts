@@ -7,7 +7,7 @@ type TabCompanyDetailsProps = {
 }
 
 export const Container = styled.div`
-	background: #FFFFFF;
+	background: #ffffff;
 	width: 100vw;
 	min-height: 100vh;
 `
@@ -36,7 +36,7 @@ export const TabCompanyDetails = styled.ul<TabCompanyDetailsProps>`
 		flex-direction: row;
 
 		.back-button {
-			background: #1F4CD5;
+			background: #1f4cd5;
 			width: 38px;
 			height: 38px;
 			border-radius: 50%;
@@ -53,13 +53,13 @@ export const TabCompanyDetails = styled.ul<TabCompanyDetailsProps>`
 
 			:active {
 				transition: none;
-				background: #1F4CD5;
+				background: #1f4cd5;
 			}
 
 			svg {
 				width: 24px;
 				height: 24px;
-				color: #FFFFFF;
+				color: #ffffff;
 			}
 		}
 
@@ -69,18 +69,17 @@ export const TabCompanyDetails = styled.ul<TabCompanyDetailsProps>`
 			margin: 0 auto;
 
 			p {
-				color: #6D7C99;
+				color: #6d7c99;
 				font-family: 'Inter';
 				font-weight: 500;
 				font-size: 24px;
 				text-align: center;
-
 			}
 		}
 
 		${({ active }) => {
-		if (active === TAB_COMPANY_DATA) {
-			return `	.company-data-title {
+			if (active === TAB_COMPANY_DATA) {
+				return `	.company-data-title {
 											p {
 												font-weight: 700;
 												font-size: 24px;
@@ -89,8 +88,9 @@ export const TabCompanyDetails = styled.ul<TabCompanyDetailsProps>`
 											border-bottom: 4px solid #1F4CD4;
 										}
 									`
-		} else if (active === TAB_MANAGER_DATA) {
-			return `	.manager-data-title {
+			}
+			if (active === TAB_MANAGER_DATA) {
+				return `	.manager-data-title {
 						p {
 							font-weight: 700;
 							font-size: 24px;
@@ -99,9 +99,8 @@ export const TabCompanyDetails = styled.ul<TabCompanyDetailsProps>`
 						border-bottom: 4px solid #1F4CD4;
 					}
 				`
-		}
-	}
-	}
+			}
+		}}}
 	}
 
 	li {
@@ -111,7 +110,7 @@ export const TabCompanyDetails = styled.ul<TabCompanyDetailsProps>`
 	}
 
 	.company-data {
-		display: ${({ active }) => active === TAB_COMPANY_DATA ? 'flex' : 'none'};
+		display: ${({ active }) => (active === TAB_COMPANY_DATA ? 'flex' : 'none')};
 		flex-direction: column;
 		align-items: center;
 
@@ -129,13 +128,13 @@ export const TabCompanyDetails = styled.ul<TabCompanyDetailsProps>`
 			svg {
 				width: 52px;
 				height: 52px;
-				color: #6D7C99;
+				color: #6d7c99;
 			}
 
 			p {
 				font-family: 'Inter';
 				font-size: 12px;
-				color: #FFFFFF;
+				color: #ffffff;
 				font-weight: 700;
 				text-align: center;
 			}
@@ -143,7 +142,7 @@ export const TabCompanyDetails = styled.ul<TabCompanyDetailsProps>`
 	}
 
 	.manager-data {
-		display: ${({ active }) => active === TAB_MANAGER_DATA ? 'flex' : 'none'};
+		display: ${({ active }) => (active === TAB_MANAGER_DATA ? 'flex' : 'none')};
 	}
 `
 
@@ -170,14 +169,14 @@ export const AuditorsDialogContent = styled.div`
 		svg {
 			width: 48px;
 			height: 48px;
-			color: #0F141E;
+			color: #0f141e;
 		}
 
 		h2 {
 			font-family: 'Inter';
 			font-weight: 700;
 			font-size: 30px;
-			color: #0F141E;
+			color: #0f141e;
 			margin-left: 16px;
 		}
 	}
@@ -195,7 +194,7 @@ export const AuditorsDialogContent = styled.div`
 			font-family: 'Inter';
 			font-weight: 700;
 			font-size: 16px;
-			color: #6D7C99;
+			color: #6d7c99;
 			margin-top: 28px;
 		}
 
@@ -208,14 +207,14 @@ export const AuditorsDialogContent = styled.div`
 			img {
 				width: 34px;
 				height: 34px;
-				border: 1px solid #FFFFFF;
+				border: 1px solid #ffffff;
 				border-radius: 50%;
 				object-fit: cover;
 			}
 
 			p {
 				font-family: 'Inter';
-				color: #0F141E;
+				color: #0f141e;
 				font-weight: 500;
 				font-size: 16px;
 				margin-left: 10px;

@@ -4,24 +4,94 @@
 		"es2021": true
 	},
 	"extends": [
-		"eslint:recommended",
 		"plugin:react/recommended",
-		"plugin:@typescript-eslint/recommended"
+		"airbnb",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:prettier/recommended"
 	],
-	"overrides": [],
+	"globals": {
+		"Atomics": "readonly",
+		"SharedArrayBuffer": "readonly"
+	},
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
-		"ecmaVersion": "latest",
+		"ecmaFeatures": {
+			"jsx": true
+		},
+		"ecmaVersion": 2018,
 		"sourceType": "module"
 	},
 	"plugins": [
 		"react",
-		"@typescript-eslint"
+		"react-hooks",
+		"@typescript-eslint",
+		"prettier"
 	],
 	"rules": {
+		"no-unexpected-multiline": "off",
+		"jsx-a11y/anchor-is-valid": "off",
+		"no-param-reassign": [
+			"error",
+			{
+				"props": false
+			}
+		],
+		"consistent-return": "off",
+		"no-underscore-dangle": [
+			"error",
+			{
+				"allow": [
+					"_eq"
+				]
+			}
+		],
+		"jsx-a11y/label-has-associated-control": [
+			"error",
+			{
+				"required": {
+					"some": [
+						"nesting",
+						"id"
+					]
+				}
+			}
+		],
+		"jsx-a11y/label-has-for": [
+			"error",
+			{
+				"required": {
+					"some": [
+						"nesting",
+						"id"
+					]
+				}
+			}
+		],
+		"react/require-default-props": "off",
+		"react/jsx-props-no-spreading": "off",
+		"react/function-component-definition": [
+			2,
+			{
+				"namedComponents": "arrow-function"
+			}
+		],
+		"react-hooks/rules-of-hooks": "error",
+		"react-hooks/exhaustive-deps": "warn",
+		"react/jsx-filename-extension": [
+			1,
+			{
+				"extensions": [
+					".tsx"
+				]
+			}
+		],
+		"import/prefer-default-export": "off",
 		"indent": [
 			"error",
-			"tab"
+			"tab",
+			{
+				"SwitchCase": 1
+			}
 		],
 		"linebreak-style": [
 			"error",
@@ -39,9 +109,24 @@
 			"error",
 			"always"
 		],
-		"@typescript-eslint/no-explicit-any": "off"
+		"import/extensions": [
+			"error",
+			"ignorePackages",
+			{
+				"ts": "never",
+				"tsx": "never"
+			}
+		],
+		"@typescript-eslint/no-explicit-any": "off",
+		"prettier/prettier": "error",
+		"import/no-unresolved": "error"
 	},
 	"ignorePatterns": [
 		"/assets"
-	]
+	],
+	"settings": {
+		"import/resolver": {
+			"typescript": {}
+		}
+	}
 }

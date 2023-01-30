@@ -34,12 +34,12 @@ export const PrimaryInput = styled(TextField)(props => ({
 	},
 
 	'& input:not(:placeholder-shown) ~ fieldset': {
-		border: '1px solid #99A7C2'
+		border: '1px solid #99A7C2',
 	},
 
 	'& label': {
 		color: props.error ? '#FF2163' : '#323E57',
-		fontWeight: 500
+		fontWeight: 500,
 	},
 	'& label.Mui-focused': {
 		color: '#1F4CD5',

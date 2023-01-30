@@ -10,14 +10,14 @@ export const Container = styled.div`
 		font-family: 'Inter';
 		font-weight: 500;
 		font-size: 24px;
-		color: #6D7C99;
+		color: #6d7c99;
 	}
 
 	p {
 		font-family: 'Inter';
 		font-weight: 700;
 		font-size: 30px;
-		color: #0F141E;
+		color: #0f141e;
 		margin-left: 10px;
 	}
 

@@ -5,7 +5,7 @@ import { KnowledgeBase } from '.'
 const knowledgeBaseRoutes: RouteObject[] = [
 	{
 		path: '/base-de-conhecimento',
-		element: <KnowledgeBase />
+		element: <KnowledgeBase />,
 	},
 ]
 
