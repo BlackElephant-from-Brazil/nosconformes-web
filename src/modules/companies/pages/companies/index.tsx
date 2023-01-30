@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom'
 import { Company } from 'interfaces/company.type'
 import { CompanyCard } from 'modules/companies/components/company-card'
 import { AddCompanyTabs } from 'modules/companies/components/add-company-tabs'
+import { enqueueApiError } from 'utils/enqueueApiError'
 
 type SearchForm = {
 	search: string
@@ -35,12 +36,22 @@ export const Companies: React.FC = () => {
 				}
 				setCompanies(data)
 			} catch (err) {
-				console.log(err)
+				enqueueApiError(err)
 			}
 		})()
 	}, [])
 
 	const toggleDrawer = () => setDrawerOpen(!drawerOpen)
+
+	const handleUpdateCompanies = async () => {
+		try {
+			const { data } = await api.get('/companies')
+			setCompanies(data)
+			toggleDrawer()
+		} catch (err) {
+			enqueueApiError(err)
+		}
+	}
 
 	const handleAddNewCompany = () => {
 		toggleDrawer()
@@ -84,7 +95,7 @@ export const Companies: React.FC = () => {
 					<CloseIcon className='close-drawer-icon' onClick={toggleDrawer} data-testid="close-drawer-button" />
 					<div className="drawer-body">
 						<AddCompanyTabs
-							finishRegisteringCallback={toggleDrawer}
+							finishRegisteringCallback={handleUpdateCompanies}
 						/>
 					</div>
 				</AddNewCompanyContainerDrawer>

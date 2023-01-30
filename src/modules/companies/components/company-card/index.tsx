@@ -7,6 +7,7 @@ import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownR
 import { useNavigate } from 'react-router-dom'
 import { AuditorsMenu, MenuItem } from './auditors-menu'
 import { Company } from 'interfaces/company.type'
+import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite'
 
 export const STATUS_LATE = 'late'
 export const STATUS_IN_PROGRESS = 'inprogress'
@@ -35,7 +36,7 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({
 			auditorToLoad.push({
 				click: () => navigate(`/usuarios/${auditor._eq}`),
 				label: auditor.name,
-				avatar: auditor.photo
+				avatar: auditor.profilePicture
 			})
 		})
 		setMenuItems(auditorToLoad)
@@ -74,9 +75,9 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({
 		} else {
 			return (
 				<>
-					<WatchLaterRoundedIcon />
+					<PlayCircleFilledWhiteIcon />
 					<p>
-						Em progresso
+						Iniciando
 					</p>
 				</>
 			)
@@ -96,8 +97,6 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({
 		setMenuOpen(!menuOpen)
 	}
 
-	// TODO: TO PREVENT INPROGRESS MOCK STATUS SET
-
 	return (
 		<Container status={company.status} data-testid={testid}>
 			<div className="company-infos" onClick={handleOpenCompanyDetails}>
@@ -107,26 +106,34 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({
 					{company.manager?.name && <p className="manager-name">Gestor: {company.manager.name}</p>}
 				</div>
 			</div>
+
 			<div className="auditors" data-testid="auditors" onClick={(e) => toggleMenu(e)}>
-				<p>Auditores</p>
-				<div className='auditors-photos'>
-					{
-						company.auditors.map((auditor, i) => {
-							if (i > 1) return
-							return (
-								<img key={i} src={auditor.photo} alt={`Foto do auditor: ${auditor.name}`} />
-							)
-						})
-					}
-					<AuditorsMenu
-						anchorEl={anchorEl}
-						closeMenu={toggleMenu}
-						open={menuOpen}
-						menuItems={menuItems}
-						menuId='addNewGroupingButtonMenu'
-					/>
-				</div>
-				<KeyboardArrowDownRoundedIcon />
+				{
+					company.auditors.length === 0 ?
+						<p className='no-registered-auditor'>Nenhum auditor cadastrado</p> :
+						<>
+							<p>Auditores</p>
+							<div className='auditors-photos'>
+								{
+									company.auditors.map((auditor, i) => {
+										if (i > 1) return
+										return (
+											<img key={i} src={auditor.profilePicture} alt={`Foto do auditor: ${auditor.name}`} />
+										)
+									})
+								}
+								<AuditorsMenu
+									anchorEl={anchorEl}
+									closeMenu={toggleMenu}
+									open={menuOpen}
+									menuItems={menuItems}
+									menuId='addNewGroupingButtonMenu'
+								/>
+							</div>
+							<KeyboardArrowDownRoundedIcon />
+						</>
+				}
+
 			</div>
 			<div className="status-container">
 				<p className='status-title'>Status</p>
