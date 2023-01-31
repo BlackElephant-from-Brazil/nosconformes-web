@@ -9,9 +9,9 @@ import ncHorizontal from '../../../../assets/nc-horizontal.png'
 import dm11Logotipo from '../../../../assets/dm11-logotipo.png'
 import dm11RoundedLogo from '../../../../assets/dm11-rounded-logo.png'
 import dashboardLogin from '../../../../assets/dashboard-login.png'
-import { Input } from '../../../../components/Input'
-import { Button } from '../../../../components/Button'
-import { Alert } from '../../../../components/Alert'
+import { Input } from '../../../../components/input'
+import { Button } from '../../../../components/button'
+import { Alert } from '../../../../components/alert'
 import { api } from '../../../../api'
 
 const errorMessages = {

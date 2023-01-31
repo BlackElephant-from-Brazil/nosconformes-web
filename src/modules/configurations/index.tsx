@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import SettingsIcon from '@mui/icons-material/Settings'
-import { HeaderWithTabs, Tab } from '../../components/HeaderWithTabs'
+import { HeaderWithTabs, Tab } from '../../components/header-with-tabs'
 import { Container } from './styles'
 import { Profile } from './Profile'
 import { PersonalConfigurations } from './PersonalConfigurations'

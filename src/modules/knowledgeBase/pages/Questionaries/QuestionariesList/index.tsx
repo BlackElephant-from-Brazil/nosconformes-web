@@ -1,7 +1,7 @@
 import React from 'react'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
-import { Button } from '../../../../../components/Button'
-import { Input } from '../../../../../components/Input'
+import { Button } from '../../../../../components/button'
+import { Input } from '../../../../../components/input'
 import { Container } from './styles'
 import { Client, QuestionaryCard } from '../../../components/QuestionaryCard'
 

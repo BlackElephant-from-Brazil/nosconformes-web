@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Header } from 'components/Header'
+import { Header } from 'components/header'
 import BusinessIcon from '@mui/icons-material/Business'
-import { Input } from 'components/Input'
-import { Button } from 'components/Button'
+import { Input } from 'components/input'
+import { Button } from 'components/button'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
-import { RightDrawer } from 'components/RightDrawer'
+import { RightDrawer } from 'components/right-drawer'
 import CloseIcon from '@mui/icons-material/Close'
 import { Form } from '@unform/web'
 import { FormHandles, SubmitHandler } from '@unform/core'
@@ -41,8 +41,10 @@ export const Companies: React.FC = () => {
 					return
 				}
 				setCompanies(data)
-			} catch (err) {
-				enqueueApiError(err)
+			} catch (err: any) {
+				if (err.response.status !== 401) {
+					enqueueApiError(err)
+				}
 			}
 		})()
 	}, [navigate])

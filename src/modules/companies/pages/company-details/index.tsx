@@ -9,7 +9,7 @@ import { api } from 'api'
 import { enqueueSnackbar } from 'notistack'
 import { Company } from 'interfaces/company.type'
 import { FormHandles, SubmitHandler } from '@unform/core'
-import { Alert } from 'components/Alert'
+import { Alert } from 'components/alert'
 import { handleYupErrors } from 'utils/handleYupErrors'
 import { handleCNPJChange, revertCnpj } from 'utils/handleCNPJChange'
 import * as Yup from 'yup'
@@ -20,16 +20,16 @@ import { Auditor } from 'interfaces/auditor.type'
 import { isObjectEmpty } from 'utils/is-object-empty'
 import { BackButton } from 'components/back-button'
 import { AccessLevel } from '../../components/access-level'
-import { Dialog } from '../../../../components/Dialog'
-import { Input } from '../../../../components/Input'
-import { BT_PRIMARY, Button } from '../../../../components/Button'
+import { Dialog } from '../../../../components/dialog'
+import { Input } from '../../../../components/input'
+import { BT_PRIMARY, Button } from '../../../../components/button'
 import {
 	Container,
 	Body,
 	TabCompanyDetails,
 	AuditorsDialogContent,
 } from './styles'
-import { Header } from '../../../../components/Header'
+import { Header } from '../../../../components/header'
 
 export const TAB_COMPANY_DATA = 0
 export const TAB_MANAGER_DATA = 1
@@ -293,20 +293,20 @@ export const CompanyDetails: React.FC = () => {
 							testid="back-button"
 							handleClick={handleBackToCompanyData}
 						/>
-						<button
-							type="button"
+						<div
 							className="company-data-title"
 							onClick={handleActiveCompanyData}
+							role="presentation"
 						>
 							<p>Dados da empresa</p>
-						</button>
-						<button
-							type="button"
+						</div>
+						<div
 							className="manager-data-title"
 							onClick={handleAcitveManagerData}
+							role="presentation"
 						>
 							<p>Dados do gestor</p>
-						</button>
+						</div>
 					</div>
 					{active === TAB_COMPANY_DATA && (
 						<li className="company-data" data-testid="tab-company-form">

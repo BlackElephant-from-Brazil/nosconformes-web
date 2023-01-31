@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import CommentBankIcon from '@mui/icons-material/CommentBank'
-import { HeaderWithTabs, Tab } from '../../components/HeaderWithTabs'
+import { HeaderWithTabs, Tab } from '../../components/header-with-tabs'
 import { Container, Body } from './styles'
 import { Questionaries } from './pages/Questionaries'
 import { Questions } from './pages/Questions'
