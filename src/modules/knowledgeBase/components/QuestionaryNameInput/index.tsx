@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import EditIcon from '@mui/icons-material/Edit'
 import CloseIcon from '@mui/icons-material/Close'
 import CheckIcon from '@mui/icons-material/Check'
-import { Input } from 'components/Input'
+import { Input } from 'components/input'
 import { Container } from './styles'
 
 type QuestionaryNameInput = {

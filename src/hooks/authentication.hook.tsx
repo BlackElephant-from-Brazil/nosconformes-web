@@ -92,10 +92,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
 	)
 
 	const signOut = useCallback(async () => {
-		await api.get('auth/logout')
-
-		localStorage.removeItem(STORAGE_TOKEN_KEY)
-		localStorage.removeItem(STORAGE_USER_KEY)
+		localStorage.clear()
 		api.defaults.headers.authorization = ''
 		setData({} as AuthState)
 	}, [])

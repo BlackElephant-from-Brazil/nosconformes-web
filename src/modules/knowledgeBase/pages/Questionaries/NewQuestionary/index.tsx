@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { BT_PRIMARY_ORANGE, Button, BT_PRIMARY } from 'components/Button'
+import { BT_PRIMARY_ORANGE, Button, BT_PRIMARY } from 'components/button'
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
 import LockIcon from '@mui/icons-material/Lock'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import { Menu, MenuItem } from 'components/Menu'
+import { Menu, MenuItem } from 'components/menu'
 import { QuestionaryNameInput } from 'modules/knowledgeBase/components/QuestionaryNameInput'
 import { Container, Body } from './styles'
 

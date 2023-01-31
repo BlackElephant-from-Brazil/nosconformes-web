@@ -36,11 +36,19 @@ export const Container = styled.div`
 		margin-bottom: 20px;
 	}
 
-	.app-menu {
-	}
-
 	.bottom {
 		margin-top: auto;
+		width: 100%;
+
+		svg {
+			display: flex;
+			margin: 0 auto;
+			margin-bottom: 36px;
+			color: #6d7c99;
+			width: 20px;
+			height: 20px;
+			cursor: pointer;
+		}
 
 		.user-tag {
 			width: 52px;

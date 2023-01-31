@@ -1,7 +1,7 @@
 import React from 'react'
 import { Home } from 'modules/login/pages/home'
 import { createBrowserRouter } from 'react-router-dom'
-import { SideBar } from 'components/SideBar'
+import { SideBar } from 'components/side-bar'
 import { STORAGE_USER_KEY } from 'hooks/authentication.hook'
 import { privateRoutes } from './private.routes'
 import { publicRoutes } from './public.routes'

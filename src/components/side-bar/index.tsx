@@ -5,8 +5,10 @@ import DashboardIcon from '@mui/icons-material/Dashboard'
 import BusinessIcon from '@mui/icons-material/Business'
 import CommentBankIcon from '@mui/icons-material/CommentBank'
 import PeopleIcon from '@mui/icons-material/People'
-import { redirect, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
+import LogoutIcon from '@mui/icons-material/Logout'
+import { useAuth } from 'hooks/authentication.hook'
 import ncMenuOpen from '../../assets/nc-menu-open.png'
 import ncMenuClose from '../../assets/nc-menu-close.png'
 import avatarExample from '../../assets/avatar-example.png'
@@ -23,6 +25,7 @@ export const SideBar: React.FC = () => {
 	const [active, setActive] = useState(DASHBOARD)
 	const navigate = useNavigate()
 	const { enqueueSnackbar } = useSnackbar()
+	const { signOut } = useAuth()
 
 	const handleShowSnackbarExample = () => {
 		enqueueSnackbar(
@@ -86,6 +89,16 @@ export const SideBar: React.FC = () => {
 		}
 	}
 
+	const handleClickLogout = () => {
+		signOut()
+		enqueueSnackbar('Você foi desconectado com sucesso!', {
+			variant: 'success',
+		})
+		setTimeout(() => {
+			navigate('/login')
+		}, 2800)
+	}
+
 	return (
 		<Container>
 			<span className="toggle-menu-button">
@@ -130,7 +143,10 @@ export const SideBar: React.FC = () => {
 					<p className="item-name">Área do auditor</p>
 				</MenuItem>
 			</div>
-			<div className="bottom">{renderBottomFixedContent()}</div>
+			<div className="bottom">
+				<LogoutIcon onClick={handleClickLogout} />
+				{renderBottomFixedContent()}
+			</div>
 		</Container>
 	)
 }

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import BusinessIcon from '@mui/icons-material/Business'
 import { api } from 'api'
 import { useNavigate } from 'react-router-dom'
-import { Header } from '../../../../components/Header'
+import { Header } from '../../../../components/header'
 import { AddCompanyTabs } from '../../components/add-company-tabs'
 import { Body, Container, CreateYourFirstCompanyScreen } from './styles'
-import { Button } from '../../../../components/Button'
+import { Button } from '../../../../components/button'
 
 const AddFirstCompany: React.FC = () => {
 	const [isRegistering, setIsRegistering] = useState(false)
@@ -16,13 +16,14 @@ const AddFirstCompany: React.FC = () => {
 	}
 
 	useEffect(() => {
-		;(async () => {
+		// eslint-disable-next-line prettier/prettier
+		; (async () => {
 			const { data } = await api.get('/companies')
 			if (data.length > 0) {
 				navigate('/empresas')
 			}
 		})()
-	}, [])
+	}, [navigate])
 
 	return (
 		<Container>

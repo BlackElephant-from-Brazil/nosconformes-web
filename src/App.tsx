@@ -9,7 +9,7 @@ import AppProvider from './hooks'
 import { STORAGE_USER_KEY } from './hooks/authentication.hook'
 import { router } from './routes'
 import { AppContainer } from './styles'
-import { ErrorSnack, SuccessSnack, WarningSnack } from './components/Snack'
+import { ErrorSnack, SuccessSnack, WarningSnack } from './components/snack'
 
 const App: React.FC = () => {
 	const [authenticated, setAuthenticated] = useState(false)
@@ -30,6 +30,7 @@ const App: React.FC = () => {
 	return (
 		<div onContextMenu={e => e.preventDefault()}>
 			<SnackbarProvider
+				autoHideDuration={2500}
 				maxSnack={6}
 				iconVariant={{
 					success: <CheckCircleIcon />,

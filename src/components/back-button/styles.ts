@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const Container = styled.button`
+export const Container = styled.a`
 	background: #1f4cd5;
 	width: 38px;
 	height: 38px;
@@ -9,6 +9,7 @@ export const Container = styled.button`
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
+	transition: background 0.2s;
 
 	:hover {
 		background: #072788;
