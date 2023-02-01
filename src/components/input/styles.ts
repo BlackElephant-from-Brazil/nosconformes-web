@@ -5,14 +5,12 @@ export const PrimaryInput = styled(TextField)(props => ({
 	marginBottom: 10,
 	borderRadius: 8,
 	borderColor: '#E9EFF5',
-	height: 48,
 	background: '#E9EFF5',
 	backgroundColor: '#E9EFF5',
 	width: '100%',
 
 	'& .MuiOutlinedInput-root': {
 		borderRadius: 8,
-		height: 48,
 
 		'& fieldset': {
 			borderColor: props.error ? '#FF2163' : '#FFFFFF',
@@ -28,7 +26,6 @@ export const PrimaryInput = styled(TextField)(props => ({
 	},
 
 	'& input': {
-		borderRadius: 8,
 		fontFamily: 'Inter',
 		fontWeight: 500,
 	},
