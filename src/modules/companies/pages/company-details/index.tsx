@@ -15,10 +15,11 @@ import { handleCNPJChange, revertCnpj } from 'utils/handleCNPJChange'
 import * as Yup from 'yup'
 import { handlePhoneChange, revertPhone } from 'utils/handlePhoneChange'
 import { enqueueApiError } from 'utils/enqueueApiError'
-import { Autocomplete, Box, TextField } from '@mui/material'
+import { Box, TextField } from '@mui/material'
 import { Auditor } from 'interfaces/auditor.type'
 import { isObjectEmpty } from 'utils/is-object-empty'
 import { BackButton } from 'components/back-button'
+import { Autocomplete } from 'components/autocomplete'
 import { AccessLevel } from '../../components/access-level'
 import { Dialog } from '../../../../components/dialog'
 import { Input } from '../../../../components/input'
@@ -391,17 +392,13 @@ export const CompanyDetails: React.FC = () => {
 						</div>
 						<div className="dialog-body">
 							<Autocomplete
-								data-testid="auditors-select"
-								multiple
-								ref={auditorsRef}
-								id="auditorsSelect"
+								testid="auditors-select"
 								options={availableAuditors}
-								disableCloseOnSelect
-								value={selectedAuditors}
-								onChange={(event: any, auditors: Auditor[]) => {
-									setSelectedAuditors(auditors)
+								selectedValues={selectedAuditors}
+								handleChange={(event, auditors) => {
+									setSelectedAuditors(auditors as Auditor[])
 								}}
-								getOptionLabel={auditor => auditor.name}
+								optionLabel={auditor => auditor.name}
 								renderOption={(props, auditor) => (
 									<Box
 										component="li"
@@ -431,15 +428,7 @@ export const CompanyDetails: React.FC = () => {
 										</p>
 									</Box>
 								)}
-								renderInput={params => (
-									<TextField
-										{...params}
-										label="Adicione auditores"
-										inputProps={{
-											...params.inputProps,
-										}}
-									/>
-								)}
+								label="Adicione auditores"
 							/>
 
 							<h3>Pessoas com acesso</h3>
