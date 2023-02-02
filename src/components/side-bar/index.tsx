@@ -40,6 +40,26 @@ export const SideBar: React.FC = () => {
 		setDisplayMenuOpen(false)
 	}, [open])
 
+	useEffect(() => {
+		const path = window.location.pathname
+		switch (path) {
+			case '/dashboard':
+				setActive(DASHBOARD)
+				break
+			case '/empresas':
+				setActive(COMPANIES)
+				break
+			case '/base-de-conhecimento':
+				setActive(KNOWLEDGE_BASE)
+				break
+			case '/area-do-auditor':
+				setActive(AUDITOR_AREA)
+				break
+			default:
+				break
+		}
+	}, [])
+
 	const handleOpenMenu = (menu: string) => {
 		setActive(menu)
 		switch (menu) {
@@ -140,12 +160,20 @@ export const SideBar: React.FC = () => {
 				</MenuItem>
 			</div>
 			<div className="bottom">
-				<div className="bottom-item">
-					<NotificationsIcon onClick={handleClickNotifications} />
+				<div
+					className="bottom-item"
+					onClick={handleClickNotifications}
+					role="presentation"
+				>
+					<NotificationsIcon />
 					<p>Notificações</p>
 				</div>
-				<div className="bottom-item">
-					<LogoutIcon onClick={handleClickLogout} />
+				<div
+					className="bottom-item"
+					onClick={handleClickLogout}
+					role="presentation"
+				>
+					<LogoutIcon />
 					<p>Sair</p>
 				</div>
 				<UserTag displayOpen={displayMenuOpen} menuOpen={open}>
