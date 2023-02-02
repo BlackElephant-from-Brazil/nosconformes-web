@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import DashboardIcon from '@mui/icons-material/Dashboard'
@@ -9,11 +9,13 @@ import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { useAuth } from 'hooks/authentication.hook'
+import NotificationsIcon from '@mui/icons-material/Notifications'
 import ncMenuOpen from '../../assets/nc-menu-open.png'
 import ncMenuClose from '../../assets/nc-menu-close.png'
 import avatarExample from '../../assets/avatar-example.png'
-import dm11ReducedLogo from '../../assets/dm11-reduced-logo.png'
-import { Container, MenuItem } from './styles'
+import ncShortLogo from '../../assets/nc-short-logo.png'
+import ncWhiteText from '../../assets/nc-white-text.png'
+import { Container, MenuItem, UserTag } from './styles'
 
 const DASHBOARD = 'dashboard'
 const COMPANIES = 'companies'
@@ -26,48 +28,17 @@ export const SideBar: React.FC = () => {
 	const navigate = useNavigate()
 	const { enqueueSnackbar } = useSnackbar()
 	const { signOut } = useAuth()
+	const [displayMenuOpen, setDisplayMenuOpen] = useState(false)
 
-	const handleShowSnackbarExample = () => {
-		enqueueSnackbar(
-			'Olá, mundo! Sou uma snack. Eu sou uma snack grande, preciso ser quebrada em duas linhas ou mais.',
-			{ variant: 'success' },
-		)
-	}
-
-	const renderBottomFixedContent = () => {
+	useEffect(() => {
 		if (open) {
-			return (
-				<>
-					<div className="user-tag">
-						<img src={avatarExample} alt="Avatar do usuário" />
-						<div className="user-infos">
-							<p className="user-name">Douglas</p>
-							<p className="user-office">Master</p>
-						</div>
-					</div>
-					<div className="bottom-menu">
-						<img src={ncMenuOpen} alt="Logotipo nosconformes inteiro" />
-						<p>Todos direitos reservados ©</p>
-					</div>
-				</>
-			)
+			const timer = setTimeout(() => {
+				setDisplayMenuOpen(true)
+			}, 200)
+			return () => clearTimeout(timer)
 		}
-		return (
-			<>
-				<div
-					className="user-tag"
-					onClick={handleShowSnackbarExample}
-					role="presentation"
-				>
-					<img src={avatarExample} alt="Avatar do usuário" />
-				</div>
-				<div className="bottom-menu">
-					<img src={ncMenuClose} alt="Logotipo nosconformes reduzido" />
-					<p>©</p>
-				</div>
-			</>
-		)
-	}
+		setDisplayMenuOpen(false)
+	}, [open])
 
 	const handleOpenMenu = (menu: string) => {
 		setActive(menu)
@@ -99,14 +70,36 @@ export const SideBar: React.FC = () => {
 		}, 2800)
 	}
 
+	const handleToggleMenuOpen = () => {
+		setOpen(!open)
+	}
+
+	const handleClickNotifications = () => {
+		console.log('click')
+	}
+
 	return (
-		<Container>
-			<span className="toggle-menu-button">
+		<Container open={open} textShow={displayMenuOpen}>
+			<span
+				className="toggle-menu-button"
+				onClick={handleToggleMenuOpen}
+				role="presentation"
+			>
 				{open ? <KeyboardArrowLeftIcon /> : <KeyboardArrowRightIcon />}
 			</span>
-			<img className="logo-dm11-top" src={dm11ReducedLogo} alt="Logo DM11" />
+			<div className="nosconformes-logo-container">
+				<img className="logo-nc-top" src={ncShortLogo} alt="Logo DM11" />
+				{displayMenuOpen && (
+					<img
+						className="nc-white-text"
+						src={ncWhiteText}
+						alt="Texto NOSCONFORMES"
+					/>
+				)}
+			</div>
 			<div className="app-menu">
 				<MenuItem
+					textShow={displayMenuOpen}
 					open={open}
 					active={active === DASHBOARD}
 					onClick={() => handleOpenMenu(DASHBOARD)}
@@ -116,6 +109,7 @@ export const SideBar: React.FC = () => {
 					<p className="item-name">Dashboard</p>
 				</MenuItem>
 				<MenuItem
+					textShow={displayMenuOpen}
 					open={open}
 					active={active === COMPANIES}
 					onClick={() => handleOpenMenu(COMPANIES)}
@@ -125,6 +119,7 @@ export const SideBar: React.FC = () => {
 					<p className="item-name">Empresas</p>
 				</MenuItem>
 				<MenuItem
+					textShow={displayMenuOpen}
 					open={open}
 					active={active === KNOWLEDGE_BASE}
 					onClick={() => handleOpenMenu(KNOWLEDGE_BASE)}
@@ -134,6 +129,7 @@ export const SideBar: React.FC = () => {
 					<p className="item-name">Base de conhecimento</p>
 				</MenuItem>
 				<MenuItem
+					textShow={displayMenuOpen}
 					open={open}
 					active={active === AUDITOR_AREA}
 					onClick={() => handleOpenMenu(AUDITOR_AREA)}
@@ -144,8 +140,36 @@ export const SideBar: React.FC = () => {
 				</MenuItem>
 			</div>
 			<div className="bottom">
-				<LogoutIcon onClick={handleClickLogout} />
-				{renderBottomFixedContent()}
+				<div className="bottom-item">
+					<NotificationsIcon onClick={handleClickNotifications} />
+					<p>Notificações</p>
+				</div>
+				<div className="bottom-item">
+					<LogoutIcon onClick={handleClickLogout} />
+					<p>Sair</p>
+				</div>
+				<UserTag displayOpen={displayMenuOpen} menuOpen={open}>
+					<img src={avatarExample} alt="Avatar do usuário" />
+					<div className="user-infos">
+						<p className="user-name">Douglas</p>
+						<p className="user-office">Master</p>
+					</div>
+				</UserTag>
+				<div className="bottom-infos">
+					{!displayMenuOpen ? (
+						<>
+							<img src={ncMenuClose} alt="Logo NOSCONFORMES" />
+							<p>©</p>
+						</>
+					) : (
+						<>
+							<img src={ncMenuOpen} alt="Logo NOSCONFORMES" />
+							<p>
+								<span>Todos direitos reservados</span>©
+							</p>
+						</>
+					)}
+				</div>
 			</div>
 		</Container>
 	)
