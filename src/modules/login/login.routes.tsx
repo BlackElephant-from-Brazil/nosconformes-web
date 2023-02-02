@@ -14,7 +14,7 @@ const loginRoutes: RouteObject[] = [
 		element: <RecoverPassword />,
 	},
 	{
-		path: '/mudar-senha',
+		path: '/mudar-senha/:email/:_protocol',
 		element: <ChangePassword />,
 	},
 ]

@@ -28,5 +28,5 @@ export const Questionaries: React.FC = () => {
 		)
 	}
 
-	return <Container>{renderQuestionaries()}</Container>
+	return <Container>Olá, questionários</Container>
 }
