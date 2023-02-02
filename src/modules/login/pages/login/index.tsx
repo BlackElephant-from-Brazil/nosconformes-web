@@ -13,6 +13,8 @@ import { Form } from '@unform/web'
 import * as Yup from 'yup'
 import { FormHandles, SubmitHandler } from '@unform/core'
 import { Input } from 'components/input'
+import { api } from 'api'
+import { enqueueApiError } from 'utils/enqueueApiError'
 import { Container, LeftSide, RightSide } from './styles'
 
 const errorMessages = {
@@ -91,6 +93,7 @@ export const Login: React.FC = () => {
 				},
 			)
 		} catch (err) {
+			// TODO: HANDLE THIS ERROR
 			let allErrors = ''
 
 			if (err instanceof Yup.ValidationError) {
@@ -103,7 +106,12 @@ export const Login: React.FC = () => {
 				setDisplayError(allErrors)
 				return
 			}
-			console.log(err)
+			return
+		}
+		try {
+			await api.post('/password/forgot', { email: emailValue })
+		} catch (err) {
+			enqueueApiError(err)
 			return
 		}
 		navigate('/recuperar-senha', {
@@ -111,8 +119,6 @@ export const Login: React.FC = () => {
 				email: emailValue,
 			},
 		})
-		// TODO: SÓ ENTRARÁ NA PÁGINA DE MUDAR A
-		// SENHA CASO ENTRE PELO LINK COM UM PROTOCOLO VÁLIDO
 	}
 
 	return (

@@ -4,7 +4,7 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
 import LockIcon from '@mui/icons-material/Lock'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import { Menu, MenuItem } from 'components/menu'
-import { QuestionaryNameInput } from 'modules/knowledgeBase/components/QuestionaryNameInput'
+import { QuestionaryNameInput } from 'modules/knowledge-base/components/QuestionaryNameInput'
 import { Container, Body } from './styles'
 
 const menuItems: MenuItem[] = [

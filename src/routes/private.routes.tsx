@@ -6,7 +6,7 @@ import { STORAGE_USER_KEY } from '../hooks/authentication.hook'
 import { companiesRoutes } from '../modules/companies/companies.routes'
 import { configurationsRoutes } from '../modules/configurations/configurations.routes'
 import { dashboardRoutes } from '../modules/dashboard/dashboard.routes'
-import { knowledgeBaseRoutes } from '../modules/knowledgeBase/knowledge-base.routes'
+import { knowledgeBaseRoutes } from '../modules/knowledge-base/knowledge-base.routes'
 import { SideBar } from '../components/side-bar'
 import { RouteContainer } from './styles'
 
