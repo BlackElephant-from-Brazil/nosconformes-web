@@ -5,6 +5,6 @@ import { Configurations } from '.'
 export const configurationsRoutes: RouteObject[] = [
 	{
 		path: '/configuracoes',
-		element: <Configurations />
+		element: <Configurations />,
 	},
 ]

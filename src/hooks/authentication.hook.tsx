@@ -1,16 +1,13 @@
+import { User } from 'interfaces/user.type'
 import { enqueueSnackbar } from 'notistack'
-import React, { createContext, useContext, useState } from 'react'
+import React, {
+	createContext,
+	useCallback,
+	useContext,
+	useMemo,
+	useState,
+} from 'react'
 import { api } from '../api'
-import { AccessLevel } from '../enums/access-level.enum'
-
-type User = {
-	_eq: string
-	profilePicture: string
-	name: string
-	email: string
-	office: string
-	accessLevel: AccessLevel
-}
 
 type SignInCredentials = {
 	email: string
@@ -39,7 +36,10 @@ export const STORAGE_TOKEN_KEY = '@nosconformes:token'
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children, authenticateUser }) => {
+export const AuthProvider: React.FC<AuthProviderProps> = ({
+	children,
+	authenticateUser,
+}) => {
 	const [data, setData] = useState<AuthState>(() => {
 		const storagedUser = localStorage.getItem(STORAGE_USER_KEY)
 		const storagedToken = localStorage.getItem(STORAGE_TOKEN_KEY)
@@ -51,57 +51,64 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children, authentica
 		return {} as AuthState
 	})
 
-	const signIn = async ({ email, password }: SignInCredentials) => {
+	const signIn = useCallback(
+		async ({ email, password }: SignInCredentials) => {
+			try {
+				const response = await api.post('auth/login', {
+					email,
+					password,
+				})
 
-		try {
-			const response = await api.post('auth/login', {
-				email,
-				password
-			})
+				const { accessToken, user } = response.data
 
-			const { accessToken, user } = response.data
+				authenticateUser()
+				localStorage.setItem(STORAGE_TOKEN_KEY, accessToken)
+				localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(user))
+				api.defaults.headers.authorization = `Bearer ${accessToken}`
 
-			authenticateUser()
-			localStorage.setItem(STORAGE_TOKEN_KEY, accessToken)
+				setData({
+					token: accessToken,
+					user,
+				})
+				return true
+			} catch (err: any) {
+				enqueueSnackbar(err.response.data.message, { variant: 'error' })
+				return false
+			}
+		},
+		[authenticateUser],
+	)
+
+	const updateUser = useCallback(
+		(user: User) => {
 			localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(user))
-			api.defaults.headers.authorization = `Bearer ${accessToken}`
 
 			setData({
-				token: accessToken,
-				user
+				...data,
+				user,
 			})
-			return true
-		} catch (err: any) {
-			enqueueSnackbar(err.response.data.message, { variant: 'error' })
-			return false
-		}
-	}
+		},
+		[data],
+	)
 
-	const updateUser = (user: User) => {
-		localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(user))
-
-		setData({
-			...data,
-			user
-		})
-	}
-
-	const signOut = async () => {
-		await api.get('auth/logout')
-
-		localStorage.removeItem(STORAGE_TOKEN_KEY)
-		localStorage.removeItem(STORAGE_USER_KEY)
+	const signOut = useCallback(async () => {
+		localStorage.clear()
 		api.defaults.headers.authorization = ''
 		setData({} as AuthState)
-	}
+	}, [])
 
+	const contextValue = useMemo(
+		() => ({
+			signIn,
+			signOut,
+			user: data.user,
+			updateUser,
+		}),
+		[signIn, signOut, data.user, updateUser],
+	)
 
 	return (
-		<AuthContext.Provider value={{
-			signIn, signOut, user: data.user, updateUser
-		}}>
-			{children}
-		</AuthContext.Provider>
+		<AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
 	)
 }
 

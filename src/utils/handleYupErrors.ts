@@ -1,7 +1,12 @@
 import { FormHandles } from '@unform/core'
 import * as Yup from 'yup'
 
-export const handleYupErrors = (err: any, formRef: React.RefObject<FormHandles>, callbackDisplayErros: React.Dispatch<React.SetStateAction<string>>, complexPath?: string) => {
+export const handleYupErrors = (
+	err: any,
+	formRef: React.RefObject<FormHandles>,
+	callbackDisplayErros: React.Dispatch<React.SetStateAction<string>>,
+	complexPath?: string,
+) => {
 	let allErrors = ''
 	if (err instanceof Yup.ValidationError) {
 		const validationErrors: { [key: string]: string } = {}
@@ -12,6 +17,5 @@ export const handleYupErrors = (err: any, formRef: React.RefObject<FormHandles>,
 		})
 		formRef.current?.setErrors(validationErrors)
 		callbackDisplayErros(allErrors)
-		return
 	}
 }

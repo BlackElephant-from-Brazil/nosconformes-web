@@ -1,12 +1,13 @@
+/* eslint-disable indent */
+import { Company } from 'interfaces/company.type'
 import styled from 'styled-components'
-import { StatusTypes, STATUS_FINISHED, STATUS_IN_PROGRESS, STATUS_LATE } from '.'
 
 type ContainerProps = {
-	status: StatusTypes
+	status: Company['status']
 }
 
 export const Container = styled.div<ContainerProps>`
-	background: #FFFFFF;
+	background: #ffffff;
 	width: 386px;
 	margin-bottom: 40px;
 	border-radius: 16px;
@@ -16,7 +17,6 @@ export const Container = styled.div<ContainerProps>`
 		display: flex;
 		flex-direction: row;
 		cursor: pointer;
-
 
 		img {
 			width: 66px;
@@ -35,7 +35,7 @@ export const Container = styled.div<ContainerProps>`
 				font-family: 'Inter';
 				font-weight: 700;
 				font-size: 20px;
-				color: #0F141E;
+				color: #0f141e;
 			}
 
 			.manager-name {
@@ -44,14 +44,13 @@ export const Container = styled.div<ContainerProps>`
 				font-size: 16px;
 			}
 		}
-
 	}
 
 	.auditors {
 		display: flex;
 		align-items: center;
 		margin-top: 24px;
-		color: #1F4CD5;
+		color: #1f4cd5;
 		cursor: pointer;
 
 		p {
@@ -72,7 +71,7 @@ export const Container = styled.div<ContainerProps>`
 				height: 50px;
 				border-radius: 50%;
 				object-fit: cover;
-				border: 4px solid #FFFFFF;
+				border: 4px solid #ffffff;
 
 				:first-child {
 					transform: translateX(10px);
@@ -85,15 +84,15 @@ export const Container = styled.div<ContainerProps>`
 		}
 
 		svg {
-				transform: translateX(-40px);
-			}
+			transform: translateX(-40px);
+		}
 	}
 
 	.status-container {
 		margin-top: 24px;
 
 		.status-title {
-			color: #323E57;
+			color: #323e57;
 			font-size: 18px;
 			font-family: 'Inter';
 			font-weight: 600;
@@ -121,28 +120,29 @@ export const Container = styled.div<ContainerProps>`
 			}
 
 			${({ status }) => {
-		if (status === STATUS_LATE) {
-			return `
+				if (status === 'late') {
+					return `
 								background: #FFE1EA;
 								color: #FF2163;
 							`
-		} else if (status === STATUS_IN_PROGRESS) {
-			return `
+				}
+				if (status === 'inprogress') {
+					return `
 								background: #FFF494;
 								color: #FF991C;
 							`
-		} else if (status === STATUS_FINISHED) {
-			return `
+				}
+				if (status === 'finished') {
+					return `
 								background: #C7FAAE;
 								color: #69B345;
 							`
-		} else {
-			return `
+				}
+				return `
 							background: #ADC8FF;
 							color: #1F4CD4;
 						`
-		}
-	}}
+			}}
 		}
 	}
 `

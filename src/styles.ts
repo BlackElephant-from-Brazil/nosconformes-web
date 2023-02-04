@@ -5,5 +5,5 @@ type AppContainerProps = {
 }
 
 export const AppContainer = styled.div<AppContainerProps>`
-display: flex;
+	display: flex;
 `

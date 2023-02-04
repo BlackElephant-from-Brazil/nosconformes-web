@@ -1,27 +1,29 @@
+import { User } from 'interfaces/user.type'
 import styled from 'styled-components'
-import { AccessLevels, ACCESS_LEVEL_MASTER } from '.'
 
 type ContainerProps = {
-	level: AccessLevels
+	level: User['accessLevel']
 }
 
 export const Container = styled.div<ContainerProps>`
-	color: #FFFFFF;
+	color: #ffffff;
 	display: flex;
 	align-items: center;
 	padding: 8px;
 	border-radius: 8px;
 
 	${({ level }) => {
-		if (level === ACCESS_LEVEL_MASTER) {
+		if (level === 'master') {
 			return `
 				background: #1F4CD4;
 			`
 		}
+
+		return null
 	}}
 
 	p {
-		color: #FFFFFF !important;
+		color: #ffffff !important;
 		font-weight: 500 !important;
 		font-size: 14px !important;
 		font-family: 'Inter' !important;

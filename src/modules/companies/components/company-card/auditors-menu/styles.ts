@@ -5,7 +5,7 @@ export const Container = muiStyled(Menu)(() => ({
 	'.MuiPaper-root': {
 		borderRadius: 8,
 		paddingTop: 8,
-		paddingBottom: 8
+		paddingBottom: 8,
 	},
 
 	'.MuiMenuItem-root': {
@@ -16,15 +16,12 @@ export const Container = muiStyled(Menu)(() => ({
 		fontFamily: 'Inter',
 		fontWeight: 600,
 		fontSize: 16,
-		color: '#0F141E'
+		color: '#0F141E',
 	},
 
 	'.primary': {
-		color: '#1F4CD4'
+		color: '#1F4CD4',
 	},
-
-
-
 }))
 
 export const MenuItemContainer = styled.div`

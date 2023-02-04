@@ -6,10 +6,11 @@ type AppProviderProps = {
 	authenticateUser: () => void
 }
 
-const AppProvider: React.FC<AppProviderProps> = ({ children, authenticateUser }) => (
-	<AuthProvider authenticateUser={authenticateUser} >
-		{children}
-	</AuthProvider>
+const AppProvider: React.FC<AppProviderProps> = ({
+	children,
+	authenticateUser,
+}) => (
+	<AuthProvider authenticateUser={authenticateUser}>{children}</AuthProvider>
 )
 
 export default AppProvider

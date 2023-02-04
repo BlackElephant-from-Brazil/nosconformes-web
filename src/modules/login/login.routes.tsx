@@ -7,16 +7,16 @@ import { RecoverPassword } from './pages/recover-password'
 const loginRoutes: RouteObject[] = [
 	{
 		path: '/login',
-		element: <Login />
+		element: <Login />,
 	},
 	{
 		path: '/recuperar-senha',
-		element: <RecoverPassword />
+		element: <RecoverPassword />,
 	},
 	{
-		path: '/mudar-senha',
-		element: <ChangePassword />
-	}
+		path: '/mudar-senha/:email/:_protocol',
+		element: <ChangePassword />,
+	},
 ]
 
 export { loginRoutes }

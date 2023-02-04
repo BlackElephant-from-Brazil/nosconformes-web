@@ -11,7 +11,7 @@ export const Container = styled.div`
 `
 
 export const LeftSide = styled.div`
-	background: #0F141E;
+	background: #0f141e;
 	display: flex;
 	flex-direction: column;
 	flex: 1;
@@ -24,7 +24,7 @@ export const LeftSide = styled.div`
 	}
 
 	p {
-		color: #FFFFFF;
+		color: #ffffff;
 		font-weight: bold;
 		font-family: 'Inter', sans-serif;
 		font-size: 30px;
@@ -36,13 +36,11 @@ export const LeftSide = styled.div`
 		position: relative;
 		left: 250px;
 		top: 100px;
-
 	}
 `
 
-
 export const RightSide = styled.div`
-	background: #FFFFFF;
+	background: #ffffff;
 	display: flex;
 	flex-direction: column;
 	width: 642px;
@@ -81,7 +79,7 @@ export const RightSide = styled.div`
 			font-style: normal;
 			font-weight: 500;
 			font-size: 20px;
-			color: #323E57;
+			color: #323e57;
 			margin-bottom: 20px;
 		}
 	}
@@ -98,11 +96,11 @@ export const RightSide = styled.div`
 		width: 481px;
 		height: 69px;
 
-		background: #FFADC6;
+		background: #ffadc6;
 		border-radius: 8px;
 
 		svg {
-			color: #FF2163;
+			color: #ff2163;
 		}
 
 		span {
@@ -115,7 +113,7 @@ export const RightSide = styled.div`
 			font-size: 14px;
 			line-height: 17px;
 
-			color: #FF2163;
+			color: #ff2163;
 		}
 	}
 
@@ -139,4 +137,3 @@ export const RightSide = styled.div`
 		}
 	}
 `
-
