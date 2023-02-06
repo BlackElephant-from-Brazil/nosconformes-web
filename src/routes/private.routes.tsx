@@ -2,6 +2,7 @@ import React from 'react'
 import { redirect } from 'react-router-dom'
 import { api } from 'api'
 import { enqueueSnackbar } from 'notistack'
+import { auditorsAreaRoutes } from 'modules/auditors-area/auditors-area.routes'
 import { STORAGE_USER_KEY } from '../hooks/authentication.hook'
 import { companiesRoutes } from '../modules/companies/companies.routes'
 import { configurationsRoutes } from '../modules/configurations/configurations.routes'
@@ -30,6 +31,7 @@ const allPrivateRoutes = [
 	...configurationsRoutes,
 	...knowledgeBaseRoutes,
 	...dashboardRoutes,
+	...auditorsAreaRoutes,
 ]
 
 const privateRoutes = allPrivateRoutes.map(route => {
