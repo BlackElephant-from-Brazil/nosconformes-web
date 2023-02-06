@@ -100,7 +100,7 @@ export const TabCompanyDetails = styled.ul<TabCompanyDetailsProps>`
 					}
 				`
 			}
-		}}}
+		}}
 	}
 
 	li {
@@ -218,10 +218,41 @@ export const AuditorsDialogContent = styled.div`
 				font-weight: 500;
 				font-size: 16px;
 				margin-left: 10px;
+				margin-right: auto;
+
+				&.auditor-name {
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					width: 120px;
+				}
 			}
 
 			.auditor-access-level {
 				margin-left: auto;
+				margin-right: 0;
+			}
+
+			.remove {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				margin-left: auto;
+				cursor: pointer;
+
+				p {
+					font-family: 'Inter';
+					font-weight: 600;
+					font-size: 16px;
+					color: #1f4cd5;
+				}
+
+				svg {
+					width: 32px;
+					height: 32px;
+					color: #1f4cd5;
+					margin-left: 4px;
+				}
 			}
 		}
 
