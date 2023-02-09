@@ -11,6 +11,7 @@ export const Container = styled.div<ContainerProps>`
 	align-items: center;
 	padding: 8px;
 	border-radius: 8px;
+	height: 32px;
 
 	${({ level }) => {
 		if (level === 'master') {

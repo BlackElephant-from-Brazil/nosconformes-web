@@ -56,6 +56,7 @@ export const SideBar: React.FC = () => {
 				setActive(AUDITOR_AREA)
 				break
 			default:
+				setActive('')
 				break
 		}
 	}, [])
@@ -96,6 +97,10 @@ export const SideBar: React.FC = () => {
 
 	const handleClickNotifications = () => {
 		console.log('click')
+	}
+
+	const handleClickUserTag = () => {
+		navigate('/configuracoes')
 	}
 
 	return (
@@ -176,7 +181,11 @@ export const SideBar: React.FC = () => {
 					<LogoutIcon />
 					<p>Sair</p>
 				</div>
-				<UserTag displayOpen={displayMenuOpen} menuOpen={open}>
+				<UserTag
+					displayOpen={displayMenuOpen}
+					menuOpen={open}
+					onClick={handleClickUserTag}
+				>
 					<img src={avatarExample} alt="Avatar do usuário" />
 					<div className="user-infos">
 						<p className="user-name">Douglas</p>

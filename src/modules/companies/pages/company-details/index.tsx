@@ -211,7 +211,10 @@ export const CompanyDetails: React.FC = () => {
 			return
 		}
 		try {
-			api.put(`/companies/company/${company._eq}`, companyFormData)
+			await api.put(`/companies/company/${company._eq}`, {
+				company: { ...companyFormData },
+			})
+			setCompany({ ...company, ...companyFormData })
 			enqueueSnackbar('Dados da empresa atualizados com sucesso!', {
 				variant: 'success',
 			})
@@ -255,10 +258,13 @@ export const CompanyDetails: React.FC = () => {
 			return
 		}
 		try {
-			api.put(`/companies/manager/${company._eq}`, managerFormData)
+			await api.put(`/companies/manager/${company._eq}`, {
+				manager: { ...managerFormData },
+			})
 			enqueueSnackbar('Dados do gestor atualizados com sucesso!', {
 				variant: 'success',
 			})
+			setCompany({ ...company, manager: { ...managerFormData } })
 		} catch (err) {
 			enqueueApiError(err)
 		}
@@ -267,14 +273,45 @@ export const CompanyDetails: React.FC = () => {
 	const handleChangeAuditorsSave = async () => {
 		try {
 			const auditorsToSave = [...company.auditors, ...selectedAuditors]
-			api.put(`/company/auditors/${companyId}`, auditorsToSave)
+			await api.put(`/companies/auditors/${companyId}`, {
+				auditors: [...auditorsToSave],
+			})
 			enqueueSnackbar('Auditores atualizados com sucesso!', {
 				variant: 'success',
+			})
+			setCompany({ ...company, auditors: [...auditorsToSave] })
+			setSelectedAuditors([])
+			setAvailableAuditors(prev => {
+				const newAvailableAuditors = prev.filter(auditor => {
+					const auditorIsSelected = selectedAuditors.find(
+						selectedAuditor => selectedAuditor._eq === auditor._eq,
+					)
+					return !auditorIsSelected
+				})
+				return newAvailableAuditors
 			})
 		} catch (err: any) {
 			enqueueSnackbar(err.response.data.message, { variant: 'error' })
 		}
 		toggleAuditorsDialogOpen()
+	}
+
+	const handleRemoveAuditor = async (auditorId: string) => {
+		try {
+			const auditorsToSave = company.auditors.filter(
+				auditor => auditor._eq !== auditorId,
+			)
+			const response = await api.put(`/companies/auditors/${companyId}`, {
+				auditors: [...auditorsToSave],
+			})
+			enqueueSnackbar('Auditor removido com sucesso!', {
+				variant: 'success',
+			})
+			setCompany({ ...company, auditors: [...auditorsToSave] })
+			setAvailableAuditors(response.data)
+		} catch (err: any) {
+			enqueueSnackbar(err.response.data.message, { variant: 'error' })
+		}
 	}
 
 	return (
@@ -439,11 +476,19 @@ export const CompanyDetails: React.FC = () => {
 											src={auditor.profilePicture}
 											alt="Foto de um auditor"
 										/>
-										<p>{auditor.name}</p>
+										<p className="auditor-name">{auditor.name}</p>
 										<AccessLevel
 											level="master"
 											className="auditor-access-level"
 										/>
+										<div
+											className="remove"
+											onClick={() => handleRemoveAuditor(auditor._eq)}
+											role="presentation"
+										>
+											<p>Remover</p>
+											<CloseIcon />
+										</div>
 									</div>
 								)
 							})}

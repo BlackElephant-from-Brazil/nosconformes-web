@@ -15,6 +15,7 @@ type InputProps = {
 	className?: string
 	autoFocus?: boolean
 	onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+	disabled?: boolean
 }
 
 const Input: React.FC<InputProps> = ({
@@ -27,6 +28,7 @@ const Input: React.FC<InputProps> = ({
 	className,
 	autoFocus,
 	onChange,
+	disabled,
 }) => {
 	const [showPassword, setShowPassword] = useState(false)
 	const inputRef = useRef()
@@ -96,6 +98,7 @@ const Input: React.FC<InputProps> = ({
 				) : null,
 				endAdornment: renderEndAdornment(),
 			}}
+			disabled={disabled}
 		/>
 	)
 }

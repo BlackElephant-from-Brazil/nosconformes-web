@@ -2,9 +2,10 @@ import React from 'react'
 import { redirect } from 'react-router-dom'
 import { api } from 'api'
 import { enqueueSnackbar } from 'notistack'
+import { auditorsAreaRoutes } from 'modules/auditors-area/auditors-area.routes'
 import { STORAGE_USER_KEY } from '../hooks/authentication.hook'
 import { companiesRoutes } from '../modules/companies/companies.routes'
-import { configurationsRoutes } from '../modules/configurations/configurations.routes'
+import { settingsRoutes } from '../modules/settings/configurations.routes'
 import { dashboardRoutes } from '../modules/dashboard/dashboard.routes'
 import { knowledgeBaseRoutes } from '../modules/knowledge-base/knowledge-base.routes'
 import { SideBar } from '../components/side-bar'
@@ -27,9 +28,10 @@ const validateLogin = () => {
 
 const allPrivateRoutes = [
 	...companiesRoutes,
-	...configurationsRoutes,
+	...settingsRoutes,
 	...knowledgeBaseRoutes,
 	...dashboardRoutes,
+	...auditorsAreaRoutes,
 ]
 
 const privateRoutes = allPrivateRoutes.map(route => {

@@ -34,6 +34,11 @@ const GlobalStyles = createGlobalStyle`
 		background: #1F4CD5;
 	}
 
+	.access-level-menu {
+		.MuiPaper-root {
+			border-radius: 10px;
+		}
+	}
 `
 
 export { GlobalStyles }

@@ -9,8 +9,10 @@ type HeaderProps = {
 export const Header: React.FC<HeaderProps> = ({ icon, title }) => {
 	return (
 		<Container>
-			{icon}
-			<h1>{title}</h1>
+			<div className="content">
+				{icon}
+				<h1>{title}</h1>
+			</div>
 		</Container>
 	)
 }
