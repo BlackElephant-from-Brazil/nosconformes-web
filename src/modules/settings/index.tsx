@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import SettingsIcon from '@mui/icons-material/Settings'
+import { Body } from 'components/body'
 import { HeaderWithTabs, Tab } from '../../components/header-with-tabs'
 import { Container } from './styles'
-import { Profile } from './Profile'
-import { PersonalConfigurations } from './PersonalConfigurations'
-import { Users } from './Users'
+import { Profile } from './tabs/profile'
+import { Users } from './tabs/users'
 
 const tabs: Tab[] = [
 	{
@@ -13,18 +13,13 @@ const tabs: Tab[] = [
 		element: <Profile />,
 	},
 	{
-		title: 'Configurações pessoais',
-		link: '/configuracoes-pessoais',
-		element: <PersonalConfigurations />,
-	},
-	{
 		title: 'Usuários',
 		link: '/usuarios',
 		element: <Users />,
 	},
 ]
 
-export const Configurations: React.FC = () => {
+export const Settings: React.FC = () => {
 	const [tabActive, setTabActive] = useState(tabs[0].link)
 
 	const handleOpenTab = (link: string) => {
@@ -49,7 +44,7 @@ export const Configurations: React.FC = () => {
 				active={tabActive}
 				openTab={handleOpenTab}
 			/>
-			{renderBody()}
+			<Body>{renderBody()}</Body>
 		</Container>
 	)
 }

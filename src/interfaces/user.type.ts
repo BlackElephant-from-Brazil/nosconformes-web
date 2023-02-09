@@ -1,8 +1,9 @@
 export type User = {
 	_eq: string
 	name: string
-	avatar: string
+	profilePicture: string
 	email: string
 	office: string
+	phone: string
 	accessLevel: 'master' | 'manager' | 'consultant' | 'auditor'
 }
