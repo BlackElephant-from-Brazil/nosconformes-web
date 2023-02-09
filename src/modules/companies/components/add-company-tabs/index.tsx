@@ -120,7 +120,7 @@ export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({
 			formRef.current?.setFieldValue('manager.email', formData.manager.email)
 			formRef.current?.setFieldValue('manager.phone', formData.manager.phone)
 		}
-	}, [activeTab])
+	}, [activeTab, formData])
 
 	const handleBackToCompanyData = () => {
 		setDisplayCompanyErrors('')

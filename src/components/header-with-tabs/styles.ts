@@ -7,24 +7,35 @@ export const Container = styled.div`
 	width: 100vw;
 	min-height: 168px;
 
-	.header-header {
+	.content {
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
+		max-width: 1300px;
+		width: 100%;
+		margin: 0 auto;
+		padding: 0 48px;
 		align-items: center;
-		margin-top: 66px;
-		margin-bottom: 54px;
-		margin-left: 176px;
+		height: 100%;
 
-		h1 {
-			font-family: 'Inter';
-			font-weight: bold;
-			font-size: 40px;
-			margin-left: 8px;
-			color: #0f141e;
-		}
+		.title {
+			display: flex;
+			flex-direction: row;
+			justify-content: flex-start;
+			align-items: center;
+			width: 100%;
+			height: 168px;
 
-		svg {
-			font-size: 40px;
+			h1 {
+				font-family: 'Inter';
+				font-weight: bold;
+				font-size: 40px;
+				margin-left: 8px;
+				color: #0f141e;
+			}
+
+			svg {
+				font-size: 40px;
+			}
 		}
 	}
 `
@@ -33,7 +44,6 @@ export const Tabs = styled.ul`
 	display: flex;
 	width: 100%;
 	list-style: none;
-	margin-left: 176px;
 
 	li {
 		margin-right: 50px;

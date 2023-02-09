@@ -1,23 +1,30 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-	display: flex;
-	flex-direction: row;
 	background: #e9eff5;
 	width: 100vw;
 	height: 168px;
-	align-items: center;
 
-	h1 {
-		font-family: 'Inter';
-		font-weight: bold;
-		font-size: 40px;
-		margin-left: 8px;
-		color: #0f141e;
-	}
+	.content {
+		display: flex;
+		flex-direction: row;
+		max-width: 1300px;
+		width: 100%;
+		margin: 0 auto;
+		padding: 0 48px;
+		align-items: center;
+		height: 100%;
 
-	svg {
-		font-size: 40px;
-		margin-left: 176px;
+		h1 {
+			font-family: 'Inter';
+			font-weight: bold;
+			font-size: 40px;
+			margin-left: 8px;
+			color: #0f141e;
+		}
+
+		svg {
+			font-size: 40px;
+		}
 	}
 `

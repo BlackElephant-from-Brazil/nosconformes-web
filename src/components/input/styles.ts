@@ -1,6 +1,7 @@
 import { styled, TextField } from '@mui/material'
 
 export const PrimaryInput = styled(TextField)(props => ({
+	display: props.type === 'hidden' ? 'none' : 'inline-flex',
 	marginTop: 10,
 	marginBottom: 10,
 	borderRadius: 8,
