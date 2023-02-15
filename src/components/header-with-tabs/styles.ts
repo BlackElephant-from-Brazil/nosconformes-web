@@ -4,17 +4,18 @@ export const Container = styled.div`
 	display: flex;
 	background: #e9eff5;
 	width: 100vw;
-	min-height: 168px;
+	height: auto;
+	padding-left: 180px;
+	padding-right: 180px;
 
 	.content {
 		display: flex;
 		flex-direction: column;
-		max-width: 1300px;
 		width: 100%;
-		margin: 0 auto;
-		padding: 0 48px;
+		max-width: 1440px;
 		align-items: center;
 		height: 100%;
+		margin: 0 auto;
 
 		.title {
 			display: flex;
@@ -27,15 +28,20 @@ export const Container = styled.div`
 			h1 {
 				font-family: 'Inter';
 				font-weight: bold;
-				font-size: 40px;
+				font-size: 32px;
 				margin-left: 8px;
 				color: #0f141e;
 			}
 
 			svg {
-				font-size: 40px;
+				font-size: 32px;
 			}
 		}
+	}
+
+	@media (max-width: 1280px) {
+		padding-left: 140px;
+		padding-right: 140px;
 	}
 `
 
