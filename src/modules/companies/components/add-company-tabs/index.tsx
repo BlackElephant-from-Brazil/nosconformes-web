@@ -222,9 +222,10 @@ export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({
 
 	const handleSubmitWithoutManagerData = async () => {
 		try {
+			formData.company.logo =
+				'https://media.licdn.com/dms/image/C4D0BAQGAYL99EehE8w/company-logo_200_200/0/1673981963317?e=1682553600&v=beta&t=I1GVv1NaM_LXAbaglNo29n5_WasBsQIPaMfTEXCfgZA'
 			await api.post('/companies', {
 				company: formData.company,
-				manager: {},
 			})
 		} catch (err: any) {
 			handleApiError(err)

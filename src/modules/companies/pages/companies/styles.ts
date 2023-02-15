@@ -37,7 +37,7 @@ export const CardContainer = styled.div`
 export const AddNewCompanyContainerDrawer = styled.div`
 	display: flex;
 	flex-direction: column;
-	width: 880px;
+	width: auto;
 
 	.close-drawer-icon {
 		position: absolute;
@@ -49,6 +49,7 @@ export const AddNewCompanyContainerDrawer = styled.div`
 	}
 
 	.drawer-body {
-		margin-top: 120px;
+		margin-top: 124px;
+		margin-bottom: 48px;
 	}
 `

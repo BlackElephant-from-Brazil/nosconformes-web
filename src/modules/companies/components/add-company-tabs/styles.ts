@@ -14,14 +14,12 @@ export const AddCompanyData = styled.li`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-bottom: 40px;
 
 	h1 {
 		font-family: 'Inter';
 		font-weight: 700;
 		font-size: 30px;
 		color: #0f141e;
-		margin-top: 48px;
 	}
 
 	.form-steps {
@@ -107,14 +105,12 @@ export const AddManagerData = styled.li`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-bottom: 40px;
 
 	h1 {
 		font-family: 'Inter';
 		font-weight: 700;
 		font-size: 30px;
 		color: #0f141e;
-		margin-top: 48px;
 	}
 
 	.form-steps {
