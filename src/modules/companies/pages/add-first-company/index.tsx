@@ -20,9 +20,9 @@ const AddFirstCompany: React.FC = () => {
 		// eslint-disable-next-line prettier/prettier
 		; (async () => {
 			const { data } = await api.get('/companies')
-			// if (data.length > 0) {
-			// 	navigate('/empresas')
-			// }
+			if (data.length > 0) {
+				navigate('/empresas')
+			}
 		})()
 	}, [navigate])
 

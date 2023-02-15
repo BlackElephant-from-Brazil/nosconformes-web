@@ -81,17 +81,11 @@ export const SideBar: React.FC = () => {
 		enqueueSnackbar('Você foi desconectado com sucesso!', {
 			variant: 'success',
 		})
-		setTimeout(() => {
-			navigate('/login')
-		}, 2800)
+		navigate('/login')
 	}
 
 	const handleToggleMenuOpen = () => {
 		setOpen(!open)
-	}
-
-	const handleClickNotifications = () => {
-		console.log('click')
 	}
 
 	const handleClickUserTag = () => {
