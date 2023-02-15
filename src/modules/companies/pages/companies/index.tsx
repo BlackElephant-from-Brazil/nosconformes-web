@@ -13,7 +13,8 @@ import { useNavigate } from 'react-router-dom'
 import { Company } from 'interfaces/company.type'
 import { CompanyCard } from 'modules/companies/components/company-card'
 import { AddCompanyTabs } from 'modules/companies/components/add-company-tabs'
-import { handleApiError } from 'utils/enqueueApiError'
+import { handleApiError } from 'utils/handle-api-error'
+
 import {
 	Container,
 	Body,

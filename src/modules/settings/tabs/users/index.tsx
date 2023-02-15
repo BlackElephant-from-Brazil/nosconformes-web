@@ -9,10 +9,10 @@ import { RightDrawer } from 'components/right-drawer'
 import { UserForm } from 'modules/settings/components/UserForm'
 import { Form } from '@unform/web'
 import { FormHandles } from '@unform/core'
-import { handleApiError } from 'utils/enqueueApiError'
 import { api } from 'api'
 import { handleUserImageError } from 'utils/handle-image-error'
 import { AccessLevel } from 'modules/settings/components/access-level'
+import { handleApiError } from 'utils/handle-api-error'
 import { AddNewUserContainer, Container } from './styles'
 
 const tableTitles = ['Nome', 'E-mail', 'Cargo', 'Responsabilidade']

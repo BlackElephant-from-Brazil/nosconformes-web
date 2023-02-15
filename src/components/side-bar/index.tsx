@@ -9,7 +9,7 @@ import { useSnackbar } from 'notistack'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { useAuth } from 'hooks/authentication.hook'
 import { getAccessLevelName } from 'utils/get-access-level-name'
-import { getFirstName } from 'utils/get-first-name'
+import { getFirstWord } from 'utils/get-first-word'
 import { handleUserImageError } from 'utils/handle-image-error'
 import ncMenuOpen from '../../assets/nc-menu-open.png'
 import ncMenuClose from '../../assets/nc-menu-close.png'
@@ -171,7 +171,7 @@ export const SideBar: React.FC = () => {
 						onError={() => handleUserImageError(avatarRef)}
 					/>
 					<div className="user-infos">
-						<p className="user-name">{getFirstName(user.name)}</p>
+						<p className="user-name">{getFirstWord(user.name)}</p>
 						<p className="user-office">
 							{getAccessLevelName(user.accessLevel)}
 						</p>
