@@ -15,7 +15,7 @@ import { FormHandles, SubmitHandler } from '@unform/core'
 import { Input } from 'components/input'
 import { api } from 'api'
 import { enqueueApiError } from 'utils/enqueueApiError'
-import { Container, LeftSide, RightSide } from './styles'
+import { Container, Describer, FormLogin } from './styles'
 
 const errorMessages = {
 	invalidMail: 'O email precisa ser um email válido. ',
@@ -69,7 +69,7 @@ export const Login: React.FC = () => {
 				email: data.email,
 				password: data.password,
 			})
-			navigate('/dashboard')
+			navigate('/empresas')
 		} catch (err) {
 			enqueueApiError(err)
 		}
@@ -122,17 +122,16 @@ export const Login: React.FC = () => {
 
 	return (
 		<Container>
-			<LeftSide>
+			<Describer>
 				<img src={dm11Logotipo} alt="Logotipo DM11" className="dm11-logo" />
-				<p>Importe perguntas do excel para enviar para seu cliente</p>
-				{/* TODO: INSER IMAGE */}
-				{/* <img
+				<h2>Importe perguntas do excel para enviar para seu cliente</h2>
+				<img
 					src={dashboardLogin}
 					alt="Dois computadores exibindo a tela de dashboard."
 					className="dashboard-login"
-				/> */}
-			</LeftSide>
-			<RightSide>
+				/>
+			</Describer>
+			<FormLogin>
 				<div className="content">
 					<img
 						src={nosconformesRoundedLogo}
@@ -174,7 +173,7 @@ export const Login: React.FC = () => {
 					<img src={ncHorizontal} alt="Logotipo NosConformes horizontal." />
 					<p>Todos os direitos reservados ©</p>
 				</div>
-			</RightSide>
+			</FormLogin>
 		</Container>
 	)
 }

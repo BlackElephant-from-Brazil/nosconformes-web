@@ -4,49 +4,51 @@ export const Container = styled.div`
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
-	height: 100%;
 	min-height: 100vh;
 	width: 100vw;
 	max-width: 1440px;
 	margin: 0 auto;
 `
 
-export const LeftSide = styled.div`
+export const Describer = styled.div`
 	background: #0f141e;
 	display: flex;
 	flex-direction: column;
 	padding: 40px;
+	padding-right: 0;
 
 	img.dm11-logo {
 		width: 218px;
-		height: 98px;
 		margin-top: 40px;
 	}
 
-	p {
+	h2 {
 		color: #ffffff;
 		font-weight: bold;
 		font-family: 'Inter', sans-serif;
 		font-size: 30px;
 		max-width: 600px;
 		margin-left: 26px;
+		padding-right: 40px;
 	}
 
 	img.dashboard-login {
-		/* position: relative; */
-		left: 250px;
-		top: 100px;
+		margin-top: 90px;
+		max-width: 100%;
+		height: auto;
+		object-fit: cover;
+		object-position: right top;
 	}
 `
 
-export const RightSide = styled.div`
+export const FormLogin = styled.div`
 	background: #ffffff;
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 	align-items: center;
 	padding: 40px;
-	flex-basis: 642px;
-	justify-content: center;
+	min-width: 642px;
 
 	.content {
 		display: flex;
@@ -87,7 +89,6 @@ export const RightSide = styled.div`
 	.footer {
 		position: absolute;
 		margin-bottom: 20px;
-		/* margin-top: auto; */
 		justify-self: flex-end;
 		bottom: 0;
 		display: flex;
