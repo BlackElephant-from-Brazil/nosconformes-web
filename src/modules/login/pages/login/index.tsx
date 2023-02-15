@@ -71,8 +71,7 @@ export const Login: React.FC = () => {
 			})
 			navigate('/dashboard')
 		} catch (err) {
-			console.log(err)
-			// TODO: COLOCAR UM TOAST AQUI QUE O USUÁRIO É INVÁLIDO
+			enqueueApiError(err)
 		}
 	}
 
@@ -126,44 +125,51 @@ export const Login: React.FC = () => {
 			<LeftSide>
 				<img src={dm11Logotipo} alt="Logotipo DM11" className="dm11-logo" />
 				<p>Importe perguntas do excel para enviar para seu cliente</p>
-				<img
+				{/* TODO: INSER IMAGE */}
+				{/* <img
 					src={dashboardLogin}
 					alt="Dois computadores exibindo a tela de dashboard."
 					className="dashboard-login"
-				/>
+				/> */}
 			</LeftSide>
 			<RightSide>
-				<img
-					src={nosconformesRoundedLogo}
-					alt="Logotipo da empresa DM11"
-					className="dm11-logo"
-				/>
-				<p className="welcome">Bem vindo! 👋</p>
-				<Form ref={formRef} onSubmit={handleSubmitFormLogin} autoComplete="off">
-					<Input
-						label="Email"
-						name="email"
-						startAdornmentIcon={<Mail />}
-						type="text"
-						placeholder="Digite aqui seu email..."
+				<div className="content">
+					<img
+						src={nosconformesRoundedLogo}
+						alt="Logotipo da empresa DM11"
+						className="dm11-logo"
 					/>
-					<Input
-						label="Senha"
-						name="password"
-						startAdornmentIcon={<Lock />}
-						type="password"
-						placeholder="Insira sua senha..."
-					/>
-					<a
-						onClick={handleRecoverPasswordCLick}
-						type="button"
-						role="presentation"
+					<p className="welcome">Bem vindo! 👋</p>
+					<Form
+						ref={formRef}
+						onSubmit={handleSubmitFormLogin}
+						autoComplete="off"
 					>
-						Esqueci a senha
-					</a>
-					<Alert text={displayError} type="error" />
-					<Button type="submit" text="Login" buttonStyle="primary" />
-				</Form>
+						<Input
+							label="Email"
+							name="email"
+							startAdornmentIcon={<Mail />}
+							type="text"
+							placeholder="Digite aqui seu email..."
+						/>
+						<Input
+							label="Senha"
+							name="password"
+							startAdornmentIcon={<Lock />}
+							type="password"
+							placeholder="Insira sua senha..."
+						/>
+						<a
+							onClick={handleRecoverPasswordCLick}
+							type="button"
+							role="presentation"
+						>
+							Esqueci a senha
+						</a>
+						<Alert text={displayError} type="error" />
+						<Button type="submit" text="Login" buttonStyle="primary" />
+					</Form>
+				</div>
 				<div className="footer">
 					<img src={ncHorizontal} alt="Logotipo NosConformes horizontal." />
 					<p>Todos os direitos reservados ©</p>

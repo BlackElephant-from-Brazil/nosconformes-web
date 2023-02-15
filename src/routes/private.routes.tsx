@@ -6,7 +6,6 @@ import { auditorsAreaRoutes } from 'modules/auditors-area/auditors-area.routes'
 import { STORAGE_USER_KEY } from '../hooks/authentication.hook'
 import { companiesRoutes } from '../modules/companies/companies.routes'
 import { settingsRoutes } from '../modules/settings/configurations.routes'
-import { dashboardRoutes } from '../modules/dashboard/dashboard.routes'
 import { knowledgeBaseRoutes } from '../modules/knowledge-base/knowledge-base.routes'
 import { SideBar } from '../components/side-bar'
 import { RouteContainer } from './styles'
@@ -30,7 +29,6 @@ const allPrivateRoutes = [
 	...companiesRoutes,
 	...settingsRoutes,
 	...knowledgeBaseRoutes,
-	...dashboardRoutes,
 	...auditorsAreaRoutes,
 ]
 

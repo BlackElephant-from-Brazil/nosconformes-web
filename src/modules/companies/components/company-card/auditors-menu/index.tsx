@@ -1,5 +1,6 @@
 import React from 'react'
 import { MenuItem } from '@mui/material'
+import { handleUserImageError } from 'utils/handle-image-error'
 import { Container, MenuItemContainer } from './styles'
 
 export type MenuItem = {
@@ -27,6 +28,7 @@ export const AuditorsMenu: React.FC<MenuProps> = ({
 	return (
 		<Container open={open} onClose={closeMenu} id={menuId} anchorEl={anchorEl}>
 			{menuItems.map(menuItem => {
+				const auditorImageMenuRef = React.createRef<HTMLImageElement>()
 				return (
 					<MenuItem
 						key={menuItem.label}
@@ -37,6 +39,8 @@ export const AuditorsMenu: React.FC<MenuProps> = ({
 							<img
 								src={menuItem.avatar}
 								alt={`Avatar do auditor: ${menuItem.label}`}
+								ref={auditorImageMenuRef}
+								onError={() => handleUserImageError(auditorImageMenuRef)}
 							/>
 							{menuItem.label}
 						</MenuItemContainer>

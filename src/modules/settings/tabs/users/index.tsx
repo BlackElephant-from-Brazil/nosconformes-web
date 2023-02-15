@@ -11,7 +11,7 @@ import { Form } from '@unform/web'
 import { FormHandles } from '@unform/core'
 import { enqueueApiError } from 'utils/enqueueApiError'
 import { api } from 'api'
-import { handleImageError } from 'utils/handle-image-error'
+import { handleUserImageError } from 'utils/handle-image-error'
 import { AccessLevel } from 'modules/settings/components/access-level'
 import { AddNewUserContainer, Container } from './styles'
 
@@ -20,7 +20,6 @@ const tableTitles = ['Nome', 'E-mail', 'Cargo', 'Responsabilidade']
 export const Users: React.FC = () => {
 	const [drawerOpen, setDrawerOpen] = useState(false)
 	const formSearchInputRef = React.useRef<FormHandles>(null)
-	const imgRef = React.useRef<HTMLImageElement>(null)
 	const [users, setUsers] = useState<User[]>([])
 	const [editableUser, setEditableUser] = useState<User | null>(null)
 
@@ -52,6 +51,7 @@ export const Users: React.FC = () => {
 
 	const renderTableBodyInfo = () => {
 		const renderedTableRow = users.map(user => {
+			const userImageRef = React.createRef<HTMLImageElement>()
 			return (
 				<tr
 					key={user._eq}
@@ -63,8 +63,8 @@ export const Users: React.FC = () => {
 							src={user.profilePicture}
 							alt={`Foto de perfil de ${user.name}`}
 							className="user-avatar"
-							ref={imgRef}
-							onError={() => handleImageError(imgRef)}
+							ref={userImageRef}
+							onError={() => handleUserImageError(userImageRef)}
 						/>
 						<p>{user.name}</p>
 					</td>
@@ -102,6 +102,15 @@ export const Users: React.FC = () => {
 		toggleDrawer()
 	}
 
+	const reloadTable = async () => {
+		try {
+			const { data } = await api.get('/users')
+			setUsers(data)
+		} catch (error) {
+			enqueueApiError(error)
+		}
+	}
+
 	return (
 		<Container>
 			<div className="users-list-utilities">
@@ -127,7 +136,11 @@ export const Users: React.FC = () => {
 					<CloseIcon className="close-drawer-icon" onClick={toggleDrawer} />
 					<div className="drawer-body">
 						<h2>{editableUser ? 'Perfil' : 'Crie novos usuários 😁'}</h2>
-						<UserForm toggleDrawer={toggleDrawer} user={editableUser} />
+						<UserForm
+							toggleDrawer={toggleDrawer}
+							user={editableUser}
+							reloadTable={reloadTable}
+						/>
 					</div>
 				</AddNewUserContainer>
 			</RightDrawer>

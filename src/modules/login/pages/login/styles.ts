@@ -3,18 +3,18 @@ import styled from 'styled-components'
 export const Container = styled.div`
 	display: flex;
 	flex-direction: row;
-	height: 100vh;
-	width: 100%;
+	justify-content: center;
+	height: 100%;
+	min-height: 100vh;
+	width: 100vw;
 	max-width: 1440px;
 	margin: 0 auto;
-	justify-content: center;
 `
 
 export const LeftSide = styled.div`
 	background: #0f141e;
 	display: flex;
 	flex-direction: column;
-	flex: 1;
 	padding: 40px;
 
 	img.dm11-logo {
@@ -33,7 +33,7 @@ export const LeftSide = styled.div`
 	}
 
 	img.dashboard-login {
-		position: relative;
+		/* position: relative; */
 		left: 250px;
 		top: 100px;
 	}
@@ -43,46 +43,55 @@ export const RightSide = styled.div`
 	background: #ffffff;
 	display: flex;
 	flex-direction: column;
-	width: 642px;
 	align-items: center;
 	padding: 40px;
-	z-index: 9;
+	flex-basis: 642px;
+	justify-content: center;
 
-	img.dm11-logo {
-		width: 134px;
-		height: 124px;
-		margin-top: 124px;
-	}
-
-	p.welcome {
-		font-family: 'Inter', sans-serif;
-		font-weight: 700;
-		font-size: 40px;
-		margin-top: 22px;
-		margin-bottom: 44px;
-	}
-
-	form {
+	.content {
 		display: flex;
 		flex-direction: column;
-		width: 481px;
+		align-items: center;
 
-		a {
+		img.dm11-logo {
+			width: 134px;
+			height: 124px;
+		}
+
+		p.welcome {
 			font-family: 'Inter', sans-serif;
 			font-weight: 700;
-			font-size: 16px;
-			text-decoration: none;
-			margin-top: 16px;
-			margin-bottom: 20px;
-			color: #1f4cd5;
-			cursor: pointer;
+			font-size: 40px;
+			margin-top: 22px;
+			margin-bottom: 44px;
+		}
+
+		form {
+			display: flex;
+			flex-direction: column;
+			width: 481px;
+
+			a {
+				font-family: 'Inter', sans-serif;
+				font-weight: 700;
+				font-size: 16px;
+				text-decoration: none;
+				margin-top: 16px;
+				margin-bottom: 20px;
+				color: #1f4cd5;
+				cursor: pointer;
+			}
 		}
 	}
 
-	div.footer {
+	.footer {
+		position: absolute;
+		margin-bottom: 20px;
+		/* margin-top: auto; */
+		justify-self: flex-end;
+		bottom: 0;
 		display: flex;
 		flex-direction: column;
-		margin-top: auto;
 
 		img {
 			width: 276px;
@@ -96,6 +105,18 @@ export const RightSide = styled.div`
 			font-size: 12px;
 			color: #666666;
 			font-weight: 400;
+		}
+	}
+
+	@media (max-height: 764px) {
+		.content {
+			margin-top: 40px;
+		}
+
+		.footer {
+			position: relative;
+			margin-top: 40px;
+			margin-bottom: 0;
 		}
 	}
 `
