@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import AssignmentLateRoundedIcon from '@mui/icons-material/AssignmentLateRounded'
 import WatchLaterRoundedIcon from '@mui/icons-material/WatchLaterRounded'
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
@@ -6,6 +6,10 @@ import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownR
 import { useNavigate } from 'react-router-dom'
 import { Company } from 'interfaces/company.type'
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite'
+import {
+	handleCompanyImageError,
+	handleUserImageError,
+} from 'utils/handle-image-error'
 import { AuditorsMenu, MenuItem } from './auditors-menu'
 import { Container } from './styles'
 
@@ -22,6 +26,7 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({
 	const [menuOpen, setMenuOpen] = useState(false)
 	const [menuItems, setMenuItems] = useState<MenuItem[]>([])
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+	const companyImageRef = useRef<HTMLImageElement>(null)
 
 	useEffect(() => {
 		const auditorToLoad: MenuItem[] = []
@@ -86,7 +91,12 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({
 				onClick={handleOpenCompanyDetails}
 				role="presentation"
 			>
-				<img src={company.logo} alt="Logo da empresa" />
+				<img
+					src={company.logo}
+					alt="Logo da empresa"
+					ref={companyImageRef}
+					onError={() => handleCompanyImageError(companyImageRef)}
+				/>
 				<div className="details">
 					<p className="company-name">{company.name}</p>
 					{company.manager?.name && (
@@ -108,12 +118,15 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({
 						<p>Auditores</p>
 						<div className="auditors-photos">
 							{company.auditors.map((auditor, i) => {
+								const imageRef = React.createRef<HTMLImageElement>()
 								if (i > 1) return
 								return (
 									<img
 										key={auditor._eq}
 										src={auditor.profilePicture}
 										alt={`Foto do auditor: ${auditor.name}`}
+										ref={imageRef}
+										onError={() => handleUserImageError(imageRef)}
 									/>
 								)
 							})}

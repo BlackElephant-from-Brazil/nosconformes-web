@@ -191,7 +191,7 @@ export const UserTag = styled.div<UserTagProps>`
 		width: 34px;
 		height: 34px;
 		border-radius: 50px;
-		object-fit: fill;
+		object-fit: cover;
 		margin-left: 12px;
 	}
 

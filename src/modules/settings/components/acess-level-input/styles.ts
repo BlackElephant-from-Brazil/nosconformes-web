@@ -26,7 +26,6 @@ export const Container = styled.div<ContainerProps>`
 
 	.select-access-level {
 		background: ${({ accessLevel }) => {
-			console.log(accessLevel)
 			switch (accessLevel) {
 				case 'master':
 					return '#1F4CD5'

@@ -74,7 +74,6 @@ export const Profile: React.FC = () => {
 		UpdateProfileForm
 	> = async data => {
 		setDisplayErrors('')
-		data.accessLevel = userData.accessLevel
 		let profileData
 		const phone = revertPhone(data.phone)
 
@@ -180,6 +179,7 @@ export const Profile: React.FC = () => {
 					name={userData.name}
 					formRef={formRef}
 				/>
+				<Input type="hidden" name="accessLevel" />
 				<Alert text={displayErrors} type="error" />
 			</Form>
 		</Container>
