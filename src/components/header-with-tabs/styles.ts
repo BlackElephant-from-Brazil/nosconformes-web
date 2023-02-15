@@ -7,7 +7,7 @@ export const Container = styled.div`
 	padding-left: 180px;
 	padding-right: 180px;
 
-	.content {
+	.header-content {
 		display: flex;
 		flex-direction: column;
 		width: 100%;

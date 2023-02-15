@@ -4,29 +4,24 @@ export const Container = styled.div`
 	background: #e9eff5;
 	width: 100vw;
 	min-height: 100vh;
-`
 
-export const Body = styled.div`
-	background: #e9eff5;
-	width: 100%;
-	min-height: 100%;
-	display: flex;
-	flex-direction: column;
-	max-width: 1300px;
-	margin: 0 auto;
-	padding: 0 48px;
-
-	.companies-list-utilities {
+	.content {
 		display: flex;
-		justify-content: space-between;
+		flex-direction: column;
+		margin: 0 auto;
 
-		.search-input {
-			width: 440px;
-			background: #ffffff;
-		}
+		.companies-list-utilities {
+			display: flex;
+			justify-content: space-between;
 
-		.new-company-button {
-			width: 220px;
+			.search-input {
+				width: 440px;
+				background: #ffffff;
+			}
+
+			.new-company-button {
+				width: 220px;
+			}
 		}
 	}
 `

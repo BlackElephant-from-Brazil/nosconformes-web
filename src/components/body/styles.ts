@@ -9,15 +9,12 @@ export const Container = styled.div<ContainerProps>`
 	width: 100vw;
 	padding-left: 180px;
 	padding-right: 180px;
+	flex: 1;
 
-	.content {
-		display: flex;
-		flex-direction: column;
+	.wrapper {
 		width: 100%;
 		max-width: 1440px;
-		margin: 0 auto;
-		margin-bottom: 48px;
-		margin-top: 48px;
+		margin: 48px auto;
 	}
 
 	@media (max-width: 1280px) {

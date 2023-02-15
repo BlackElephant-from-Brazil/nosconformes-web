@@ -3,18 +3,18 @@ import styled from 'styled-components'
 export const Container = styled.div`
 	background: #e9eff5;
 	width: 100vw;
-	height: 168px;
+	height: auto;
 	padding-left: 180px;
 	padding-right: 180px;
 
-	.content {
+	.header-content {
 		display: flex;
 		flex-direction: column;
 		width: 100%;
 		max-width: 1440px;
 		align-items: center;
-		height: 100%;
-		margin: 0 auto;
+		padding-top: 48px;
+		padding-bottom: 48px;
 
 		.title {
 			display: flex;
@@ -22,8 +22,6 @@ export const Container = styled.div`
 			justify-content: flex-start;
 			align-items: center;
 			width: 100%;
-			margin-top: 48px;
-			margin-bottom: 36px;
 
 			h1 {
 				font-family: 'Inter';

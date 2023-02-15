@@ -31,16 +31,12 @@ export const Container = styled.div<ContainerProps>`
 			switch (accessLevel) {
 				case 'master':
 					return '#1F4CD5'
-					break
 				case 'consultant':
 					return '#69B345'
-					break
 				case 'manager':
 					return '#FF2163'
-					break
 				case 'auditor':
 					return '#23067D'
-					break
 				default:
 					return '#23067D'
 			}
@@ -75,7 +71,7 @@ export const Container = styled.div<ContainerProps>`
 	}
 `
 
-export const MenuItem = muiStyled(MuiMenuItem)(props => ({
+export const MenuItem = muiStyled(MuiMenuItem)(() => ({
 	svg: {
 		marginRight: 6,
 	},

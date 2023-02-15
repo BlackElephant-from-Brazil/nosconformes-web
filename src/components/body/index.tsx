@@ -9,7 +9,7 @@ type BodyProps = {
 export const Body: React.FC<BodyProps> = ({ children, cardContext }) => {
 	return (
 		<Container cardContext={cardContext}>
-			<div className="content">{children}</div>
+			<div className="wrapper">{children}</div>
 		</Container>
 	)
 }
