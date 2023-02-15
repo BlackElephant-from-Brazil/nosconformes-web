@@ -9,7 +9,7 @@ import { RightDrawer } from 'components/right-drawer'
 import { UserForm } from 'modules/settings/components/UserForm'
 import { Form } from '@unform/web'
 import { FormHandles } from '@unform/core'
-import { enqueueApiError } from 'utils/enqueueApiError'
+import { handleApiError } from 'utils/enqueueApiError'
 import { api } from 'api'
 import { handleUserImageError } from 'utils/handle-image-error'
 import { AccessLevel } from 'modules/settings/components/access-level'
@@ -30,7 +30,7 @@ export const Users: React.FC = () => {
 				const { data } = await api.get('/users')
 				setUsers(data)
 			} catch (error) {
-				enqueueApiError(error)
+				handleApiError(error)
 			}
 		})()
 	}, [])
@@ -45,7 +45,7 @@ export const Users: React.FC = () => {
 			setEditableUser(data as User)
 			toggleDrawer()
 		} catch (err) {
-			enqueueApiError(err)
+			handleApiError(err)
 		}
 	}
 
@@ -93,7 +93,7 @@ export const Users: React.FC = () => {
 			)
 			setUsers(findUsers)
 		} catch (err) {
-			enqueueApiError(err)
+			handleApiError(err)
 		}
 	}
 
@@ -107,7 +107,7 @@ export const Users: React.FC = () => {
 			const { data } = await api.get('/users')
 			setUsers(data)
 		} catch (error) {
-			enqueueApiError(error)
+			handleApiError(error)
 		}
 	}
 

@@ -14,7 +14,8 @@ import * as Yup from 'yup'
 import { FormHandles, SubmitHandler } from '@unform/core'
 import { Input } from 'components/input'
 import { api } from 'api'
-import { enqueueApiError } from 'utils/enqueueApiError'
+import { handleApiError } from 'utils/handle-api-error'
+import { handleYupErrors } from 'utils/handle-yup-errors'
 import { Container, Describer, FormLogin } from './styles'
 
 const errorMessages = {
@@ -48,20 +49,8 @@ export const Login: React.FC = () => {
 			await schema.validate(data, {
 				abortEarly: false,
 			})
-		} catch (errors) {
-			let allErrors = ''
-			if (errors instanceof Yup.ValidationError) {
-				const validationErrors: { [key: string]: string } = {}
-				errors.inner.forEach(error => {
-					if (error.path) validationErrors[error.path] = error.message
-					allErrors += error.message
-				})
-				formRef.current?.setErrors(validationErrors)
-				setDisplayError(allErrors)
-				return
-			}
-			console.log(errors)
-			return
+		} catch (err) {
+			handleYupErrors(err, formRef, setDisplayError)
 		}
 
 		try {
@@ -71,7 +60,7 @@ export const Login: React.FC = () => {
 			})
 			navigate('/empresas')
 		} catch (err) {
-			enqueueApiError(err)
+			handleApiError(err)
 		}
 	}
 
@@ -92,25 +81,13 @@ export const Login: React.FC = () => {
 				},
 			)
 		} catch (err) {
-			// TODO: HANDLE THIS ERROR
-			let allErrors = ''
-
-			if (err instanceof Yup.ValidationError) {
-				const validationErrors: { [key: string]: string } = {}
-				err.inner.forEach(error => {
-					if (error.path) validationErrors[error.path] = error.message
-					allErrors += error.message
-				})
-				formRef.current?.setErrors(validationErrors)
-				setDisplayError(allErrors)
-				return
-			}
-			return
+			handleYupErrors(err, formRef, setDisplayError)
 		}
+
 		try {
 			await api.post('/password/forgot', { email: emailValue })
 		} catch (err) {
-			enqueueApiError(err)
+			handleApiError(err)
 			return
 		}
 		navigate('/recuperar-senha', {

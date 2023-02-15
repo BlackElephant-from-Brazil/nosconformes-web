@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom'
 import { Company } from 'interfaces/company.type'
 import { CompanyCard } from 'modules/companies/components/company-card'
 import { AddCompanyTabs } from 'modules/companies/components/add-company-tabs'
-import { enqueueApiError } from 'utils/enqueueApiError'
+import { handleApiError } from 'utils/enqueueApiError'
 import {
 	Container,
 	Body,
@@ -43,7 +43,7 @@ export const Companies: React.FC = () => {
 				setCompanies(data)
 			} catch (err: any) {
 				if (err.response.status !== 401) {
-					enqueueApiError(err)
+					handleApiError(err)
 				}
 			}
 		})()
@@ -57,7 +57,7 @@ export const Companies: React.FC = () => {
 			setCompanies(data)
 			toggleDrawer()
 		} catch (err) {
-			enqueueApiError(err)
+			handleApiError(err)
 		}
 	}
 

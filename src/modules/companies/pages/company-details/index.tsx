@@ -14,7 +14,7 @@ import { handleYupErrors } from 'utils/handleYupErrors'
 import { handleCNPJChange, revertCnpj } from 'utils/handleCNPJChange'
 import * as Yup from 'yup'
 import { handlePhoneChange, revertPhone } from 'utils/handlePhoneChange'
-import { enqueueApiError } from 'utils/enqueueApiError'
+import { handleApiError } from 'utils/enqueueApiError'
 import { Box, TextField } from '@mui/material'
 import { Auditor } from 'interfaces/auditor.type'
 import { isObjectEmpty } from 'utils/is-object-empty'
@@ -219,7 +219,7 @@ export const CompanyDetails: React.FC = () => {
 				variant: 'success',
 			})
 		} catch (err) {
-			enqueueApiError(err)
+			handleApiError(err)
 		}
 	}
 
@@ -266,7 +266,7 @@ export const CompanyDetails: React.FC = () => {
 			})
 			setCompany({ ...company, manager: { ...managerFormData } })
 		} catch (err) {
-			enqueueApiError(err)
+			handleApiError(err)
 		}
 	}
 

@@ -8,7 +8,7 @@ import { FormHandles, Scope, SubmitHandler } from '@unform/core'
 import * as Yup from 'yup'
 import { Alert } from 'components/alert'
 import { useNavigate } from 'react-router-dom'
-import { enqueueApiError } from 'utils/enqueueApiError'
+import { handleApiError } from 'utils/enqueueApiError'
 import { api } from 'api'
 import { enqueueSnackbar } from 'notistack'
 import { handleYupErrors } from 'utils/handleYupErrors'
@@ -217,7 +217,7 @@ export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({
 			finishRegisteringCallback?.()
 			navigate('/empresas')
 		} catch (err) {
-			enqueueApiError(err)
+			handleApiError(err)
 		}
 	}
 
@@ -228,7 +228,7 @@ export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({
 				manager: {},
 			})
 		} catch (err: any) {
-			enqueueApiError(err)
+			handleApiError(err)
 			return
 		}
 		enqueueSnackbar('Empresa cadastrada com sucesso!', { variant: 'success' })
