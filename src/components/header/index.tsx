@@ -10,8 +10,10 @@ export const Header: React.FC<HeaderProps> = ({ icon, title }) => {
 	return (
 		<Container>
 			<div className="content">
-				{icon}
-				<h1>{title}</h1>
+				<div className="title">
+					{icon}
+					<h1>{title}</h1>
+				</div>
 			</div>
 		</Container>
 	)

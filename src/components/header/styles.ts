@@ -4,27 +4,43 @@ export const Container = styled.div`
 	background: #e9eff5;
 	width: 100vw;
 	height: 168px;
+	padding-left: 180px;
+	padding-right: 180px;
 
 	.content {
 		display: flex;
-		flex-direction: row;
-		max-width: 1300px;
+		flex-direction: column;
 		width: 100%;
-		margin: 0 auto;
-		padding: 0 48px;
+		max-width: 1440px;
 		align-items: center;
 		height: 100%;
+		margin: 0 auto;
 
-		h1 {
-			font-family: 'Inter';
-			font-weight: bold;
-			font-size: 40px;
-			margin-left: 8px;
-			color: #0f141e;
-		}
+		.title {
+			display: flex;
+			flex-direction: row;
+			justify-content: flex-start;
+			align-items: center;
+			width: 100%;
+			margin-top: 48px;
+			margin-bottom: 36px;
 
-		svg {
-			font-size: 40px;
+			h1 {
+				font-family: 'Inter';
+				font-weight: bold;
+				font-size: 32px;
+				margin-left: 8px;
+				color: #0f141e;
+			}
+
+			svg {
+				font-size: 32px;
+			}
 		}
+	}
+
+	@media (max-width: 1280px) {
+		padding-left: 140px;
+		padding-right: 140px;
 	}
 `

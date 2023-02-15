@@ -109,7 +109,7 @@ export const FormLogin = styled.div`
 		}
 	}
 
-	@media (max-height: 764px) {
+	@media (max-height: 760px) {
 		.content {
 			margin-top: 40px;
 		}
