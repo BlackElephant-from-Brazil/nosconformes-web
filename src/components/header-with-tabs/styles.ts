@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-	display: flex;
 	background: #e9eff5;
 	width: 100vw;
 	height: auto;
@@ -23,7 +22,8 @@ export const Container = styled.div`
 			justify-content: flex-start;
 			align-items: center;
 			width: 100%;
-			height: 168px;
+			margin-top: 48px;
+			margin-bottom: 36px;
 
 			h1 {
 				font-family: 'Inter';

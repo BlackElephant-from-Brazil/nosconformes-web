@@ -117,7 +117,7 @@ export const Users: React.FC = () => {
 				<Form onSubmit={e => e.preventDefault()} ref={formSearchInputRef}>
 					<Input
 						name="searchUser"
-						placeholder="Pesquise por nome, email ou responsabilidade"
+						placeholder="Pesquise por nome, email ou cargo"
 						endAdornmentIcon={<SearchRoundedIcon />}
 						className="search-input"
 						onChange={handleSearchInputChange}

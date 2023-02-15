@@ -15,6 +15,8 @@ export const Container = styled.div<ContainerProps>`
 	height: 48px;
 	align-items: center;
 	justify-content: space-between;
+	margin-top: 10px;
+	margin-bottom: 10px;
 
 	p {
 		font-family: 'Inter';
