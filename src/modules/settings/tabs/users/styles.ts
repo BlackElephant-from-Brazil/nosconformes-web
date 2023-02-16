@@ -6,7 +6,6 @@ export const Container = styled.div`
 	width: 100%;
 	max-width: 1300px;
 	margin: 0 auto;
-	padding: 60px 0;
 
 	.users-list-utilities {
 		display: flex;
@@ -50,10 +49,19 @@ export const Container = styled.div`
 	table tr td > * {
 		vertical-align: middle;
 	}
+
+	@media (max-width: 1280px) {
+		.users-list-utilities {
+			.search-input {
+				width: 360px;
+			}
+		}
+	}
 `
 
 export const AddNewUserContainer = styled.div`
 	width: 652px;
+	margin-bottom: 48px;
 
 	.close-drawer-icon {
 		position: absolute;
@@ -76,7 +84,7 @@ export const AddNewUserContainer = styled.div`
 			font-weight: 700;
 			font-size: 30px;
 			color: #0f141e;
-			margin-top: 164px;
+			margin-top: 124px;
 		}
 	}
 `

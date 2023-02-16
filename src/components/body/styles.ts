@@ -7,13 +7,18 @@ type ContainerProps = {
 export const Container = styled.div<ContainerProps>`
 	overflow-y: scroll;
 	width: 100vw;
+	padding-left: 180px;
+	padding-right: 180px;
+	flex: 1;
 
-	.content {
-		max-width: 1300px;
+	.wrapper {
 		width: 100%;
-		padding: 0 48px;
-		margin: 0 auto;
-		display: flex;
-		margin-bottom: 48px;
+		max-width: 1440px;
+		margin: 48px auto;
+	}
+
+	@media (max-width: 1280px) {
+		padding-left: 140px;
+		padding-right: 140px;
 	}
 `

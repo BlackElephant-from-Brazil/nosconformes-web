@@ -1,21 +1,20 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-	display: flex;
-	flex-direction: column;
 	background: #e9eff5;
 	width: 100vw;
-	min-height: 168px;
+	height: auto;
+	padding-left: 180px;
+	padding-right: 180px;
 
-	.content {
+	.header-content {
 		display: flex;
 		flex-direction: column;
-		max-width: 1300px;
 		width: 100%;
-		margin: 0 auto;
-		padding: 0 48px;
+		max-width: 1440px;
 		align-items: center;
 		height: 100%;
+		margin: 0 auto;
 
 		.title {
 			display: flex;
@@ -23,20 +22,26 @@ export const Container = styled.div`
 			justify-content: flex-start;
 			align-items: center;
 			width: 100%;
-			height: 168px;
+			margin-top: 48px;
+			margin-bottom: 36px;
 
 			h1 {
 				font-family: 'Inter';
 				font-weight: bold;
-				font-size: 40px;
+				font-size: 32px;
 				margin-left: 8px;
 				color: #0f141e;
 			}
 
 			svg {
-				font-size: 40px;
+				font-size: 32px;
 			}
 		}
+	}
+
+	@media (max-width: 1280px) {
+		padding-left: 140px;
+		padding-right: 140px;
 	}
 `
 

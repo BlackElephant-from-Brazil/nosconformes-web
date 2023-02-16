@@ -10,9 +10,9 @@ import { User } from 'interfaces/user.type'
 import { AccessLevelInput } from 'modules/settings/components/acess-level-input'
 import { enqueueSnackbar } from 'notistack'
 import React, { useEffect, useState } from 'react'
-import { enqueueApiError } from 'utils/enqueueApiError'
+import { handleApiError } from 'utils/handle-api-error'
 import { revertPhone } from 'utils/handlePhoneChange'
-import { handleYupErrors } from 'utils/handleYupErrors'
+import { handleYupErrors } from 'utils/handle-yup-errors'
 import * as Yup from 'yup'
 import { Container } from './styles'
 
@@ -61,7 +61,7 @@ export const Profile: React.FC = () => {
 				const { data } = await api.get(`/users/${user._eq}`)
 				setUserData({ ...data, password: '**********' })
 			} catch (err) {
-				enqueueApiError(err)
+				handleApiError(err)
 			}
 		})()
 	}, [user._eq])
@@ -143,7 +143,7 @@ export const Profile: React.FC = () => {
 			})
 			enqueueSnackbar('Dados atualizados com sucesso!', { variant: 'success' })
 		} catch (err) {
-			enqueueApiError(err)
+			handleApiError(err)
 		}
 	}
 

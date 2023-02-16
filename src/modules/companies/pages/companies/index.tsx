@@ -13,10 +13,10 @@ import { useNavigate } from 'react-router-dom'
 import { Company } from 'interfaces/company.type'
 import { CompanyCard } from 'modules/companies/components/company-card'
 import { AddCompanyTabs } from 'modules/companies/components/add-company-tabs'
-import { enqueueApiError } from 'utils/enqueueApiError'
+import { handleApiError } from 'utils/handle-api-error'
+import { Body } from 'components/body'
 import {
 	Container,
-	Body,
 	CardContainer,
 	AddNewCompanyContainerDrawer,
 } from './styles'
@@ -43,7 +43,7 @@ export const Companies: React.FC = () => {
 				setCompanies(data)
 			} catch (err: any) {
 				if (err.response.status !== 401) {
-					enqueueApiError(err)
+					handleApiError(err)
 				}
 			}
 		})()
@@ -57,7 +57,7 @@ export const Companies: React.FC = () => {
 			setCompanies(data)
 			toggleDrawer()
 		} catch (err) {
-			enqueueApiError(err)
+			handleApiError(err)
 		}
 	}
 
@@ -82,32 +82,34 @@ export const Companies: React.FC = () => {
 		<Container>
 			<Header icon={<BusinessIcon />} title="Empresas" />
 			<Body>
-				<div className="companies-list-utilities">
-					<Form onSubmit={handleSearchSubmit} ref={formSearchInputRef}>
-						<Input
-							onChange={handleSearchInputChange}
-							name="searchCompany"
-							placeholder="Pesquise pelo nome da empresa ou do gestor"
-							endAdornmentIcon={<SearchRoundedIcon />}
-							className="search-input"
+				<div className="content">
+					<div className="companies-list-utilities">
+						<Form onSubmit={handleSearchSubmit} ref={formSearchInputRef}>
+							<Input
+								onChange={handleSearchInputChange}
+								name="searchCompany"
+								placeholder="Pesquise pelo nome da empresa ou do gestor"
+								endAdornmentIcon={<SearchRoundedIcon />}
+								className="search-input"
+							/>
+						</Form>
+						<Button
+							buttonStyle="primary"
+							text="Criar nova empresa +"
+							className="new-company-button"
+							onClick={handleAddNewCompany}
 						/>
-					</Form>
-					<Button
-						buttonStyle="primary"
-						text="Criar nova empresa +"
-						className="new-company-button"
-						onClick={handleAddNewCompany}
-					/>
+					</div>
+					<CardContainer>
+						{companies.map(company => (
+							<CompanyCard
+								key={company._eq}
+								company={company}
+								testid="company-card"
+							/>
+						))}
+					</CardContainer>
 				</div>
-				<CardContainer>
-					{companies.map(company => (
-						<CompanyCard
-							key={company._eq}
-							company={company}
-							testid="company-card"
-						/>
-					))}
-				</CardContainer>
 			</Body>
 			<RightDrawer drawerOpen={drawerOpen} toggleDrawer={toggleDrawer}>
 				<AddNewCompanyContainerDrawer data-testid="create-company-drawer">

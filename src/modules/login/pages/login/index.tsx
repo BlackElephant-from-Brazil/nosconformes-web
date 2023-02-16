@@ -14,8 +14,9 @@ import * as Yup from 'yup'
 import { FormHandles, SubmitHandler } from '@unform/core'
 import { Input } from 'components/input'
 import { api } from 'api'
-import { enqueueApiError } from 'utils/enqueueApiError'
-import { Container, LeftSide, RightSide } from './styles'
+import { handleApiError } from 'utils/handle-api-error'
+import { handleYupErrors } from 'utils/handle-yup-errors'
+import { Container, Describer, FormLogin } from './styles'
 
 const errorMessages = {
 	invalidMail: 'O email precisa ser um email válido. ',
@@ -48,20 +49,8 @@ export const Login: React.FC = () => {
 			await schema.validate(data, {
 				abortEarly: false,
 			})
-		} catch (errors) {
-			let allErrors = ''
-			if (errors instanceof Yup.ValidationError) {
-				const validationErrors: { [key: string]: string } = {}
-				errors.inner.forEach(error => {
-					if (error.path) validationErrors[error.path] = error.message
-					allErrors += error.message
-				})
-				formRef.current?.setErrors(validationErrors)
-				setDisplayError(allErrors)
-				return
-			}
-			console.log(errors)
-			return
+		} catch (err) {
+			handleYupErrors(err, formRef, setDisplayError)
 		}
 
 		try {
@@ -69,9 +58,9 @@ export const Login: React.FC = () => {
 				email: data.email,
 				password: data.password,
 			})
-			navigate('/dashboard')
+			navigate('/empresas')
 		} catch (err) {
-			enqueueApiError(err)
+			handleApiError(err)
 		}
 	}
 
@@ -92,25 +81,13 @@ export const Login: React.FC = () => {
 				},
 			)
 		} catch (err) {
-			// TODO: HANDLE THIS ERROR
-			let allErrors = ''
-
-			if (err instanceof Yup.ValidationError) {
-				const validationErrors: { [key: string]: string } = {}
-				err.inner.forEach(error => {
-					if (error.path) validationErrors[error.path] = error.message
-					allErrors += error.message
-				})
-				formRef.current?.setErrors(validationErrors)
-				setDisplayError(allErrors)
-				return
-			}
-			return
+			handleYupErrors(err, formRef, setDisplayError)
 		}
+
 		try {
 			await api.post('/password/forgot', { email: emailValue })
 		} catch (err) {
-			enqueueApiError(err)
+			handleApiError(err)
 			return
 		}
 		navigate('/recuperar-senha', {
@@ -122,17 +99,16 @@ export const Login: React.FC = () => {
 
 	return (
 		<Container>
-			<LeftSide>
+			<Describer>
 				<img src={dm11Logotipo} alt="Logotipo DM11" className="dm11-logo" />
-				<p>Importe perguntas do excel para enviar para seu cliente</p>
-				{/* TODO: INSER IMAGE */}
-				{/* <img
+				<h2>Importe perguntas do excel para enviar para seu cliente</h2>
+				<img
 					src={dashboardLogin}
 					alt="Dois computadores exibindo a tela de dashboard."
 					className="dashboard-login"
-				/> */}
-			</LeftSide>
-			<RightSide>
+				/>
+			</Describer>
+			<FormLogin>
 				<div className="content">
 					<img
 						src={nosconformesRoundedLogo}
@@ -174,7 +150,7 @@ export const Login: React.FC = () => {
 					<img src={ncHorizontal} alt="Logotipo NosConformes horizontal." />
 					<p>Todos os direitos reservados ©</p>
 				</div>
-			</RightSide>
+			</FormLogin>
 		</Container>
 	)
 }

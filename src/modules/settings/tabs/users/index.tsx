@@ -9,10 +9,10 @@ import { RightDrawer } from 'components/right-drawer'
 import { UserForm } from 'modules/settings/components/UserForm'
 import { Form } from '@unform/web'
 import { FormHandles } from '@unform/core'
-import { enqueueApiError } from 'utils/enqueueApiError'
 import { api } from 'api'
 import { handleUserImageError } from 'utils/handle-image-error'
 import { AccessLevel } from 'modules/settings/components/access-level'
+import { handleApiError } from 'utils/handle-api-error'
 import { AddNewUserContainer, Container } from './styles'
 
 const tableTitles = ['Nome', 'E-mail', 'Cargo', 'Responsabilidade']
@@ -30,7 +30,7 @@ export const Users: React.FC = () => {
 				const { data } = await api.get('/users')
 				setUsers(data)
 			} catch (error) {
-				enqueueApiError(error)
+				handleApiError(error)
 			}
 		})()
 	}, [])
@@ -45,7 +45,7 @@ export const Users: React.FC = () => {
 			setEditableUser(data as User)
 			toggleDrawer()
 		} catch (err) {
-			enqueueApiError(err)
+			handleApiError(err)
 		}
 	}
 
@@ -93,7 +93,7 @@ export const Users: React.FC = () => {
 			)
 			setUsers(findUsers)
 		} catch (err) {
-			enqueueApiError(err)
+			handleApiError(err)
 		}
 	}
 
@@ -107,7 +107,7 @@ export const Users: React.FC = () => {
 			const { data } = await api.get('/users')
 			setUsers(data)
 		} catch (error) {
-			enqueueApiError(error)
+			handleApiError(error)
 		}
 	}
 
@@ -117,7 +117,7 @@ export const Users: React.FC = () => {
 				<Form onSubmit={e => e.preventDefault()} ref={formSearchInputRef}>
 					<Input
 						name="searchUser"
-						placeholder="Pesquise por nome, email ou responsabilidade"
+						placeholder="Pesquise por nome, email ou cargo"
 						endAdornmentIcon={<SearchRoundedIcon />}
 						className="search-input"
 						onChange={handleSearchInputChange}

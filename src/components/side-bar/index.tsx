@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import BusinessIcon from '@mui/icons-material/Business'
@@ -8,9 +8,9 @@ import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { useAuth } from 'hooks/authentication.hook'
-import NotificationsIcon from '@mui/icons-material/Notifications'
 import { getAccessLevelName } from 'utils/get-access-level-name'
-import { getFirstName } from 'utils/get-first-name'
+import { getFirstWord } from 'utils/get-first-word'
+import { handleUserImageError } from 'utils/handle-image-error'
 import ncMenuOpen from '../../assets/nc-menu-open.png'
 import ncMenuClose from '../../assets/nc-menu-close.png'
 import ncShortLogo from '../../assets/nc-short-logo.png'
@@ -29,6 +29,7 @@ export const SideBar: React.FC = () => {
 	const { signOut } = useAuth()
 	const [displayMenuOpen, setDisplayMenuOpen] = useState(false)
 	const { user } = useAuth()
+	const avatarRef = useRef<HTMLImageElement>(null)
 
 	useEffect(() => {
 		if (open) {
@@ -80,17 +81,11 @@ export const SideBar: React.FC = () => {
 		enqueueSnackbar('Você foi desconectado com sucesso!', {
 			variant: 'success',
 		})
-		setTimeout(() => {
-			navigate('/login')
-		}, 2800)
+		navigate('/login')
 	}
 
 	const handleToggleMenuOpen = () => {
 		setOpen(!open)
-	}
-
-	const handleClickNotifications = () => {
-		console.log('click')
 	}
 
 	const handleClickUserTag = () => {
@@ -166,9 +161,11 @@ export const SideBar: React.FC = () => {
 						src={user.profilePicture}
 						alt="Avatar do usuário"
 						className="avatar"
+						ref={avatarRef}
+						onError={() => handleUserImageError(avatarRef)}
 					/>
 					<div className="user-infos">
-						<p className="user-name">{getFirstName(user.name)}</p>
+						<p className="user-name">{getFirstWord(user.name)}</p>
 						<p className="user-office">
 							{getAccessLevelName(user.accessLevel)}
 						</p>

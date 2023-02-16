@@ -8,7 +8,6 @@ export const Container = styled.div`
 	.save-button {
 		width: 186px;
 		margin-left: auto;
-		margin-top: 66px;
 	}
 
 	.form {

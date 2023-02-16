@@ -4,8 +4,8 @@ import { Button } from 'components/button'
 import { User } from 'interfaces/user.type'
 import { enqueueSnackbar } from 'notistack'
 import React, { useEffect, useState } from 'react'
-import { enqueueApiError } from 'utils/enqueueApiError'
-import { handleYupErrors } from 'utils/handleYupErrors'
+import { handleApiError } from 'utils/handle-api-error'
+import { handleYupErrors } from 'utils/handle-yup-errors'
 import * as Yup from 'yup'
 import { revertPhone } from 'utils/handlePhoneChange'
 import { Alert } from 'components/alert'
@@ -119,7 +119,7 @@ export const UserForm: React.FC<UserFormProps> = ({
 			reloadTable()
 			toggleDrawer()
 		} catch (err) {
-			enqueueApiError(err)
+			handleApiError(err)
 		}
 	}
 	return (

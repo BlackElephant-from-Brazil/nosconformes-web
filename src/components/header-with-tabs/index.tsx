@@ -24,7 +24,7 @@ export const HeaderWithTabs: React.FC<HeaderWithTabsProps> = ({
 }) => {
 	return (
 		<Container>
-			<div className="content">
+			<div className="header-content">
 				<div className="title">
 					{icon}
 					<h1>{title}</h1>
