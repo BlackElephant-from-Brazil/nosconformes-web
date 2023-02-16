@@ -20,16 +20,13 @@ import { isObjectEmpty } from 'utils/is-object-empty'
 import { BackButton } from 'components/back-button'
 import { Autocomplete } from 'components/autocomplete'
 import { handleYupErrors } from 'utils/handle-yup-errors'
+import { handleUserImageError } from 'utils/handle-image-error'
+import { Body } from 'components/body'
 import { AccessLevel } from '../../components/access-level'
 import { Dialog } from '../../../../components/dialog'
 import { Input } from '../../../../components/input'
 import { BT_PRIMARY, Button } from '../../../../components/button'
-import {
-	Container,
-	Body,
-	TabCompanyDetails,
-	AuditorsDialogContent,
-} from './styles'
+import { Container, TabCompanyDetails, AuditorsDialogContent } from './styles'
 import { Header } from '../../../../components/header'
 
 export const TAB_COMPANY_DATA = 0
@@ -95,7 +92,6 @@ export const CompanyDetails: React.FC = () => {
 	const formManagerRef = useRef<FormHandles>(null)
 	const [displayErrors, setDisplayErrors] = useState('')
 	const [availableAuditors, setAvailableAuditors] = useState<Auditor[]>([])
-	const auditorsRef = useRef(null)
 	const [selectedAuditors, setSelectedAuditors] = useState<Auditor[]>([])
 	const [dataLoaded, setDataLoaded] = useState(false)
 
@@ -331,19 +327,21 @@ export const CompanyDetails: React.FC = () => {
 							testid="back-button"
 							handleClick={handleBackToCompanyData}
 						/>
-						<div
-							className="company-data-title"
-							onClick={handleActiveCompanyData}
-							role="presentation"
-						>
-							<p>Dados da empresa</p>
-						</div>
-						<div
-							className="manager-data-title"
-							onClick={handleAcitveManagerData}
-							role="presentation"
-						>
-							<p>Dados do gestor</p>
+						<div className="tab-titles">
+							<div
+								className="company-data-title"
+								onClick={handleActiveCompanyData}
+								role="presentation"
+							>
+								<p>Dados da empresa</p>
+							</div>
+							<div
+								className="manager-data-title"
+								onClick={handleAcitveManagerData}
+								role="presentation"
+							>
+								<p>Dados do gestor</p>
+							</div>
 						</div>
 					</div>
 					{active === TAB_COMPANY_DATA && (
@@ -436,45 +434,54 @@ export const CompanyDetails: React.FC = () => {
 									setSelectedAuditors(auditors as Auditor[])
 								}}
 								optionLabel={auditor => auditor.name}
-								renderOption={(props, auditor) => (
-									<Box
-										component="li"
-										sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
-										{...props}
-									>
-										<img
-											style={{
-												borderRadius: '50%',
-												width: 36,
-												height: 36,
-												objectFit: 'cover',
-											}}
-											src={auditor.profilePicture}
-											alt={`Foto do auditor: ${auditor.name}`}
-										/>
-										<p
-											style={{
-												fontFamily: 'Inter',
-												fontWeight: 600,
-												fontSize: 16,
-												color: '#0F141E',
-												marginLeft: 6,
-											}}
+								renderOption={(props, auditor) => {
+									const auditorImageRef = React.createRef<HTMLImageElement>()
+
+									return (
+										<Box
+											component="li"
+											sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
+											{...props}
 										>
-											{auditor.name}
-										</p>
-									</Box>
-								)}
+											<img
+												style={{
+													borderRadius: '50%',
+													width: 36,
+													height: 36,
+													objectFit: 'cover',
+												}}
+												src={auditor.profilePicture}
+												alt={`Foto do auditor: ${auditor.name}`}
+												ref={auditorImageRef}
+												onError={() => handleUserImageError(auditorImageRef)}
+											/>
+											<p
+												style={{
+													fontFamily: 'Inter',
+													fontWeight: 600,
+													fontSize: 16,
+													color: '#0F141E',
+													marginLeft: 6,
+												}}
+											>
+												{auditor.name}
+											</p>
+										</Box>
+									)
+								}}
 								label="Adicione auditores"
 							/>
 
 							<h3>Pessoas com acesso</h3>
 							{company.auditors?.map(auditor => {
+								const auditorImageRef = React.createRef<HTMLImageElement>()
 								return (
 									<div className="auditor" key={auditor._eq}>
 										<img
 											src={auditor.profilePicture}
 											alt="Foto de um auditor"
+											ref={auditorImageRef}
+											onError={() => handleUserImageError(auditorImageRef)}
 										/>
 										<p className="auditor-name">{auditor.name}</p>
 										<AccessLevel
