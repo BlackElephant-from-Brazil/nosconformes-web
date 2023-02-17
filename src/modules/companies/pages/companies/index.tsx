@@ -36,6 +36,7 @@ export const Companies: React.FC = () => {
 	const navigate = useNavigate()
 	const formSearchInputRef = useRef<FormHandles>(null)
 	const [activeCompanyId, setActiveCompanyId] = useState('')
+	const graphDivRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
 		// eslint-disable-next-line prettier/prettier
@@ -92,6 +93,10 @@ export const Companies: React.FC = () => {
 		navigate(`/detalhes-da-empresa/${activeCompanyId}`)
 	}
 
+	useEffect(() => {
+		console.log(graphDivRef.current?.clientWidth)
+	}, [graphDivRef.current?.clientWidth])
+
 	return (
 		<Container>
 			<Header icon={<BusinessIcon />} title="Empresas" />
@@ -138,7 +143,9 @@ export const Companies: React.FC = () => {
 													{formatSite(company.site)}
 												</a>
 											</div>
-											<CompanyGraph points={company.points} />
+											<div className="company-graph" ref={graphDivRef}>
+												<CompanyGraph points={400} height={100} width={100} />
+											</div>
 											<CompanyStatus status={company.status} reduced />
 										</CompanyItem>
 									)

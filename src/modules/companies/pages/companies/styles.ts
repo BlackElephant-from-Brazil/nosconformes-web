@@ -166,4 +166,11 @@ export const CompanyItem = styled.div<CompanyItemProps>`
 			text-overflow: ellipsis;
 		}
 	}
+
+	.company-graph {
+		display: flex;
+		justify-content: center;
+		margin: 0 auto;
+		width: 30%;
+	}
 `
