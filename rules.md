@@ -13,7 +13,7 @@ The media screen will get this properties:
 		/* css code here */
 	}
 ```
-**Screens with height lower than 920px:**
+**Screens with height lower than 760px:**
 ```
 	@media (max-height: 760px) {
 		/* css code here */

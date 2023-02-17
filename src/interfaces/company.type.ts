@@ -5,9 +5,11 @@ export type Company = {
 	_eq: string
 	logo: string
 	name: string
+	sector: string
 	manager?: Manager
 	cnpj: string
 	site: string
-	status: 'late' | 'finished' | 'inprogress'
+	points: number
+	status: 'late' | 'finished' | 'inprogress' | 'notstarted'
 	auditors: Auditor[]
 }
