@@ -11,14 +11,19 @@ import { FormHandles, SubmitHandler } from '@unform/core'
 import { api } from 'api'
 import { useNavigate } from 'react-router-dom'
 import { Company } from 'interfaces/company.type'
-import { CompanyCard } from 'modules/companies/components/company-card'
+import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import { AddCompanyTabs } from 'modules/companies/components/add-company-tabs'
 import { handleApiError } from 'utils/handle-api-error'
 import { Body } from 'components/body'
+import { handleCompanyImageError } from 'utils/handle-image-error'
+import { CompanyGraph } from 'components/company-graph'
+import { CompanyStatus } from 'components/company-status'
+import { formatSite } from 'utils/format-site'
 import {
 	Container,
-	CardContainer,
 	AddNewCompanyContainerDrawer,
+	CompaniesList,
+	CompanyItem,
 } from './styles'
 
 type SearchForm = {
@@ -30,6 +35,7 @@ export const Companies: React.FC = () => {
 	const [companies, setCompanies] = useState<Company[]>([])
 	const navigate = useNavigate()
 	const formSearchInputRef = useRef<FormHandles>(null)
+	const [activeCompanyId, setActiveCompanyId] = useState('')
 
 	useEffect(() => {
 		// eslint-disable-next-line prettier/prettier
@@ -78,6 +84,14 @@ export const Companies: React.FC = () => {
 		setCompanies(findCompanies)
 	}
 
+	const handleCompanyItemClicked = (companyId: string) => {
+		setActiveCompanyId(companyId)
+	}
+
+	const handleEditCompany = () => {
+		navigate(`/detalhes-da-empresa/${activeCompanyId}`)
+	}
+
 	return (
 		<Container>
 			<Header icon={<BusinessIcon />} title="Empresas" />
@@ -100,15 +114,54 @@ export const Companies: React.FC = () => {
 							onClick={handleAddNewCompany}
 						/>
 					</div>
-					<CardContainer>
-						{companies.map(company => (
-							<CompanyCard
-								key={company._eq}
-								company={company}
-								testid="company-card"
-							/>
-						))}
-					</CardContainer>
+					<CompaniesList>
+						<h2>Empresas ativas</h2>
+						<div className="companies-container">
+							<div className="companies-list">
+								{companies.map(company => {
+									const companyLogoRef = React.createRef<HTMLImageElement>()
+									return (
+										<CompanyItem
+											isActive={activeCompanyId === company._eq}
+											onClick={() => handleCompanyItemClicked(company._eq)}
+										>
+											<img
+												src={company.logo}
+												alt={`Logo da empresa ${company.name}`}
+												ref={companyLogoRef}
+												onError={() => handleCompanyImageError(companyLogoRef)}
+											/>
+											<div className="company-info">
+												<h3>{company.name}</h3>
+												<p>{company.sector || 'Varejo'}</p>
+												<a href={company.site} target="_blank" rel="noreferrer">
+													{formatSite(company.site)}
+												</a>
+											</div>
+											<CompanyGraph points={company.points} />
+											<CompanyStatus status={company.status} reduced />
+										</CompanyItem>
+									)
+								})}
+							</div>
+							<div className="company-profile">
+								{activeCompanyId === '' ? (
+									<h3>Selecione uma empresa para visualizar as informações</h3>
+								) : (
+									<>
+										<a
+											href="#"
+											className="edit-company-profile"
+											onClick={handleEditCompany}
+										>
+											Editar perfil <ModeEditIcon />
+										</a>
+										<h3>Esta empresa não possui pontuação</h3>
+									</>
+								)}
+							</div>
+						</div>
+					</CompaniesList>
 				</div>
 			</Body>
 			<RightDrawer drawerOpen={drawerOpen} toggleDrawer={toggleDrawer}>
