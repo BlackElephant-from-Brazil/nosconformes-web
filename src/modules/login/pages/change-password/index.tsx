@@ -4,7 +4,7 @@ import { Form } from '@unform/web'
 import { FormHandles, SubmitHandler } from '@unform/core'
 import * as Yup from 'yup'
 import { useNavigate } from 'react-router-dom'
-import { Container, LeftSide, RightSide } from './styles'
+import { Container, Describer, FormChangePassword } from './styles'
 import ncHorizontal from '../../../../assets/nc-horizontal.png'
 import dm11Logotipo from '../../../../assets/dm11-logotipo.png'
 import dm11RoundedLogo from '../../../../assets/dm11-rounded-logo.png'
@@ -86,49 +86,54 @@ const ChangePassword: React.FC = () => {
 
 	return (
 		<Container>
-			<LeftSide>
+			<Describer>
 				<img src={dm11Logotipo} alt="Logotipo DM11" className="dm11-logo" />
-				<p>Importe perguntas do excel para enviar para seu cliente</p>
+				<h2>Importe perguntas do excel para enviar para seu cliente</h2>
 				<img
 					src={dashboardLogin}
 					alt="Dois computadores exibindo a tela de dashboard."
 					className="dashboard-login"
 				/>
-			</LeftSide>
-			<RightSide>
-				<img
-					src={dm11RoundedLogo}
-					alt="Logotipo DM11"
-					className="dm11-rounded-logo"
-				/>
-				<p className="welcome">Bem vindo! 👋</p>
-				<Form onSubmit={handleChangePasswordFormSubmit} ref={formRef}>
-					<p className="pass-advise">
-						Digite sua nova senha nos campos abaixo:
-					</p>
-					<Input
-						label="Senha"
-						name="password"
-						startAdornmentIcon={<Lock />}
-						type="password"
-						placeholder="Digite a sua nova senha..."
+			</Describer>
+			<FormChangePassword>
+				<div className="content">
+					<img
+						src={dm11RoundedLogo}
+						alt="Logotipo DM11"
+						className="dm11-rounded-logo"
 					/>
-					<Input
-						label="Confirme sua senha"
-						name="passwordConfirmation"
-						startAdornmentIcon={<Lock />}
-						type="password"
-						placeholder="Confirme a senha digitada..."
-					/>
-					<Alert text={displayErrors} type="error" />
-					<Button text="Atualizar senha" buttonStyle="primary" type="submit" />
-				</Form>
-
+					<p className="welcome">Bem vindo! 👋</p>
+					<Form onSubmit={handleChangePasswordFormSubmit} ref={formRef}>
+						<p className="pass-advise">
+							Digite sua nova senha nos campos abaixo:
+						</p>
+						<Input
+							label="Senha"
+							name="password"
+							startAdornmentIcon={<Lock />}
+							type="password"
+							placeholder="Digite a sua nova senha..."
+						/>
+						<Input
+							label="Confirme sua senha"
+							name="passwordConfirmation"
+							startAdornmentIcon={<Lock />}
+							type="password"
+							placeholder="Confirme a senha digitada..."
+						/>
+						<Alert text={displayErrors} type="error" />
+						<Button
+							text="Atualizar senha"
+							buttonStyle="primary"
+							type="submit"
+						/>
+					</Form>
+				</div>
 				<div className="footer">
 					<img src={ncHorizontal} alt="Logotipo NosConformes horizontal." />
 					<p>Todos os direitos reservados ©</p>
 				</div>
-			</RightSide>
+			</FormChangePassword>
 		</Container>
 	)
 }

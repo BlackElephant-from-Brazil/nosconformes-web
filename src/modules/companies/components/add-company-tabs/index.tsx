@@ -2,16 +2,15 @@ import React, { useEffect, useRef, useState } from 'react'
 import InsertPhotoOutlinedIcon from '@mui/icons-material/InsertPhotoOutlined'
 import { Input } from 'components/input'
 import { Button } from 'components/button'
-import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined'
 import { Form } from '@unform/web'
 import { FormHandles, Scope, SubmitHandler } from '@unform/core'
 import * as Yup from 'yup'
 import { Alert } from 'components/alert'
 import { useNavigate } from 'react-router-dom'
-import { enqueueApiError } from 'utils/enqueueApiError'
+import { handleApiError } from 'utils/handle-api-error'
 import { api } from 'api'
 import { enqueueSnackbar } from 'notistack'
-import { handleYupErrors } from 'utils/handleYupErrors'
+import { handleYupErrors } from 'utils/handle-yup-errors'
 import { handlePhoneChange, revertPhone } from 'utils/handlePhoneChange'
 import { handleCNPJChange, revertCnpj } from 'utils/handleCNPJChange'
 import { BackButton } from 'components/back-button'
@@ -217,18 +216,19 @@ export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({
 			finishRegisteringCallback?.()
 			navigate('/empresas')
 		} catch (err) {
-			enqueueApiError(err)
+			handleApiError(err)
 		}
 	}
 
 	const handleSubmitWithoutManagerData = async () => {
 		try {
+			formData.company.logo =
+				'https://media.licdn.com/dms/image/C4D0BAQGAYL99EehE8w/company-logo_200_200/0/1673981963317?e=1682553600&v=beta&t=I1GVv1NaM_LXAbaglNo29n5_WasBsQIPaMfTEXCfgZA'
 			await api.post('/companies', {
 				company: formData.company,
-				manager: {},
 			})
 		} catch (err: any) {
-			enqueueApiError(err)
+			handleApiError(err)
 			return
 		}
 		enqueueSnackbar('Empresa cadastrada com sucesso!', { variant: 'success' })

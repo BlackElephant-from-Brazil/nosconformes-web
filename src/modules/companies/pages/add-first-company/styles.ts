@@ -8,17 +8,19 @@ export const Container = styled.div`
 	background: #ffffff;
 	display: flex;
 	width: 100vw;
-	min-height: 100vh;
 	flex-direction: column;
-`
+	height: 100vh;
 
-export const Body = styled.ul`
-	width: 724px;
-	margin: 0 auto;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	list-style: none;
+	.content {
+		max-width: 724px;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		list-style: none;
+		min-height: calc(100vh - 232px);
+		justify-content: center;
+	}
 `
 
 export const CreateYourFirstCompanyScreen = styled.li<CreateYourFirstCompanyScreenProps>`
@@ -32,7 +34,6 @@ export const CreateYourFirstCompanyScreen = styled.li<CreateYourFirstCompanyScre
 		font-weight: 700;
 		font-size: 30px;
 		color: #0f141e;
-		margin-top: 200px;
 	}
 
 	.form-steps {

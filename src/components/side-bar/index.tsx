@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
-import DashboardIcon from '@mui/icons-material/Dashboard'
 import BusinessIcon from '@mui/icons-material/Business'
 import CommentBankIcon from '@mui/icons-material/CommentBank'
 import PeopleIcon from '@mui/icons-material/People'
@@ -9,26 +8,28 @@ import { useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { useAuth } from 'hooks/authentication.hook'
-import NotificationsIcon from '@mui/icons-material/Notifications'
+import { getAccessLevelName } from 'utils/get-access-level-name'
+import { getFirstWord } from 'utils/get-first-word'
+import { handleUserImageError } from 'utils/handle-image-error'
 import ncMenuOpen from '../../assets/nc-menu-open.png'
 import ncMenuClose from '../../assets/nc-menu-close.png'
-import avatarExample from '../../assets/avatar-example.png'
 import ncShortLogo from '../../assets/nc-short-logo.png'
 import ncWhiteText from '../../assets/nc-white-text.png'
 import { Container, MenuItem, UserTag } from './styles'
 
-const DASHBOARD = 'dashboard'
 const COMPANIES = 'companies'
 const KNOWLEDGE_BASE = 'knowledge_base'
 const AUDITOR_AREA = 'auditor_area'
 
 export const SideBar: React.FC = () => {
 	const [open, setOpen] = useState(false)
-	const [active, setActive] = useState(DASHBOARD)
+	const [active, setActive] = useState(COMPANIES)
 	const navigate = useNavigate()
 	const { enqueueSnackbar } = useSnackbar()
 	const { signOut } = useAuth()
 	const [displayMenuOpen, setDisplayMenuOpen] = useState(false)
+	const { user } = useAuth()
+	const avatarRef = useRef<HTMLImageElement>(null)
 
 	useEffect(() => {
 		if (open) {
@@ -43,9 +44,6 @@ export const SideBar: React.FC = () => {
 	useEffect(() => {
 		const path = window.location.pathname
 		switch (path) {
-			case '/dashboard':
-				setActive(DASHBOARD)
-				break
 			case '/empresas':
 				setActive(COMPANIES)
 				break
@@ -64,9 +62,6 @@ export const SideBar: React.FC = () => {
 	const handleOpenMenu = (menu: string) => {
 		setActive(menu)
 		switch (menu) {
-			case DASHBOARD:
-				navigate('/dashboard')
-				break
 			case COMPANIES:
 				navigate('/empresas')
 				break
@@ -86,17 +81,11 @@ export const SideBar: React.FC = () => {
 		enqueueSnackbar('Você foi desconectado com sucesso!', {
 			variant: 'success',
 		})
-		setTimeout(() => {
-			navigate('/login')
-		}, 2800)
+		navigate('/login')
 	}
 
 	const handleToggleMenuOpen = () => {
 		setOpen(!open)
-	}
-
-	const handleClickNotifications = () => {
-		console.log('click')
 	}
 
 	const handleClickUserTag = () => {
@@ -123,16 +112,6 @@ export const SideBar: React.FC = () => {
 				)}
 			</div>
 			<div className="app-menu">
-				<MenuItem
-					textShow={displayMenuOpen}
-					open={open}
-					active={active === DASHBOARD}
-					onClick={() => handleOpenMenu(DASHBOARD)}
-				>
-					<div className="side-border" />
-					<DashboardIcon />
-					<p className="item-name">Dashboard</p>
-				</MenuItem>
 				<MenuItem
 					textShow={displayMenuOpen}
 					open={open}
@@ -167,14 +146,6 @@ export const SideBar: React.FC = () => {
 			<div className="bottom">
 				<div
 					className="bottom-item"
-					onClick={handleClickNotifications}
-					role="presentation"
-				>
-					<NotificationsIcon />
-					<p>Notificações</p>
-				</div>
-				<div
-					className="bottom-item"
 					onClick={handleClickLogout}
 					role="presentation"
 				>
@@ -186,10 +157,18 @@ export const SideBar: React.FC = () => {
 					menuOpen={open}
 					onClick={handleClickUserTag}
 				>
-					<img src={avatarExample} alt="Avatar do usuário" />
+					<img
+						src={user.profilePicture}
+						alt="Avatar do usuário"
+						className="avatar"
+						ref={avatarRef}
+						onError={() => handleUserImageError(avatarRef)}
+					/>
 					<div className="user-infos">
-						<p className="user-name">Douglas</p>
-						<p className="user-office">Master</p>
+						<p className="user-name">{getFirstWord(user.name)}</p>
+						<p className="user-office">
+							{getAccessLevelName(user.accessLevel)}
+						</p>
 					</div>
 				</UserTag>
 				<div className="bottom-infos">

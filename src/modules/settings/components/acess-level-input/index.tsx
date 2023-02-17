@@ -44,7 +44,7 @@ export const AccessLevelInput: React.FC<AccessLevelInputProps> = ({
 					MenuProps={{
 						componentsProps: {
 							root: {
-								// this class is in globalStyles.ts file because of the MUI engeneering
+								// this class "access-level-menu" is in globalStyles.ts file because of the MUI engeneering
 								className: 'access-level-menu',
 							},
 						},

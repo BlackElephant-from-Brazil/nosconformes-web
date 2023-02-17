@@ -4,8 +4,8 @@ import { Button } from 'components/button'
 import { User } from 'interfaces/user.type'
 import { enqueueSnackbar } from 'notistack'
 import React, { useEffect, useState } from 'react'
-import { enqueueApiError } from 'utils/enqueueApiError'
-import { handleYupErrors } from 'utils/handleYupErrors'
+import { handleApiError } from 'utils/handle-api-error'
+import { handleYupErrors } from 'utils/handle-yup-errors'
 import * as Yup from 'yup'
 import { revertPhone } from 'utils/handlePhoneChange'
 import { Alert } from 'components/alert'
@@ -18,6 +18,7 @@ import { AccessLevelInput } from '../acess-level-input'
 type UserFormProps = {
 	toggleDrawer: () => void
 	user: User | null
+	reloadTable: () => void
 }
 
 type FormData = {
@@ -46,7 +47,11 @@ const errorMessages = {
 	},
 }
 
-export const UserForm: React.FC<UserFormProps> = ({ toggleDrawer, user }) => {
+export const UserForm: React.FC<UserFormProps> = ({
+	toggleDrawer,
+	user,
+	reloadTable,
+}) => {
 	const formRef = React.useRef<FormHandles>(null)
 	const [displayErrors, setDisplayErrors] = useState('')
 
@@ -111,9 +116,10 @@ export const UserForm: React.FC<UserFormProps> = ({ toggleDrawer, user }) => {
 					variant: 'success',
 				})
 			}
+			reloadTable()
 			toggleDrawer()
 		} catch (err) {
-			enqueueApiError(err)
+			handleApiError(err)
 		}
 	}
 	return (
@@ -128,7 +134,7 @@ export const UserForm: React.FC<UserFormProps> = ({ toggleDrawer, user }) => {
 				<AccessLevelInput
 					name="Selecione o perfil"
 					formRef={formRef}
-					accessLevel="auditor"
+					accessLevel={user?.accessLevel || 'auditor'}
 				/>
 				<Input type="hidden" name="accessLevel" />
 				<Alert text={displayErrors} type="error" />

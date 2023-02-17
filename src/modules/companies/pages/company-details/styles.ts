@@ -7,29 +7,21 @@ type TabCompanyDetailsProps = {
 }
 
 export const Container = styled.div`
-	background: #ffffff;
+	display: flex;
+	flex-direction: column;
 	width: 100vw;
-	min-height: 100vh;
-`
-
-export const Body = styled.div`
-	width: 724px;
-	min-height: 100%;
-	margin: 0 auto;
+	height: 100vh;
+	background: #ffffff;
 
 	.auditors-button {
-		top: 168px;
-		margin-top: 52px;
-		max-width: 136px;
-		position: absolute;
-		right: 0;
-		margin-right: 142px;
+		max-width: 148px;
+		display: flex;
+		margin-left: auto;
 	}
 `
 
 export const TabCompanyDetails = styled.ul<TabCompanyDetailsProps>`
 	list-style: none;
-	margin-top: 116px;
 
 	.tab-header {
 		display: flex;
@@ -63,23 +55,28 @@ export const TabCompanyDetails = styled.ul<TabCompanyDetailsProps>`
 			}
 		}
 
-		div {
-			cursor: pointer;
-			width: 230px;
+		.tab-titles {
+			display: flex;
 			margin: 0 auto;
+			transform: translateX(-19px);
 
-			p {
-				color: #6d7c99;
-				font-family: 'Inter';
-				font-weight: 500;
-				font-size: 24px;
-				text-align: center;
+			div {
+				cursor: pointer;
+				width: 230px;
+				margin: 0 24px;
+
+				p {
+					color: #6d7c99;
+					font-family: 'Inter';
+					font-weight: 500;
+					font-size: 24px;
+					text-align: center;
+				}
 			}
-		}
 
-		${({ active }) => {
-			if (active === TAB_COMPANY_DATA) {
-				return `	.company-data-title {
+			${({ active }) => {
+				if (active === TAB_COMPANY_DATA) {
+					return `	.company-data-title {
 											p {
 												font-weight: 700;
 												font-size: 24px;
@@ -88,9 +85,9 @@ export const TabCompanyDetails = styled.ul<TabCompanyDetailsProps>`
 											border-bottom: 4px solid #1F4CD4;
 										}
 									`
-			}
-			if (active === TAB_MANAGER_DATA) {
-				return `	.manager-data-title {
+				}
+				if (active === TAB_MANAGER_DATA) {
+					return `	.manager-data-title {
 						p {
 							font-weight: 700;
 							font-size: 24px;
@@ -99,8 +96,9 @@ export const TabCompanyDetails = styled.ul<TabCompanyDetailsProps>`
 						border-bottom: 4px solid #1F4CD4;
 					}
 				`
-			}
-		}}
+				}
+			}}
+		}
 	}
 
 	li {

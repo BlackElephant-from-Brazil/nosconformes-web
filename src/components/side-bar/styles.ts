@@ -78,7 +78,7 @@ export const Container = styled.div<ContainerProps>`
 				color: #6d7c99;
 				width: 24px;
 				height: 24px;
-				margin-left: 25px;
+				margin-left: 22px;
 			}
 
 			p {
@@ -128,7 +128,7 @@ type MenuItemProps = {
 export const MenuItem = styled.div<MenuItemProps>`
 	display: flex;
 	justify-content: flex-start;
-	margin-left: 21px;
+	margin-left: 22px;
 	align-items: center;
 	height: 48px;
 	width: 100%;
@@ -191,7 +191,7 @@ export const UserTag = styled.div<UserTagProps>`
 		width: 34px;
 		height: 34px;
 		border-radius: 50px;
-		object-fit: fill;
+		object-fit: cover;
 		margin-left: 12px;
 	}
 
