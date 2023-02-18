@@ -25,7 +25,7 @@ import { Body } from 'components/body'
 import { AccessLevel } from '../../components/access-level'
 import { Dialog } from '../../../../components/dialog'
 import { Input } from '../../../../components/input'
-import { BT_PRIMARY, Button } from '../../../../components/button'
+import { Button } from '../../../../components/button'
 import { Container, TabCompanyDetails, AuditorsDialogContent } from './styles'
 import { Header } from '../../../../components/header'
 
@@ -430,13 +430,12 @@ export const CompanyDetails: React.FC = () => {
 								testid="auditors-select"
 								options={availableAuditors}
 								selectedValues={selectedAuditors}
-								handleChange={(event, auditors) => {
+								handleChange={(_, auditors) => {
 									setSelectedAuditors(auditors as Auditor[])
 								}}
 								optionLabel={auditor => auditor.name}
 								renderOption={(props, auditor) => {
 									const auditorImageRef = React.createRef<HTMLImageElement>()
-
 									return (
 										<Box
 											component="li"
@@ -500,7 +499,7 @@ export const CompanyDetails: React.FC = () => {
 								)
 							})}
 							<Button
-								buttonStyle={BT_PRIMARY}
+								buttonStyle="primary"
 								text="Concluído"
 								className="bt-auditors-finished"
 								onClick={handleChangeAuditorsSave}

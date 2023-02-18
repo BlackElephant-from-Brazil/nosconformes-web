@@ -9,13 +9,5 @@ export const Container = styled.div<ContainerProps>`
 	height: 100vh;
 	display: flex;
 	flex-direction: column;
-	background: #e9eff5;
-`
-
-export const Body = styled.div`
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	height: 100%;
-	margin-top: 52px;
+	background: #ffffff;
 `

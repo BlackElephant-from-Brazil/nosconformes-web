@@ -130,7 +130,11 @@ export const Users: React.FC = () => {
 					onClick={handleCreateNewUserButtonClick}
 				/>
 			</div>
-			<Table headerTitles={tableTitles} tableRows={renderTableBodyInfo()} />
+			<Table
+				headerTitles={tableTitles}
+				tableRows={renderTableBodyInfo()}
+				className="table-users"
+			/>
 			<RightDrawer toggleDrawer={toggleDrawer} drawerOpen={drawerOpen}>
 				<AddNewUserContainer>
 					<CloseIcon className="close-drawer-icon" onClick={toggleDrawer} />

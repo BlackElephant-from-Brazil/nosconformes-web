@@ -9,16 +9,18 @@ type TableProps = {
 	headerTitles: string[]
 	tableRows: JSX.Element[]
 	pagination?: boolean
+	className: string
 }
 
 export const Table: React.FC<TableProps> = ({
 	headerTitles,
 	tableRows,
 	pagination,
+	className,
 }) => {
 	return (
 		<Container>
-			<TableContent>
+			<TableContent className={className}>
 				<thead>
 					<tr>
 						{headerTitles.map(headerTitle => {

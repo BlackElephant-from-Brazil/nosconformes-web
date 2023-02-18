@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { TextField } from '@mui/material'
 import { Container } from './styles'
 
@@ -8,8 +8,10 @@ type AutocompleteProps = {
 	testid?: string
 	handleChange: (event: any, values: unknown) => void
 	optionLabel: (option: any) => string
-	label: string
+	label?: string
 	renderOption?: (props: any, option: any) => JSX.Element
+	multiple?: boolean
+	disableCloseOnSelect?: boolean
 }
 
 export const Autocomplete: React.FC<AutocompleteProps> = ({
@@ -20,6 +22,8 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
 	optionLabel,
 	label,
 	renderOption,
+	multiple = true,
+	disableCloseOnSelect = true,
 }) => {
 	const [placeholder, setPlaceholder] = useState(' ')
 	const handleChangeAutocompleteChange = (event: any, values: unknown) => {
@@ -31,9 +35,9 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
 	return (
 		<Container
 			data-testid={testid}
-			multiple
+			multiple={multiple}
 			options={options}
-			disableCloseOnSelect
+			disableCloseOnSelect={disableCloseOnSelect}
 			value={selectedValues}
 			onChange={handleChangeAutocompleteChange}
 			getOptionLabel={optionLabel}

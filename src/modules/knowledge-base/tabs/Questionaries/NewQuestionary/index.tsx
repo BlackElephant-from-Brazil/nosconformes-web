@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { BT_PRIMARY_ORANGE, Button, BT_PRIMARY } from 'components/button'
+import { Button } from 'components/button'
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
 import LockIcon from '@mui/icons-material/Lock'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
@@ -37,12 +37,12 @@ export const NewQuestionary: React.FC = () => {
 					<QuestionaryNameInput className="questionary-name-input" />
 					<div className="button-group">
 						<Button
-							buttonStyle={BT_PRIMARY_ORANGE}
+							buttonStyle="primary-orange"
 							icon={<PeopleAltIcon />}
 							text="Auditores"
 						/>
 						<Button
-							buttonStyle={BT_PRIMARY}
+							buttonStyle="primary"
 							icon={<LockIcon />}
 							text="Compartilhar"
 						/>
@@ -50,7 +50,7 @@ export const NewQuestionary: React.FC = () => {
 				</div>
 				<Body>
 					<Button
-						buttonStyle={BT_PRIMARY}
+						buttonStyle="primary"
 						text="Adicionar um agrupamento"
 						icon={<KeyboardArrowDownIcon />}
 						className="add-new-grouping-button"

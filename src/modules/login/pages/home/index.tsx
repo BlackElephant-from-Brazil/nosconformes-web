@@ -10,7 +10,7 @@ const Home: React.FC = () => {
 		if (!user || Object.keys(user).length === 0) {
 			navigate('/login')
 		} else {
-			navigate('/dashboard')
+			navigate('/empresas')
 		}
 	}, [navigate, user])
 

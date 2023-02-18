@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import CommentBankIcon from '@mui/icons-material/CommentBank'
+import { Body } from 'components/body'
 import { HeaderWithTabs, Tab } from '../../components/header-with-tabs'
-import { Container, Body } from './styles'
-import { Questionaries } from './pages/Questionaries'
-import { Questions } from './pages/Questions'
+import { Container } from './styles'
+import { Questionaries } from './tabs/Questionaries'
+import { Questions } from './tabs/questions'
 
 const tabs: Tab[] = [
 	{

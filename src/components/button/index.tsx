@@ -1,18 +1,10 @@
 import React from 'react'
+import excelIcon from 'assets/excel-icon.png'
 import { StyledButton } from './styles'
 
-export const BT_PRIMARY = 'primary'
-export const BT_SECONDARY = 'secondary'
-export const BT_PRIMARY_ORANGE = 'primary-orange'
-
-export type ButtonVariations =
-	| typeof BT_PRIMARY
-	| typeof BT_SECONDARY
-	| typeof BT_PRIMARY_ORANGE
-
-type ButtonProps = {
+export type ButtonProps = {
 	text: string
-	buttonStyle: ButtonVariations
+	buttonStyle: 'primary' | 'secondary' | 'primary-orange' | 'excel'
 	onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void
 	className?: string
 	icon?: JSX.Element
@@ -43,6 +35,7 @@ const Button: React.FC<ButtonProps> = ({
 			endIcon={icon || null}
 		>
 			{text}
+			{buttonStyle === 'excel' && <img src={excelIcon} alt="Ícone do excel" />}
 		</StyledButton>
 	)
 }

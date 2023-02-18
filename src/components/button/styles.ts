@@ -1,8 +1,8 @@
 import { Button, styled } from '@mui/material'
-import { BT_PRIMARY_ORANGE, BT_SECONDARY, ButtonVariations } from '.'
+import { ButtonProps } from '.'
 
 type PrimaryButtonProps = {
-	buttonstyle: ButtonVariations
+	buttonstyle: ButtonProps['buttonStyle']
 }
 
 export const StyledButton = styled(Button)<PrimaryButtonProps>`
@@ -18,7 +18,7 @@ export const StyledButton = styled(Button)<PrimaryButtonProps>`
 	margin-top: 10px;
 
 	:hover {
-		background: #072788;
+		background: #183caa;
 	}
 
 	:active {
@@ -26,7 +26,7 @@ export const StyledButton = styled(Button)<PrimaryButtonProps>`
 	}
 
 	${({ buttonstyle: buttonStyle }) => {
-		if (buttonStyle === BT_SECONDARY) {
+		if (buttonStyle === 'secondary') {
 			return `
 						background: #FFFFFF;
 						color: #1F4CD5;
@@ -40,17 +40,35 @@ export const StyledButton = styled(Button)<PrimaryButtonProps>`
 						}
 					`
 		}
-		if (buttonStyle === BT_PRIMARY_ORANGE) {
+		if (buttonStyle === 'primary-orange') {
 			return `
 				background: #FF991C;
 				color: #FFFFFF;
 
 				:hover {
-					background: #FF991C;
+					background: #e27c00;
 				}
 
 				:active {
 					background: #FF991C;
+				}
+			`
+		}
+		if (buttonStyle === 'excel') {
+			return `
+				background: #1D7044;
+				color: #FFFFFF;
+
+				:hover {
+					background: #175936;
+				}
+
+				:active {
+					background: #1D7044;
+				}
+
+				img {
+					margin-left: 6px;
 				}
 			`
 		}
