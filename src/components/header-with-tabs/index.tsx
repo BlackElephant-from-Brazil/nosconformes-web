@@ -5,6 +5,7 @@ export type Tab = {
 	title: string
 	link: string
 	element: JSX.Element
+	hidden?: boolean
 }
 
 type HeaderWithTabsProps = {
@@ -30,16 +31,19 @@ export const HeaderWithTabs: React.FC<HeaderWithTabsProps> = ({
 					<h1>{title}</h1>
 				</div>
 				<Tabs>
-					{tabs.map(({ link, title: tabTitle }) => (
-						<li
-							onClick={() => openTab(link)}
-							key={tabTitle}
-							className={link === active ? 'active' : ''}
-							role="presentation"
-						>
-							<p>{tabTitle}</p>
-						</li>
-					))}
+					{tabs.map(({ link, title: tabTitle, hidden }) => {
+						if (hidden) return null
+						return (
+							<li
+								onClick={() => openTab(link)}
+								key={tabTitle}
+								className={link === active ? 'active' : ''}
+								role="presentation"
+							>
+								<p>{tabTitle}</p>
+							</li>
+						)
+					})}
 				</Tabs>
 			</div>
 		</Container>

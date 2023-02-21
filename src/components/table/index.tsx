@@ -9,7 +9,7 @@ type TableProps = {
 	headerTitles: string[]
 	tableRows: JSX.Element[]
 	pagination?: boolean
-	className: string
+	className?: string
 }
 
 export const Table: React.FC<TableProps> = ({

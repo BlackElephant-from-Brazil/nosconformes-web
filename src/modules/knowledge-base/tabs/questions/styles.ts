@@ -6,7 +6,7 @@ export const Container = styled.div`
 	width: 100%;
 	height: 100%;
 
-	.users-list-utilities {
+	.questions-list-utilities {
 		display: flex;
 
 		.search-input {
@@ -26,6 +26,27 @@ export const Container = styled.div`
 
 	.table-questions {
 		margin-top: 24px;
+		table-layout: fixed;
+
+		p.table-text {
+			font-family: 'Inter';
+			font-weight: 700;
+			font-size: 14px;
+			color: #0f141e;
+		}
+
+		th:nth-child(2),
+		th:nth-child(4),
+		th:nth-child(5) {
+			width: 25%;
+		}
+
+		.protect {
+			background: #c7faae;
+			p {
+				color: #69b345;
+			}
+		}
 	}
 `
 

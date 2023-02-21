@@ -3,8 +3,9 @@ import CommentBankIcon from '@mui/icons-material/CommentBank'
 import { Body } from 'components/body'
 import { HeaderWithTabs, Tab } from '../../components/header-with-tabs'
 import { Container } from './styles'
-import { Questionaries } from './tabs/Questionaries'
 import { Questions } from './tabs/questions'
+import { Questionaries } from './tabs/questionaries'
+import { NewQuestionary } from './tabs/questionaries/pages/new-questionary'
 
 const tabs: Tab[] = [
 	{
@@ -15,7 +16,13 @@ const tabs: Tab[] = [
 	{
 		title: 'Questionários',
 		link: '/questionarios',
-		element: <Questionaries />,
+		element: <Questionaries openTab={() => null} />,
+	},
+	{
+		title: 'Questionários',
+		link: '/novo-questionario',
+		element: <NewQuestionary />,
+		hidden: true,
 	},
 ]
 
@@ -26,9 +33,12 @@ export const KnowledgeBase: React.FC = () => {
 		setTabActive(link)
 	}
 
-	const renderBody = () => {
+	const renderBody = (openTab: (link: string) => void) => {
 		for (let count = 0; count <= tabs.length; count += 1) {
 			if (tabs[count].link === tabActive) {
+				if (tabs[count].link === '/questionarios') {
+					return <Questionaries openTab={openTab} />
+				}
 				return tabs[count].element
 			}
 		}
@@ -44,7 +54,7 @@ export const KnowledgeBase: React.FC = () => {
 				active={tabActive}
 				openTab={handleOpenTab}
 			/>
-			<Body>{renderBody()}</Body>
+			<Body>{renderBody(handleOpenTab)}</Body>
 		</Container>
 	)
 }

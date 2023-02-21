@@ -10,6 +10,9 @@ import { Table } from 'components/table'
 import { Question } from 'interfaces/question.type'
 import { RightDrawer } from 'components/right-drawer'
 import CloseIcon from '@mui/icons-material/Close'
+import { Chip } from 'components/chip'
+import { capitalizeFirstLetter } from 'utils/captalize-firs-letter'
+import { Menu, MenuItem } from '@mui/material'
 import { AddNewQuestionContainer, Container } from './styles'
 import { FormQuestion } from './components/form-question'
 
@@ -22,6 +25,19 @@ export const Questions: React.FC = () => {
 	const [editableQuestion, setEditableQuestion] = useState<Question>(
 		{} as Question,
 	)
+	const [anchorEl, setAnchorEl] = useState(null)
+	const [mousePosition, setMousePosition] = useState({ x: null, y: null })
+
+	const handleContextMenu = (event: any) => {
+		event.preventDefault()
+		setAnchorEl(event.currentTarget)
+		setMousePosition({ x: event.clientX, y: event.clientY })
+	}
+
+	const handleClose = () => {
+		setMousePosition({ x: null, y: null })
+		setAnchorEl(null)
+	}
 
 	useEffect(() => {
 		// eslint-disable-next-line prettier/prettier
@@ -49,22 +65,28 @@ export const Questions: React.FC = () => {
 				<tr
 					key={question._eq}
 					onClick={() => handleOpenEditQuestion(question._eq)}
-					className="user-table-row"
+					className="question-table-row"
 				>
 					<td>
-						<p>{question.id}</p>
+						<p className="table-text">{question.id}</p>
 					</td>
 					<td>
-						<p>{question.question}</p>
+						<p className="table-text">{question.question}</p>
 					</td>
 					<td>
-						<p>{question.funcs}</p>
+						{question.funcs.map(func => (
+							<Chip className={func} info={capitalizeFirstLetter(func)} />
+						))}
 					</td>
 					<td>
-						<p>{question.tags[0].text}</p>
+						<Chip info="Uma tag bem complexa" />
+						<Chip info="Uma tag bem complexa e muito grande também que precisaria ser quebrada" />
+						{/* <p>{question.tags[0].text}</p> */}
 					</td>
 					<td>
-						<p>{question.references[0].text}</p>
+						<Chip info="Uma referência bem complexa" />
+						<Chip info="Uma referência bem complexa e muito grande também que precisaria ser quebrada" />
+						{/* <p>{question.references[0]?.text}</p> */}
 					</td>
 				</tr>
 			)
@@ -77,16 +99,16 @@ export const Questions: React.FC = () => {
 			formSearchInputRef.current?.getFieldValue('searchQuestion')
 
 		try {
-			const { data: findUsers } = await api.get(
+			const { data: findQuestions } = await api.get(
 				`/questions?query=${searchInputValue}`,
 			)
-			setQuestions(findUsers)
+			setQuestions(findQuestions)
 		} catch (err) {
 			handleApiError(err)
 		}
 	}
 
-	const handleCreateNewUserButtonClick = () => {
+	const handleCreateNewQuestionButtonClick = () => {
 		setEditableQuestion({} as Question)
 		toggleDrawer()
 	}
@@ -96,12 +118,12 @@ export const Questions: React.FC = () => {
 	}
 
 	return (
-		<Container>
-			<div className="users-list-utilities">
+		<Container onContextMenu={handleContextMenu}>
+			<div className="questions-list-utilities">
 				<Form onSubmit={e => e.preventDefault()} ref={formSearchInputRef}>
 					<Input
 						name="searchQuestion"
-						placeholder="Pesquise por nome, email ou cargo"
+						placeholder="Pesquise por pergunta, função, tag, agrupamento ou referência"
 						endAdornmentIcon={<SearchRoundedIcon />}
 						className="search-input"
 						onChange={handleSearchInputChange}
@@ -117,7 +139,7 @@ export const Questions: React.FC = () => {
 					buttonStyle="primary"
 					text="Cadastrar pergunta +"
 					className="new-question-button"
-					onClick={handleCreateNewUserButtonClick}
+					onClick={handleCreateNewQuestionButtonClick}
 				/>
 			</div>
 			<Table
@@ -131,6 +153,21 @@ export const Questions: React.FC = () => {
 					<FormQuestion />
 				</AddNewQuestionContainer>
 			</RightDrawer>
+			<Menu
+				anchorEl={anchorEl}
+				open={Boolean(anchorEl)}
+				onClose={handleClose}
+				anchorReference="anchorPosition"
+				anchorPosition={
+					mousePosition.y !== null && mousePosition.x !== null
+						? { top: mousePosition.y, left: mousePosition.x }
+						: undefined
+				}
+			>
+				<MenuItem onClick={handleClose}>Opção 1</MenuItem>
+				<MenuItem onClick={handleClose}>Opção 2</MenuItem>
+				<MenuItem onClick={handleClose}>Opção 3</MenuItem>
+			</Menu>
 		</Container>
 	)
 }
