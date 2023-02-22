@@ -46,7 +46,7 @@ const AddFirstCompany: React.FC = () => {
 								</p>
 							</div>
 							<Button
-								buttonStyle="primary"
+								variant="primary"
 								text="Cadastrar primeira empresa ->"
 								className="bt-add-first-company"
 								onClick={handleAddFirstCompanyButtonClicked}

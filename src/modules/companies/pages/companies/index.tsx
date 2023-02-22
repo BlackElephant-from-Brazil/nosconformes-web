@@ -113,7 +113,7 @@ export const Companies: React.FC = () => {
 							/>
 						</Form>
 						<Button
-							buttonStyle="primary"
+							variant="primary"
 							text="Criar nova empresa +"
 							className="new-company-button"
 							onClick={handleAddNewCompany}

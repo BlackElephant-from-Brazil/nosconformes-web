@@ -28,6 +28,10 @@ export const Container = styled.div`
 		margin-top: 24px;
 		table-layout: fixed;
 
+		tr {
+			cursor: pointer;
+		}
+
 		p.table-text {
 			font-family: 'Inter';
 			font-weight: 700;
@@ -76,5 +80,34 @@ export const AddNewQuestionContainer = styled.div`
 		width: 50px;
 		height: 50px;
 		cursor: pointer;
+	}
+`
+
+export const DialogBody = styled.div`
+	width: 500px;
+	padding: 32px;
+
+	.close-dialog-icon {
+		position: absolute;
+		left: 26px;
+		top: 26px;
+		width: 22px;
+		height: 22px;
+		cursor: pointer;
+	}
+
+	.dialog-confirmation-text {
+		display: flex;
+		flex-direction: row;
+		margin-top: 40px;
+		margin-bottom: 34px;
+		align-items: center;
+
+		h2 {
+			font-family: 'Inter';
+			font-weight: 700;
+			font-size: 20px;
+			color: #0f141e;
+		}
 	}
 `

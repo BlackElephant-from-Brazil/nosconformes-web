@@ -16,7 +16,8 @@ import { Menu, MenuItem } from '@mui/material'
 import { enqueueSnackbar } from 'notistack'
 import { Checkbox } from 'components/checkbox/input'
 import { ContextMenu } from 'components/context-menu'
-import { AddNewQuestionContainer, Container } from './styles'
+import { Dialog } from 'components/dialog'
+import { AddNewQuestionContainer, Container, DialogBody } from './styles'
 import { FormQuestion } from './components/form-question'
 
 const tableTitles = ['ID', 'Pergunta', 'Função', 'Tag', 'Referência']
@@ -32,6 +33,7 @@ export const Questions: React.FC = () => {
 	const inputFileRef = useRef<HTMLInputElement>(null)
 	const [selectedQuestions, setSelectedQuestions] = useState<string[]>([])
 	const [anchorEl, setAnchorEl] = useState(null)
+	const [dialogOpen, setDialogOpen] = useState(false)
 
 	const handleContextMenu = (event: any) => {
 		event.preventDefault()
@@ -182,17 +184,8 @@ export const Questions: React.FC = () => {
 		setSelectedQuestions([])
 	}
 
-	const handleDeleteQuesitons = async () => {
-		try {
-			await api.delete('/questions', {
-				data: { questions: selectedQuestions },
-			})
-		} catch (err) {
-			handleApiError(err)
-			return
-		}
-		enqueueSnackbar('Perguntas deletadas com sucesso!', { variant: 'success' })
-		setSelectedQuestions([])
+	const toggleDialog = () => {
+		setDialogOpen(!dialogOpen)
 	}
 
 	const reloadTable = async () => {
@@ -202,6 +195,22 @@ export const Questions: React.FC = () => {
 		} catch (error) {
 			handleApiError(error)
 		}
+	}
+
+	const handleDeleteQuesitons = async () => {
+		try {
+			await api.delete('/questions', {
+				data: { questions: selectedQuestions },
+			})
+		} catch (err) {
+			handleApiError(err)
+			return
+		}
+		reloadTable()
+		setDialogOpen(false)
+		setAnchorEl(null)
+		enqueueSnackbar('Perguntas deletadas com sucesso!', { variant: 'success' })
+		setSelectedQuestions([])
 	}
 
 	return (
@@ -217,7 +226,7 @@ export const Questions: React.FC = () => {
 					/>
 				</Form>
 				<Button
-					buttonStyle="excel"
+					variant="excel"
 					text="Importar excel"
 					className="excel-button"
 					onClick={handleImportExcelButtonClick}
@@ -230,7 +239,7 @@ export const Questions: React.FC = () => {
 					accept=".xlsx"
 				/>
 				<Button
-					buttonStyle="primary"
+					variant="primary"
 					text="Cadastrar pergunta +"
 					className="new-question-button"
 					onClick={handleCreateNewQuestionButtonClick}
@@ -259,10 +268,31 @@ export const Questions: React.FC = () => {
 				mousePosition={mousePosition}
 			>
 				<MenuItem onClick={handleClose}>Mover para o agrupamento</MenuItem>
-				<MenuItem onClick={handleDeleteQuesitons} className="danger">
+				<MenuItem onClick={toggleDialog} className="danger">
 					Remover pergunta
 				</MenuItem>
 			</ContextMenu>
+			<Dialog
+				open={dialogOpen}
+				toggleOpen={toggleDialog}
+				variant="bottom_right"
+			>
+				<DialogBody>
+					<CloseIcon
+						className="close-dialog-icon"
+						onClick={toggleDialog}
+						data-testid="close-button"
+					/>
+					<div className="dialog-confirmation-text">
+						<h2>Tem certeza que deseja excluir as perguntas selecionadas?</h2>
+					</div>
+					<Button
+						text="Excluir"
+						onClick={handleDeleteQuesitons}
+						variant="danger"
+					/>
+				</DialogBody>
+			</Dialog>
 		</Container>
 	)
 }

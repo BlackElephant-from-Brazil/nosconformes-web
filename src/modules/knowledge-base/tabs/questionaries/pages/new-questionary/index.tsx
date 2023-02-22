@@ -51,7 +51,7 @@ export const NewQuestionary: React.FC = () => {
 				<div className="questionary-buttons">
 					<Button
 						text="Auditores"
-						buttonStyle="primary-orange"
+						variant="primary-orange"
 						icon={<PeopleAltIcon />}
 						className="auditors-button"
 						onClick={toggleAuditorsDialogOpen}
@@ -59,7 +59,7 @@ export const NewQuestionary: React.FC = () => {
 					<Button
 						text="Compartilhar"
 						icon={<LockIcon />}
-						buttonStyle="primary"
+						variant="primary"
 						className="share-button"
 					/>
 				</div>
@@ -78,7 +78,7 @@ export const NewQuestionary: React.FC = () => {
 					/>
 				</Form>
 				<Button
-					buttonStyle="secondary"
+					variant="secondary"
 					text="Adicionar agrupamento +"
 					className="new-grouping-button"
 					onClick={handleCreateNewGroupingButtonClick}

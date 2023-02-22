@@ -48,7 +48,7 @@ export const Questionaries: React.FC<QuestionariesProps> = ({ openTab }) => {
 					/>
 				</Form>
 				<Button
-					buttonStyle="primary"
+					variant="primary"
 					text="Cadastrar novo questionário +"
 					className="new-questionary-button"
 					onClick={handleCreateNewQuestionaryButtonClick}

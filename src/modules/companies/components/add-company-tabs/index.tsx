@@ -273,7 +273,7 @@ export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({
 						/>
 						<Button
 							text="Próximo"
-							buttonStyle="primary"
+							variant="primary"
 							onClick={handleButtonNextClick}
 						/>
 					</Scope>
@@ -319,13 +319,13 @@ export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({
 						<div className="form-manager-button-container">
 							<Button
 								text="Pular etapa"
-								buttonStyle="secondary"
+								variant="secondary"
 								onClick={handleSubmitWithoutManagerData}
 								className="jump-buttom"
 							/>
 							<Button
 								text="Cadastrar empresa"
-								buttonStyle="primary"
+								variant="primary"
 								type="submit"
 							/>
 						</div>

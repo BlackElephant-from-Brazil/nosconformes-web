@@ -362,7 +362,7 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 						<div className="button-field">
 							<Button
 								text="Adicionar botão de anexo +"
-								buttonStyle="secondary"
+								variant="secondary"
 								className="bt-add-input-field"
 								onClick={handleAddNewAccordingAttachmentButtonClick}
 							/>
@@ -405,7 +405,7 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 						<div className="button-field">
 							<Button
 								text="Adicionar botão de anexo +"
-								buttonStyle="secondary"
+								variant="secondary"
 								className="bt-add-input-field"
 								onClick={handleAddNewPartialAccordingAttachmentButtonClick}
 							/>
@@ -416,9 +416,8 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 									`partialAccordingButtons${index}`,
 									buttonText,
 								)
-								// const partialAccordingKey = generateRandomCode()
 								return (
-									<div className="input-attachment-field" key={buttonText}>
+									<div className="input-attachment-field">
 										<Input
 											initialValue={buttonText}
 											placeholder="Escreva o texto que aparecerá no botão de anexo"
@@ -455,7 +454,7 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 
 				<div className="button-group-form-question">
 					<Button
-						buttonStyle="primary"
+						variant="primary"
 						text="Cadastrar pergunta"
 						type="submit"
 						className="button-submit-question"

@@ -138,7 +138,7 @@ export const UserForm: React.FC<UserFormProps> = ({
 				/>
 				<Input type="hidden" name="accessLevel" />
 				<Alert text={displayErrors} type="error" />
-				<Button buttonStyle="primary" text="Salvar" type="submit" />
+				<Button variant="primary" text="Salvar" type="submit" />
 			</Form>
 		</Container>
 	)

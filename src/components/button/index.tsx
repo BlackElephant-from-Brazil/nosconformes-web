@@ -4,7 +4,7 @@ import { StyledButton } from './styles'
 
 export type ButtonProps = {
 	text: string
-	buttonStyle: 'primary' | 'secondary' | 'primary-orange' | 'excel'
+	variant: 'primary' | 'secondary' | 'primary-orange' | 'excel' | 'danger'
 	onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void
 	className?: string
 	icon?: JSX.Element
@@ -14,7 +14,7 @@ export type ButtonProps = {
 
 const Button: React.FC<ButtonProps> = ({
 	text,
-	buttonStyle,
+	variant,
 	onClick,
 	className,
 	icon,
@@ -31,11 +31,11 @@ const Button: React.FC<ButtonProps> = ({
 				onClick?.(e)
 			}}
 			className={className}
-			buttonstyle={buttonStyle}
+			buttonstyle={variant}
 			endIcon={icon || null}
 		>
 			{text}
-			{buttonStyle === 'excel' && <img src={excelIcon} alt="Ícone do excel" />}
+			{variant === 'excel' && <img src={excelIcon} alt="Ícone do excel" />}
 		</StyledButton>
 	)
 }

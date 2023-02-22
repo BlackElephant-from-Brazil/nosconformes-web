@@ -2,7 +2,7 @@ import { Button, styled } from '@mui/material'
 import { ButtonProps } from '.'
 
 type PrimaryButtonProps = {
-	buttonstyle: ButtonProps['buttonStyle']
+	buttonstyle: ButtonProps['variant']
 }
 
 export const StyledButton = styled(Button)<PrimaryButtonProps>`
@@ -65,6 +65,25 @@ export const StyledButton = styled(Button)<PrimaryButtonProps>`
 
 				:active {
 					background: #1D7044;
+				}
+
+				img {
+					margin-left: 6px;
+				}
+			`
+		}
+
+		if (buttonStyle === 'danger') {
+			return `
+				background: #FF2163;
+				color: #FFFFFF;
+
+				:hover {
+					background: #e60044;
+				}
+
+				:active {
+					background: #FF2163;
 				}
 
 				img {

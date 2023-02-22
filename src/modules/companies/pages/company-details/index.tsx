@@ -316,7 +316,7 @@ export const CompanyDetails: React.FC = () => {
 			<Body data-testid="company-details-body">
 				<Button
 					text="Auditores"
-					buttonStyle="primary-orange"
+					variant="primary-orange"
 					icon={<PeopleAltIcon />}
 					className="auditors-button"
 					onClick={toggleAuditorsDialogOpen}
@@ -375,7 +375,7 @@ export const CompanyDetails: React.FC = () => {
 									/>
 									<Button
 										text="Salvar alterações"
-										buttonStyle="primary"
+										variant="primary"
 										type="submit"
 									/>
 								</Form>
@@ -407,7 +407,7 @@ export const CompanyDetails: React.FC = () => {
 								/>
 								<Button
 									text="Salvar alterações"
-									buttonStyle="primary"
+									variant="primary"
 									type="submit"
 								/>
 							</Form>
@@ -499,7 +499,7 @@ export const CompanyDetails: React.FC = () => {
 								)
 							})}
 							<Button
-								buttonStyle="primary"
+								variant="primary"
 								text="Concluído"
 								className="bt-auditors-finished"
 								onClick={handleChangeAuditorsSave}

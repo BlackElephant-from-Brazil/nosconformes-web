@@ -93,13 +93,13 @@ export const GroupingAccordion: React.FC = () => {
 				/>
 				<div className="accordion-buttons">
 					<Button
-						buttonStyle="secondary"
+						variant="secondary"
 						text="Adicionar perguntas +"
 						className="button-add"
 						onClick={handleButtonAddClick}
 					/>
 					<Button
-						buttonStyle="secondary"
+						variant="secondary"
 						text="Excluir agrupamento x"
 						className="button-delete"
 						onClick={handleButtonDeleteClick}

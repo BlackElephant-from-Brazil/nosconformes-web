@@ -124,7 +124,7 @@ export const Users: React.FC = () => {
 					/>
 				</Form>
 				<Button
-					buttonStyle="primary"
+					variant="primary"
 					text="Criar novo usuário +"
 					className="new-user-button"
 					onClick={handleCreateNewUserButtonClick}
