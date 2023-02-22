@@ -1,5 +1,5 @@
 import { Form } from '@unform/web'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import FileCopyIcon from '@mui/icons-material/FileCopy'
 import { Input } from 'components/input'
 import { FormHandles, SubmitHandler } from '@unform/core'
@@ -8,6 +8,14 @@ import { Question } from 'interfaces/question.type'
 import { Button } from 'components/button'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { Switch } from 'components/switch'
+import { Alert } from 'components/alert'
+import { handleYupErrors } from 'utils/handle-yup-errors'
+import * as Yup from 'yup'
+import { api } from 'api'
+import { enqueueSnackbar } from 'notistack'
+import { handleApiError } from 'utils/handle-api-error'
+import { isObjectEmpty } from 'utils/is-object-empty'
+import { generateRandomCode } from 'utils/generate-random-code'
 import { AnswerGroup, Container } from './styles'
 
 type QuestionForm = {
@@ -78,7 +86,17 @@ const availableReferences: Reference[] = [
 	},
 ]
 
-export const FormQuestion: React.FC = () => {
+type FormQuestionProps = {
+	toggleDrawer: () => void
+	reloadTable: () => void
+	question?: Question
+}
+
+export const FormQuestion: React.FC<FormQuestionProps> = ({
+	reloadTable,
+	toggleDrawer,
+	question,
+}) => {
 	const [selectedFuncs, setSelectedFuncs] = React.useState<Func[]>([])
 	const [selectedGoupings, setSelectedGroupings] = React.useState<Grouping[]>(
 		[],
@@ -92,10 +110,63 @@ export const FormQuestion: React.FC = () => {
 		string[]
 	>([])
 	const formRef = React.useRef<FormHandles>(null)
+	const [displayErrors, setDisplayErrors] = useState('')
+	const [errorFuncs, setErrorFuncs] = useState(false)
+	const [errorTags, setErrorTags] = useState(false)
+	const [errorReferences, setErrorReferences] = useState(false)
 
-	const handleFormQuestionSubmit: SubmitHandler<QuestionForm> = data => {
-		const createdQuestion = {
-			id: 'NC QQCOISA',
+	useEffect(() => {
+		if (question && !isObjectEmpty(question)) {
+			// setSelectedFuncs(
+			// 	question.funcs.map(func => {
+			// 		const funcData = availableFuncs.find(
+			// 			availableFunc => availableFunc.name === func,
+			// 		)
+			// 		return funcData
+			// 	}),
+			// )
+			// setSelectedGroupings(
+			// 	question.groupings.map(grouping => {
+			// 		const groupingData = availableGroupings.find(
+			// 			availableGrouping => availableGrouping._eq === grouping,
+			// 		)
+			// 		return groupingData
+			// 	}),
+			// )
+			// setSelectedTags(
+			// 	question.tags.map(tag => {
+			// 		const tagData = availableTags.find(
+			// 			availableTag => availableTag._eq === tag,
+			// 		)
+			// 		return tagData
+			// 	}),
+			// )
+			// setSelectedReferences(
+			// 	question.references.map(reference => {
+			// 		const referenceData = availableReferences.find(
+			// 			availableReference => availableReference._eq === reference,
+			// 		)
+			// 		return referenceData
+			// 	}),
+			// )
+			formRef.current?.setData({
+				question: question.question,
+				threat: question.threat,
+				recommendation: question.recommendation,
+				description: question.description,
+			})
+			setAccordingButtons(question.accordingButtons)
+			setPartialAccordingButtons(question.partialAccordingButtons)
+		}
+	}, [question])
+
+	const handleFormQuestionSubmit: SubmitHandler<QuestionForm> = async data => {
+		setDisplayErrors('')
+		setErrorFuncs(false)
+		setErrorReferences(false)
+		setErrorTags(false)
+		const questionData = {
+			id: 'NC QQCOISA22',
 			question: data.question,
 			funcs: [...selectedFuncs.map(func => func.name)],
 			groupings: [...selectedGoupings.map(grouping => grouping._eq)],
@@ -108,9 +179,65 @@ export const FormQuestion: React.FC = () => {
 			partialAccordingButtons: [...partialAccordingButtons],
 		}
 
-		// TODO: CREATE VALIDATION IN THIS DATA
+		try {
+			const schema = Yup.object().shape({
+				question: Yup.string().required(
+					'A pergunta precisa estar preenchida. ',
+				),
+				funcs: Yup.array().min(1, 'Escolha pelo menos uma função. '),
+				tags: Yup.array().min(1, 'Escolha pelo menos uma tag. '),
+				references: Yup.array().min(1, 'Escolha pelo menos uma referência. '),
+				threat: Yup.string().required('Preencha o campo de ameaça. '),
+				recommendation: Yup.string().required(
+					'Preencha o campo de recomendação. ',
+				),
+				description: Yup.string().required('Preencha o campo de descrição. '),
 
-		console.log(createdQuestion)
+				accordingButtons: Yup.array().min(
+					1,
+					'Adicione pelo menos um botão anexo de conformidade. ',
+				),
+
+				partialAccordingButtons: Yup.array().min(
+					1,
+					'Adicione pelo menos um botão anexo de conformidade parcial. ',
+				),
+			})
+
+			console.log(questionData)
+
+			await schema.validate(questionData, {
+				abortEarly: false,
+			})
+		} catch (err) {
+			const validationErrors = handleYupErrors(err, formRef, setDisplayErrors)
+			setErrorFuncs(!!validationErrors?.funcs)
+			setErrorReferences(!!validationErrors?.references)
+			setErrorTags(!!validationErrors?.tags)
+			return
+		}
+
+		try {
+			if (question) {
+				await api.put(`/questions/${question._eq}`, {
+					...questionData,
+				})
+				enqueueSnackbar('Pergunta atualizada com sucesso', {
+					variant: 'success',
+				})
+			} else {
+				await api.post('/questions', {
+					...questionData,
+				})
+				enqueueSnackbar('Pergunta cadastrada com sucesso!', {
+					variant: 'success',
+				})
+			}
+			reloadTable()
+			toggleDrawer()
+		} catch (err) {
+			handleApiError(err)
+		}
 	}
 
 	const handleAddNewAccordingAttachmentButtonClick = () => {
@@ -175,6 +302,7 @@ export const FormQuestion: React.FC = () => {
 				<div className="form-autocomplete">
 					<h3>Função</h3>
 					<Autocomplete
+						error={errorFuncs}
 						handleChange={(_, funcs: any) => setSelectedFuncs(funcs as Func[])}
 						options={availableFuncs}
 						selectedValues={selectedFuncs}
@@ -182,7 +310,9 @@ export const FormQuestion: React.FC = () => {
 					/>
 				</div>
 				<div className="form-autocomplete">
-					<h3>Agrupamento</h3>
+					<h3>
+						Agrupamento <span>(Opcional)</span>
+					</h3>
 					<Autocomplete
 						handleChange={(_, groupings: any) =>
 							setSelectedGroupings(groupings as Grouping[])
@@ -195,6 +325,7 @@ export const FormQuestion: React.FC = () => {
 				<div className="form-autocomplete">
 					<h3>Tag</h3>
 					<Autocomplete
+						error={errorTags}
 						handleChange={(_, tags: any) => setSelectedTags(tags as Tag[])}
 						options={availableTags}
 						selectedValues={selectedTags}
@@ -204,6 +335,7 @@ export const FormQuestion: React.FC = () => {
 				<div className="form-autocomplete">
 					<h3>Referência</h3>
 					<Autocomplete
+						error={errorReferences}
 						handleChange={(_, references: any) =>
 							setSelectedReferences(references as Reference[])
 						}
@@ -244,6 +376,7 @@ export const FormQuestion: React.FC = () => {
 								return (
 									<div className="input-attachment-field">
 										<Input
+											initialValue={buttonText}
 											placeholder="Escreva o texto que aparecerá no botão de anexo"
 											name={`accordingButton${index}`}
 											className="input-attachment"
@@ -283,9 +416,11 @@ export const FormQuestion: React.FC = () => {
 									`partialAccordingButtons${index}`,
 									buttonText,
 								)
+								// const partialAccordingKey = generateRandomCode()
 								return (
-									<div className="input-attachment-field">
+									<div className="input-attachment-field" key={buttonText}>
 										<Input
+											initialValue={buttonText}
 											placeholder="Escreva o texto que aparecerá no botão de anexo"
 											name={`partialAccordingButtons${index}`}
 											className="input-attachment"
@@ -316,6 +451,7 @@ export const FormQuestion: React.FC = () => {
 						</div>
 					</div>
 				</AnswerGroup>
+				<Alert text={displayErrors} type="error" />
 
 				<div className="button-group-form-question">
 					<Button

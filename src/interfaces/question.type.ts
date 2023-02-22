@@ -10,14 +10,6 @@ type Reference = {
 	_eq: string
 	text: string
 }
-type AccordingButton = {
-	_eq: string
-	text: string
-}
-type PartialAccordingButton = {
-	_eq: string
-	text: string
-}
 
 export type Question = {
 	_eq: string
@@ -30,6 +22,6 @@ export type Question = {
 	threat: string
 	recommendation: string
 	description: string
-	accordingButtons: AccordingButton[]
-	partialAccordingButtons: PartialAccordingButton[]
+	accordingButtons: string[]
+	partialAccordingButtons: string[]
 }

@@ -35,9 +35,13 @@ export const Container = styled.div`
 			color: #0f141e;
 		}
 
-		th:nth-child(2),
-		th:nth-child(4),
-		th:nth-child(5) {
+		th:nth-child(1) {
+			width: 50px;
+		}
+
+		th:nth-child(3),
+		th:nth-child(5),
+		th:nth-child(6) {
 			width: 25%;
 		}
 
@@ -47,6 +51,17 @@ export const Container = styled.div`
 				color: #69b345;
 			}
 		}
+
+		.active {
+			background: #d6e4ff;
+		}
+		.unactive {
+			background: #ffffff;
+		}
+	}
+
+	li.delete-question {
+		color: #ff2163;
 	}
 `
 

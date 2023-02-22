@@ -12,6 +12,7 @@ type AutocompleteProps = {
 	renderOption?: (props: any, option: any) => JSX.Element
 	multiple?: boolean
 	disableCloseOnSelect?: boolean
+	error?: boolean
 }
 
 export const Autocomplete: React.FC<AutocompleteProps> = ({
@@ -24,6 +25,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
 	renderOption,
 	multiple = true,
 	disableCloseOnSelect = true,
+	error,
 }) => {
 	const [placeholder, setPlaceholder] = useState(' ')
 	const handleChangeAutocompleteChange = (event: any, values: unknown) => {
@@ -34,6 +36,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
 
 	return (
 		<Container
+			error={error}
 			data-testid={testid}
 			multiple={multiple}
 			options={options}

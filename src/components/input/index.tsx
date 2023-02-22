@@ -17,6 +17,7 @@ type InputProps = {
 	onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 	disabled?: boolean
 	variant?: 'standard' | 'outlined'
+	initialValue?: string
 }
 
 const Input: React.FC<InputProps> = ({
@@ -31,11 +32,20 @@ const Input: React.FC<InputProps> = ({
 	onChange,
 	disabled,
 	variant,
+	initialValue,
 }) => {
 	const [showPassword, setShowPassword] = useState(false)
-	const inputRef = useRef()
+	const inputRef = useRef<HTMLInputElement>(null)
 	const { fieldName, defaultValue, registerField, clearError, error } =
 		useField(name)
+
+	useEffect(() => {
+		if (initialValue != null) {
+			if (inputRef.current) {
+				inputRef.current.value = initialValue
+			}
+		}
+	}, [initialValue, inputRef])
 
 	useEffect(() => {
 		registerField({

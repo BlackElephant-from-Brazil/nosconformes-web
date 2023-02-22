@@ -47,6 +47,11 @@ export const Container = styled.div`
 				font-size: 16px;
 				color: #6d7c99;
 				margin-bottom: 16px;
+
+				span {
+					font-size: 14px;
+					font-weight: 500;
+				}
 			}
 		}
 

@@ -1,6 +1,10 @@
 import { styled, Autocomplete } from '@mui/material'
 
-export const Container = styled(Autocomplete)(props => ({
+type ContainerProps = {
+	error?: boolean
+}
+
+export const Container = styled(Autocomplete)<ContainerProps>(props => ({
 	'& .MuiAutocomplete-inputRoot': {
 		borderRadius: 8,
 		background: '#E9EFF5',
@@ -8,7 +12,7 @@ export const Container = styled(Autocomplete)(props => ({
 		borderColor: '#E9EFF5',
 
 		'& fieldset': {
-			borderColor: '#FFFFFF',
+			borderColor: props.error ? '#d32f2f' : '#FFFFFF',
 		},
 
 		'&:hover fieldset': {
@@ -30,7 +34,7 @@ export const Container = styled(Autocomplete)(props => ({
 	},
 
 	'& label': {
-		color: '#323E57',
+		color: props.error ? '#d32f2f' : '#323E57',
 		fontWeight: 500,
 	},
 	'& label.Mui-focused': {
