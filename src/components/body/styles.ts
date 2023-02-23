@@ -10,6 +10,7 @@ export const Container = styled.div<ContainerProps>`
 	padding-left: 180px;
 	padding-right: 180px;
 	flex: 1;
+	background: ${({ cardContext }) => (cardContext ? '#e9eff5' : '#fff')};
 
 	.wrapper {
 		width: 100%;

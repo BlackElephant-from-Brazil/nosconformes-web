@@ -54,7 +54,9 @@ export const KnowledgeBase: React.FC = () => {
 				active={tabActive}
 				openTab={handleOpenTab}
 			/>
-			<Body>{renderBody(handleOpenTab)}</Body>
+			<Body cardContext={tabActive === '/questionarios'}>
+				{renderBody(handleOpenTab)}
+			</Body>
 		</Container>
 	)
 }

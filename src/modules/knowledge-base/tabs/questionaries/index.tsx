@@ -1,13 +1,16 @@
 import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
 import { Input } from 'components/input'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import { api } from 'api'
 import { Questionary } from 'interfaces/questionary.type'
 import { handleApiError } from 'utils/handle-api-error'
 import { Button } from 'components/button'
-import { Container } from './styles'
+import { handleUserImageError } from 'utils/handle-image-error'
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded'
+import { Container, QuestionaryCard } from './styles'
+import { AuditorsMenu, MenuItem } from './components/auditors-menu'
 
 type QuestionariesProps = {
 	openTab: (link: string, active?: string) => void
@@ -16,6 +19,22 @@ type QuestionariesProps = {
 export const Questionaries: React.FC<QuestionariesProps> = ({ openTab }) => {
 	const formSearchInputRef = React.useRef<FormHandles>(null)
 	const [questionaries, setQuestionaries] = useState<Questionary[]>([])
+	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+	const [auditorsMenuOpen, setAuditorsMenuOpen] = useState(false)
+	const [menuItems, setMenuItems] = useState<MenuItem[]>([])
+
+	useEffect(() => {
+		// eslint-disable-next-line prettier/prettier
+		; (async () => {
+			try {
+				const { data } = await api.get('/questionaries')
+				setQuestionaries(data)
+				console.log(data)
+			} catch (error) {
+				handleApiError(error)
+			}
+		})()
+	}, [])
 
 	const handleSearchInputChange = async () => {
 		const searchInputValue =
@@ -26,6 +45,7 @@ export const Questionaries: React.FC<QuestionariesProps> = ({ openTab }) => {
 				`/questionaries?query=${searchInputValue}`,
 			)
 			setQuestionaries(findQuestionaries)
+			console.log(findQuestionaries)
 		} catch (err) {
 			handleApiError(err)
 		}
@@ -35,12 +55,19 @@ export const Questionaries: React.FC<QuestionariesProps> = ({ openTab }) => {
 		openTab('/novo-questionario', '/questionarios')
 	}
 
+	const toggleAuditorsMenu = (event?: React.MouseEvent<HTMLDivElement>) => {
+		if (auditorsMenuOpen) setAnchorEl(null)
+		else setAnchorEl(event?.currentTarget || null)
+
+		setAuditorsMenuOpen(!auditorsMenuOpen)
+	}
+
 	return (
 		<Container>
 			<div className="questionaries-list-utilities">
 				<Form onSubmit={e => e.preventDefault()} ref={formSearchInputRef}>
 					<Input
-						name="searchQuestion"
+						name="searchQuestionary"
 						placeholder="Pesquise pelo nome do questionário"
 						endAdornmentIcon={<SearchRoundedIcon />}
 						className="search-input"
@@ -53,6 +80,62 @@ export const Questionaries: React.FC<QuestionariesProps> = ({ openTab }) => {
 					className="new-questionary-button"
 					onClick={handleCreateNewQuestionaryButtonClick}
 				/>
+			</div>
+			<div className="questionaries-list">
+				{questionaries.map(questionary => (
+					<QuestionaryCard>
+						<h3>{questionary.name}</h3>
+						<div
+							className="auditors"
+							data-testid="auditors"
+							onClick={e => toggleAuditorsMenu(e)}
+							role="presentation"
+						>
+							{questionary.auditors.length === 0 ? (
+								<p className="no-registered-auditor">
+									Nenhum auditor cadastrado
+								</p>
+							) : (
+								<>
+									<p>Auditores</p>
+									<div className="auditors-photos">
+										{questionary.auditors.map((auditor, i) => {
+											const imageRef = React.createRef<HTMLImageElement>()
+											if (i > 1) return
+											return (
+												<img
+													key={auditor._eq}
+													src={auditor.profilePicture}
+													alt={`Foto do auditor: ${auditor.name}`}
+													ref={imageRef}
+													onError={() => handleUserImageError(imageRef)}
+												/>
+											)
+										})}
+										<AuditorsMenu
+											anchorEl={anchorEl}
+											closeMenu={toggleAuditorsMenu}
+											open={auditorsMenuOpen}
+											menuItems={menuItems}
+											menuId="addNewGroupingButtonMenu"
+										/>
+									</div>
+									<KeyboardArrowDownRoundedIcon />
+								</>
+							)}
+						</div>
+						<div className="clients-list">
+							<p className="clients">Clientes</p>
+							<div className="client">
+								<img
+									src="https://s.yimg.com/ny/api/res/1.2/a19vkjSUoD4hVV0djOpSLw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD02Nzc-/https://s.yimg.com/os/creatr-uploaded-images/2020-07/20e95610-d02d-11ea-9f0c-81042fd4c51a"
+									alt="Logo da empresa"
+								/>
+								<p>Casas Bahia</p>
+							</div>
+						</div>
+					</QuestionaryCard>
+				))}
 			</div>
 		</Container>
 	)
