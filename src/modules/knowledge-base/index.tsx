@@ -1,48 +1,64 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CommentBankIcon from '@mui/icons-material/CommentBank'
 import { Body } from 'components/body'
 import { HeaderWithTabs, Tab } from '../../components/header-with-tabs'
 import { Container } from './styles'
 import { Questions } from './tabs/questions'
 import { Questionaries } from './tabs/questionaries'
-import { NewQuestionary } from './tabs/questionaries/pages/new-questionary'
-
-const tabs: Tab[] = [
-	{
-		title: 'Perguntas',
-		link: '/perguntas',
-		element: <Questions />,
-	},
-	{
-		title: 'Questionários',
-		link: '/questionarios',
-		element: <Questionaries openTab={() => null} />,
-	},
-	{
-		title: 'Questionários',
-		link: '/novo-questionario',
-		element: <NewQuestionary />,
-		hidden: true,
-	},
-]
+import { QuestionaryDetails } from './tabs/questionaries/pages/questionary-details'
 
 export const KnowledgeBase: React.FC = () => {
-	const [tabActive, setTabActive] = useState(tabs[0].link)
+	const [tabs, setTabs] = useState<Tab[]>([])
+	const [tabActive, setTabActive] = useState('/perguntas')
+	const [questionaryId, setQuestionaryId] = useState('')
 
-	const handleOpenTab = (link: string) => {
+	const handleOpenQuestionaryDetails = (
+		link: string,
+		currentQuestionaryId: string,
+	) => {
 		setTabActive(link)
+		setQuestionaryId(currentQuestionaryId)
 	}
 
-	const renderBody = (openTab: (link: string) => void) => {
-		for (let count = 0; count <= tabs.length; count += 1) {
-			if (tabs[count].link === tabActive) {
-				if (tabs[count].link === '/questionarios') {
-					return <Questionaries openTab={openTab} />
+	useEffect(() => {
+		setTabs([
+			{
+				title: 'Perguntas',
+				link: '/perguntas',
+				element: <Questions />,
+			},
+			{
+				title: 'Questionários',
+				link: '/questionarios',
+				element: (
+					<Questionaries
+						openQuestionaryDetails={handleOpenQuestionaryDetails}
+					/>
+				),
+			},
+			{
+				title: 'Questionários',
+				link: '/detalhes-do-questionario',
+				element: <QuestionaryDetails questionaryId={questionaryId} />,
+				hidden: true,
+			},
+		])
+	}, [questionaryId])
+
+	const renderBody = () => {
+		if (tabs.length > 0) {
+			for (let count = 0; count < tabs.length; count += 1) {
+				if (tabs[count].link === tabActive) {
+					return tabs[count].element
 				}
-				return tabs[count].element
 			}
 		}
+
 		return null
+	}
+
+	const openTab = (link: string) => {
+		setTabActive(link)
 	}
 
 	return (
@@ -52,11 +68,9 @@ export const KnowledgeBase: React.FC = () => {
 				title="Base de conhecimento"
 				tabs={tabs}
 				active={tabActive}
-				openTab={handleOpenTab}
+				openTab={openTab}
 			/>
-			<Body cardContext={tabActive === '/questionarios'}>
-				{renderBody(handleOpenTab)}
-			</Body>
+			<Body cardContext={tabActive === '/questionarios'}>{renderBody()}</Body>
 		</Container>
 	)
 }

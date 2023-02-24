@@ -20,10 +20,12 @@ export const Container = styled.div`
 		display: flex;
 		justify-content: space-between;
 		margin-top: 26px;
+		flex-wrap: wrap;
 	}
 `
 
 export const QuestionaryCard = styled.div`
+	margin-bottom: 24px;
 	display: flex;
 	flex-direction: column;
 	background: #fff;
@@ -55,27 +57,31 @@ export const QuestionaryCard = styled.div`
 		}
 
 		.auditors-photos {
-			margin-left: 8px;
-
 			img {
 				width: 50px;
 				height: 50px;
 				border-radius: 50%;
 				object-fit: cover;
 				border: 4px solid #ffffff;
-
-				:first-child {
-					transform: translateX(10px);
-				}
-
-				:last-child {
-					transform: translateX(-50px);
-				}
 			}
 		}
 
-		svg {
-			transform: translateX(-40px);
+		&.multiple {
+			margin-left: 8px;
+			.auditors-photos {
+				img {
+					:nth-child(1) {
+						transform: translateX(10px);
+					}
+
+					:nth-child(2) {
+						transform: translateX(-50px);
+					}
+				}
+			}
+			svg {
+				transform: translateX(-40px);
+			}
 		}
 	}
 

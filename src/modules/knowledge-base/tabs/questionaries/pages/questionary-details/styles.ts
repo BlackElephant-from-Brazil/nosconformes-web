@@ -16,12 +16,29 @@ export const Container = styled.div`
 				color: #6d7c99;
 			}
 
+			form {
+				display: flex;
+				align-items: center;
+				margin-left: 10px;
+
+				input {
+					font-family: 'Inter';
+					font-weight: 700;
+					font-size: 24px;
+				}
+			}
+
 			span {
 				margin-left: 10px;
 				font-family: 'Inter';
 				font-weight: 700;
 				font-size: 30px;
 				color: #0f141e;
+			}
+
+			svg {
+				margin-left: 10px;
+				cursor: pointer;
 			}
 		}
 

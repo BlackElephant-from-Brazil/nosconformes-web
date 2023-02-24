@@ -10,18 +10,19 @@ import { Button } from 'components/button'
 import { handleUserImageError } from 'utils/handle-image-error'
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded'
 import { Container, QuestionaryCard } from './styles'
-import { AuditorsMenu, MenuItem } from './components/auditors-menu'
+import { AuditorsMenu } from './components/auditors-menu'
 
 type QuestionariesProps = {
-	openTab: (link: string, active?: string) => void
+	openQuestionaryDetails: (link: string, questionaryId: string) => void
 }
 
-export const Questionaries: React.FC<QuestionariesProps> = ({ openTab }) => {
+export const Questionaries: React.FC<QuestionariesProps> = ({
+	openQuestionaryDetails,
+}) => {
 	const formSearchInputRef = React.useRef<FormHandles>(null)
 	const [questionaries, setQuestionaries] = useState<Questionary[]>([])
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 	const [auditorsMenuOpen, setAuditorsMenuOpen] = useState(false)
-	const [menuItems, setMenuItems] = useState<MenuItem[]>([])
 
 	useEffect(() => {
 		// eslint-disable-next-line prettier/prettier
@@ -29,7 +30,6 @@ export const Questionaries: React.FC<QuestionariesProps> = ({ openTab }) => {
 			try {
 				const { data } = await api.get('/questionaries')
 				setQuestionaries(data)
-				console.log(data)
 			} catch (error) {
 				handleApiError(error)
 			}
@@ -45,14 +45,20 @@ export const Questionaries: React.FC<QuestionariesProps> = ({ openTab }) => {
 				`/questionaries?query=${searchInputValue}`,
 			)
 			setQuestionaries(findQuestionaries)
-			console.log(findQuestionaries)
 		} catch (err) {
 			handleApiError(err)
 		}
 	}
 
-	const handleCreateNewQuestionaryButtonClick = () => {
-		openTab('/novo-questionario', '/questionarios')
+	const handleCreateNewQuestionaryButtonClick = async () => {
+		let newQuestionaryId = ''
+		try {
+			const { data: newQuestionary } = await api.post('/questionaries')
+			newQuestionaryId = newQuestionary.questionaryId
+		} catch (err) {
+			handleApiError(err)
+		}
+		openQuestionaryDetails('/detalhes-do-questionario', newQuestionaryId)
 	}
 
 	const toggleAuditorsMenu = (event?: React.MouseEvent<HTMLDivElement>) => {
@@ -83,10 +89,19 @@ export const Questionaries: React.FC<QuestionariesProps> = ({ openTab }) => {
 			</div>
 			<div className="questionaries-list">
 				{questionaries.map(questionary => (
-					<QuestionaryCard>
+					<QuestionaryCard
+						onClick={() =>
+							openQuestionaryDetails(
+								'/detalhes-do-questionario',
+								questionary._eq,
+							)
+						}
+					>
 						<h3>{questionary.name}</h3>
 						<div
-							className="auditors"
+							className={`auditors ${
+								questionary.auditors.length >= 2 && 'multiple'
+							}`}
 							data-testid="auditors"
 							onClick={e => toggleAuditorsMenu(e)}
 							role="presentation"
@@ -101,7 +116,7 @@ export const Questionaries: React.FC<QuestionariesProps> = ({ openTab }) => {
 									<div className="auditors-photos">
 										{questionary.auditors.map((auditor, i) => {
 											const imageRef = React.createRef<HTMLImageElement>()
-											if (i > 1) return
+											if (i >= 2) return
 											return (
 												<img
 													key={auditor._eq}
@@ -116,7 +131,7 @@ export const Questionaries: React.FC<QuestionariesProps> = ({ openTab }) => {
 											anchorEl={anchorEl}
 											closeMenu={toggleAuditorsMenu}
 											open={auditorsMenuOpen}
-											menuItems={menuItems}
+											auditors={questionary.auditors}
 											menuId="addNewGroupingButtonMenu"
 										/>
 									</div>

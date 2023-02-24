@@ -9,11 +9,18 @@ import { api } from 'api'
 import { Question } from 'interfaces/question.type'
 import { Chip } from 'components/chip'
 import { capitalizeFirstLetter } from 'utils/captalize-firs-letter'
+import { Grouping } from 'interfaces/grouping.type'
 import { AccordionSummary, Container } from './styles'
 
 const headerTitles = ['ID', 'Pergunta', 'Função', 'Tag', 'Referência']
 
-export const GroupingAccordion: React.FC = () => {
+type GroupingAccordionProps = {
+	grouping: Grouping
+}
+
+export const GroupingAccordion: React.FC<GroupingAccordionProps> = ({
+	grouping,
+}) => {
 	const [groupingQuestions, setGroupingQuestions] = useState<Question[]>([])
 	const [isExpanded, setIsExpanded] = useState(false)
 

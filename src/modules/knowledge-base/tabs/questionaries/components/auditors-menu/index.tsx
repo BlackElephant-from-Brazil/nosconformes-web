@@ -1,48 +1,47 @@
 import React from 'react'
 import { MenuItem } from '@mui/material'
 import { handleUserImageError } from 'utils/handle-image-error'
+import { Auditor } from 'interfaces/auditor.type'
+import { useNavigate } from 'react-router-dom'
 import { Container, MenuItemContainer } from './styles'
-
-export type MenuItem = {
-	avatar: string
-	label: string
-	click: () => void
-	isPrimary?: boolean
-}
 
 type MenuProps = {
 	open: boolean
 	closeMenu: () => void
-	menuItems: MenuItem[]
+	auditors: Auditor[]
 	menuId: string
 	anchorEl: null | HTMLElement
 }
 
 export const AuditorsMenu: React.FC<MenuProps> = ({
-	menuItems,
+	auditors,
 	open,
 	closeMenu,
 	menuId,
 	anchorEl,
 }) => {
+	const navigate = useNavigate()
+	const handleOpenAuditorProfile = (auditorId: string) => {
+		navigate(`/perfil/${auditorId}`)
+	}
 	return (
 		<Container open={open} onClose={closeMenu} id={menuId} anchorEl={anchorEl}>
-			{menuItems.map(menuItem => {
+			{auditors.map(auditor => {
 				const auditorImageMenuRef = React.createRef<HTMLImageElement>()
 				return (
 					<MenuItem
-						key={menuItem.label}
-						onClick={menuItem.click}
-						className={menuItem.isPrimary ? 'primary' : ''}
+						key={auditor.name}
+						onClick={e => handleOpenAuditorProfile(auditor._eq)}
+						// className={menuItem.isPrimary ? 'primary' : ''}
 					>
 						<MenuItemContainer>
 							<img
-								src={menuItem.avatar}
-								alt={`Avatar do auditor: ${menuItem.label}`}
+								src={auditor.profilePicture}
+								alt={`Avatar do auditor: ${auditor.name}`}
 								ref={auditorImageMenuRef}
 								onError={() => handleUserImageError(auditorImageMenuRef)}
 							/>
-							{menuItem.label}
+							{auditor.name}
 						</MenuItemContainer>
 					</MenuItem>
 				)
