@@ -37,6 +37,7 @@ export const QuestionaryCard = styled.div`
 		font-weight: 700;
 		font-size: 20px;
 		color: #0f141e;
+		cursor: pointer;
 	}
 
 	.auditors {

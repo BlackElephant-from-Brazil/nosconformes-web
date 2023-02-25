@@ -21,23 +21,10 @@ type GroupingAccordionProps = {
 export const GroupingAccordion: React.FC<GroupingAccordionProps> = ({
 	grouping,
 }) => {
-	const [groupingQuestions, setGroupingQuestions] = useState<Question[]>([])
 	const [isExpanded, setIsExpanded] = useState(false)
 
-	useEffect(() => {
-		// eslint-disable-next-line prettier/prettier
-		; (async () => {
-			try {
-				const { data } = await api.get('/questions')
-				setGroupingQuestions(data)
-			} catch (error) {
-				handleApiError(error)
-			}
-		})()
-	}, [])
-
 	const renderTableBodyInfo = () => {
-		const renderedTableRow = groupingQuestions.map(question => {
+		const renderedTableRow = grouping.questions.map(question => {
 			return (
 				<tr key={question._eq} className="question-table-row">
 					<td>

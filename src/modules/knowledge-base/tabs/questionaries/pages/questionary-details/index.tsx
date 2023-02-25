@@ -16,6 +16,7 @@ import ClearIcon from '@mui/icons-material/Clear'
 import { Questionary } from 'interfaces/questionary.type'
 import { Container } from './styles'
 import { GroupingAccordion } from './components/grouping-accordion'
+import { AuditorsDialog } from './components/auditors-dialog'
 
 type QuestionaryDetailsProps = {
 	questionaryId: string
@@ -27,7 +28,6 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 	const formSearchInputRef = React.useRef<FormHandles>(null)
 	const formQuestionaryNameRef = React.useRef<FormHandles>(null)
 	const [auditorsDialogOpen, setAuditorsDialogOpen] = useState(false)
-	const [groupings, setGroupings] = useState<Grouping[]>([])
 	const [questionaryNameEditable, setQuestionaryNameEditable] = useState(false)
 	const [newQuestionaryName, setNewQuestionaryName] = useState('')
 	const [questionary, setQuestionary] = useState({} as Questionary)
@@ -38,27 +38,17 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 				const { data: findQuestionary } = await api.get(
 					`/questionaries/${questionaryId}`,
 				)
+
+				console.log('findQuestionary', findQuestionary)
 				setQuestionary(findQuestionary)
 				setNewQuestionaryName(findQuestionary.name)
-				setGroupings(findQuestionary.groupings)
 			} catch (err) {
 				handleApiError(err)
 			}
 		})()
 	}, [questionaryId])
 
-	// useEffect(() => {
-	// 	;(async () => {
-	// 		try {
-	// 			const { data: findGroupings } = await api.get(
-	// 				`/groupings/${questionary._eq}`,
-	// 			)
-	// 			setGroupings(findGroupings)
-	// 		} catch (err) {
-	// 			handleApiError(err)
-	// 		}
-	// 	})()
-	// }, [questionary._eq])
+	if (!questionaryId) return null
 
 	const toggleAuditorsDialogOpen = () => {
 		setAuditorsDialogOpen(!auditorsDialogOpen)
@@ -72,7 +62,7 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 			const { data: findGroupings } = await api.get(
 				`/groupings/${questionary._eq}?query=${searchInputValue}`,
 			)
-			setGroupings(findGroupings)
+			setQuestionary({ ...questionary, groupings: findGroupings })
 		} catch (err) {
 			handleApiError(err)
 		}
@@ -88,7 +78,10 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 			handleApiError(err)
 			return
 		}
-		setGroupings([...groupings, newGrouping])
+		setQuestionary({
+			...questionary,
+			groupings: [...questionary.groupings, newGrouping],
+		})
 	}
 
 	const handleEditQuestionaryNameClick = () => {
@@ -183,10 +176,16 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 				/>
 			</div>
 			<div className="groupings">
-				{groupings.map(grouping => (
+				{questionary.groupings?.map(grouping => (
 					<GroupingAccordion grouping={grouping} />
 				))}
 			</div>
+			<AuditorsDialog
+				open={auditorsDialogOpen}
+				toggleOpen={toggleAuditorsDialogOpen}
+				questionaryId={questionary._eq}
+				currentAuditors={questionary.auditors}
+			/>
 		</Container>
 	)
 }

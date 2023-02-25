@@ -11,6 +11,7 @@ export const KnowledgeBase: React.FC = () => {
 	const [tabs, setTabs] = useState<Tab[]>([])
 	const [tabActive, setTabActive] = useState('/perguntas')
 	const [questionaryId, setQuestionaryId] = useState('')
+	const [loadedBody, setLoadedBody] = useState<JSX.Element | null>(null)
 
 	const handleOpenQuestionaryDetails = (
 		link: string,
@@ -45,17 +46,19 @@ export const KnowledgeBase: React.FC = () => {
 		])
 	}, [questionaryId])
 
-	const renderBody = () => {
-		if (tabs.length > 0) {
-			for (let count = 0; count < tabs.length; count += 1) {
-				if (tabs[count].link === tabActive) {
-					return tabs[count].element
+	useEffect(() => {
+		setLoadedBody(() => {
+			if (tabs.length > 0) {
+				for (let count = 0; count < tabs.length; count += 1) {
+					if (tabs[count].link === tabActive) {
+						return tabs[count].element
+					}
 				}
 			}
-		}
 
-		return null
-	}
+			return null
+		})
+	}, [tabActive, tabs])
 
 	const openTab = (link: string) => {
 		setTabActive(link)
@@ -70,7 +73,7 @@ export const KnowledgeBase: React.FC = () => {
 				active={tabActive}
 				openTab={openTab}
 			/>
-			<Body cardContext={tabActive === '/questionarios'}>{renderBody()}</Body>
+			<Body cardContext={tabActive === '/questionarios'}>{loadedBody}</Body>
 		</Container>
 	)
 }

@@ -14,7 +14,7 @@ import { handleCNPJChange, revertCnpj } from 'utils/handleCNPJChange'
 import * as Yup from 'yup'
 import { handlePhoneChange, revertPhone } from 'utils/handlePhoneChange'
 import { handleApiError } from 'utils/handle-api-error'
-import { Box, TextField } from '@mui/material'
+import { Box } from '@mui/material'
 import { Auditor } from 'interfaces/auditor.type'
 import { isObjectEmpty } from 'utils/is-object-empty'
 import { BackButton } from 'components/back-button'
@@ -22,7 +22,7 @@ import { Autocomplete } from 'components/autocomplete'
 import { handleYupErrors } from 'utils/handle-yup-errors'
 import { handleUserImageError } from 'utils/handle-image-error'
 import { Body } from 'components/body'
-import { AccessLevel } from '../../components/access-level'
+import { AccessLevel } from 'modules/companies/components/access-level'
 import { Dialog } from '../../../../components/dialog'
 import { Input } from '../../../../components/input'
 import { Button } from '../../../../components/button'
@@ -269,7 +269,7 @@ export const CompanyDetails: React.FC = () => {
 	const handleChangeAuditorsSave = async () => {
 		try {
 			const auditorsToSave = [...company.auditors, ...selectedAuditors]
-			await api.put(`/companies/auditors/${companyId}`, {
+			const { data } = await api.put(`/companies/auditors/${companyId}`, {
 				auditors: [...auditorsToSave],
 			})
 			enqueueSnackbar('Auditores atualizados com sucesso!', {
@@ -277,17 +277,9 @@ export const CompanyDetails: React.FC = () => {
 			})
 			setCompany({ ...company, auditors: [...auditorsToSave] })
 			setSelectedAuditors([])
-			setAvailableAuditors(prev => {
-				const newAvailableAuditors = prev.filter(auditor => {
-					const auditorIsSelected = selectedAuditors.find(
-						selectedAuditor => selectedAuditor._eq === auditor._eq,
-					)
-					return !auditorIsSelected
-				})
-				return newAvailableAuditors
-			})
-		} catch (err: any) {
-			enqueueSnackbar(err.response.data.message, { variant: 'error' })
+			setAvailableAuditors(data)
+		} catch (err) {
+			handleApiError(err)
 		}
 		toggleAuditorsDialogOpen()
 	}
@@ -306,7 +298,7 @@ export const CompanyDetails: React.FC = () => {
 			setCompany({ ...company, auditors: [...auditorsToSave] })
 			setAvailableAuditors(response.data)
 		} catch (err: any) {
-			enqueueSnackbar(err.response.data.message, { variant: 'error' })
+			handleApiError(err)
 		}
 	}
 

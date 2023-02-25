@@ -100,7 +100,7 @@ export const Companies: React.FC = () => {
 	return (
 		<Container>
 			<Header icon={<BusinessIcon />} title="Empresas" />
-			<Body>
+			<Body cardContext>
 				<div className="content">
 					<div className="companies-list-utilities">
 						<Form onSubmit={handleSearchSubmit} ref={formSearchInputRef}>

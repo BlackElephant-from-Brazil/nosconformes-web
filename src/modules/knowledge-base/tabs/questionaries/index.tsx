@@ -68,6 +68,11 @@ export const Questionaries: React.FC<QuestionariesProps> = ({
 		setAuditorsMenuOpen(!auditorsMenuOpen)
 	}
 
+	const handleOpenQuestionaryDetails = (questionaryId: string) => {
+		console.log('openQuestionaryDetails', questionaryId)
+		openQuestionaryDetails('/detalhes-do-questionario', questionaryId)
+	}
+
 	return (
 		<Container>
 			<div className="questionaries-list-utilities">
@@ -89,15 +94,13 @@ export const Questionaries: React.FC<QuestionariesProps> = ({
 			</div>
 			<div className="questionaries-list">
 				{questionaries.map(questionary => (
-					<QuestionaryCard
-						onClick={() =>
-							openQuestionaryDetails(
-								'/detalhes-do-questionario',
-								questionary._eq,
-							)
-						}
-					>
-						<h3>{questionary.name}</h3>
+					<QuestionaryCard>
+						<h3
+							onClick={() => handleOpenQuestionaryDetails(questionary._eq)}
+							role="presentation"
+						>
+							{questionary.name}
+						</h3>
 						<div
 							className={`auditors ${
 								questionary.auditors.length >= 2 && 'multiple'
