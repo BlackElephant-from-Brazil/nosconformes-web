@@ -108,6 +108,7 @@ export const QuestionaryCard = styled.div`
 			}
 
 			p {
+				margin-left: 8px;
 				font-weight: 600;
 				font-size: 18px;
 				color: #000000;

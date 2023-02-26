@@ -69,7 +69,6 @@ export const Questionaries: React.FC<QuestionariesProps> = ({
 	}
 
 	const handleOpenQuestionaryDetails = (questionaryId: string) => {
-		console.log('openQuestionaryDetails', questionaryId)
 		openQuestionaryDetails('/detalhes-do-questionario', questionaryId)
 	}
 
@@ -144,13 +143,15 @@ export const Questionaries: React.FC<QuestionariesProps> = ({
 						</div>
 						<div className="clients-list">
 							<p className="clients">Clientes</p>
-							<div className="client">
-								<img
-									src="https://s.yimg.com/ny/api/res/1.2/a19vkjSUoD4hVV0djOpSLw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD02Nzc-/https://s.yimg.com/os/creatr-uploaded-images/2020-07/20e95610-d02d-11ea-9f0c-81042fd4c51a"
-									alt="Logo da empresa"
-								/>
-								<p>Casas Bahia</p>
-							</div>
+							{questionary.companies.map(company => (
+								<div className="client">
+									<img
+										src={company.logo}
+										alt={`Logo da empresa: ${company.name}`}
+									/>
+									<p>{company.name}</p>
+								</div>
+							))}
 						</div>
 					</QuestionaryCard>
 				))}

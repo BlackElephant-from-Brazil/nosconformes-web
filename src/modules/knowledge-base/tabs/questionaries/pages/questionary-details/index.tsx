@@ -17,6 +17,7 @@ import { Questionary } from 'interfaces/questionary.type'
 import { Container } from './styles'
 import { GroupingAccordion } from './components/grouping-accordion'
 import { AuditorsDialog } from './components/auditors-dialog'
+import { CompaniesDialog } from './components/companies-dialog'
 
 type QuestionaryDetailsProps = {
 	questionaryId: string
@@ -28,6 +29,7 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 	const formSearchInputRef = React.useRef<FormHandles>(null)
 	const formQuestionaryNameRef = React.useRef<FormHandles>(null)
 	const [auditorsDialogOpen, setAuditorsDialogOpen] = useState(false)
+	const [companiesDialogOpen, setCompaniesDialogOpen] = useState(false)
 	const [questionaryNameEditable, setQuestionaryNameEditable] = useState(false)
 	const [newQuestionaryName, setNewQuestionaryName] = useState('')
 	const [questionary, setQuestionary] = useState({} as Questionary)
@@ -52,6 +54,10 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 
 	const toggleAuditorsDialogOpen = () => {
 		setAuditorsDialogOpen(!auditorsDialogOpen)
+	}
+
+	const toggleCompaniesDialogOpen = () => {
+		setCompaniesDialogOpen(!companiesDialogOpen)
 	}
 
 	const handleSearchInputChange = async () => {
@@ -152,6 +158,7 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 						icon={<LockIcon />}
 						variant="primary"
 						className="share-button"
+						onClick={toggleCompaniesDialogOpen}
 					/>
 				</div>
 			</div>
@@ -185,6 +192,12 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 				toggleOpen={toggleAuditorsDialogOpen}
 				questionaryId={questionary._eq}
 				currentAuditors={questionary.auditors}
+			/>
+			<CompaniesDialog
+				open={companiesDialogOpen}
+				toggleOpen={toggleCompaniesDialogOpen}
+				questionaryId={questionary._eq}
+				currentCompanies={questionary.companies}
 			/>
 		</Container>
 	)
