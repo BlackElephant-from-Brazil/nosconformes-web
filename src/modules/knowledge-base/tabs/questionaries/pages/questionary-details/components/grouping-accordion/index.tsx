@@ -10,18 +10,27 @@ import { Question } from 'interfaces/question.type'
 import { Chip } from 'components/chip'
 import { capitalizeFirstLetter } from 'utils/captalize-firs-letter'
 import { Grouping } from 'interfaces/grouping.type'
-import { AccordionSummary, Container } from './styles'
+
+import CloseIcon from '@mui/icons-material/Close'
+import { Dialog } from 'components/dialog'
+import { AccordionSummary, Container, DialogBody } from './styles'
 
 const headerTitles = ['ID', 'Pergunta', 'Função', 'Tag', 'Referência']
 
 type GroupingAccordionProps = {
 	grouping: Grouping
+	questionaryId: string
+	onDelete: (groupingId: string) => void
 }
 
 export const GroupingAccordion: React.FC<GroupingAccordionProps> = ({
 	grouping,
+	questionaryId,
+	onDelete,
 }) => {
 	const [isExpanded, setIsExpanded] = useState(false)
+	const [dialogDeleteGroupingOpen, setDialogDeleteGroupingOpen] =
+		useState(false)
 
 	const renderTableBodyInfo = () => {
 		const renderedTableRow = grouping.questions.map(question => {
@@ -58,12 +67,26 @@ export const GroupingAccordion: React.FC<GroupingAccordionProps> = ({
 		console.log('add')
 	}
 
+	const toggleDialogDeleteGrouping = () => {
+		setDialogDeleteGroupingOpen(!dialogDeleteGroupingOpen)
+	}
+
 	const handleButtonDeleteClick = () => {
-		console.log('delete')
+		toggleDialogDeleteGrouping()
 	}
 
 	const toggleExpanded = () => {
 		setIsExpanded(!isExpanded)
+	}
+
+	const handleDeleteDialogConfirm = () => {
+		try {
+			api.delete(`/questionaries/${questionaryId}/groupings/${grouping._eq}`)
+			onDelete(grouping._eq)
+			toggleDialogDeleteGrouping()
+		} catch (error) {
+			handleApiError(error)
+		}
 	}
 
 	return (
@@ -77,7 +100,7 @@ export const GroupingAccordion: React.FC<GroupingAccordionProps> = ({
 				}
 			>
 				<div className="accordion-grouping-name">
-					<p className="title">Muito bom</p>
+					<p className="title">{`Muito bom ${grouping._eq}`}</p>
 					<ModeIcon />
 				</div>
 				<div
@@ -107,6 +130,31 @@ export const GroupingAccordion: React.FC<GroupingAccordionProps> = ({
 					className="table-questionary-grouping"
 				/>
 			</AccordionDetails>
+
+			<Dialog
+				open={dialogDeleteGroupingOpen}
+				toggleOpen={toggleDialogDeleteGrouping}
+				variant="bottom_right"
+			>
+				<DialogBody>
+					<CloseIcon
+						className="close-dialog-icon"
+						onClick={toggleDialogDeleteGrouping}
+						data-testid="close-button"
+					/>
+					<div className="dialog-confirmation-text">
+						<h2>
+							Tem certeza que deseja excluir este agrupamento deste
+							questionário?
+						</h2>
+					</div>
+					<Button
+						text="Excluir"
+						onClick={handleDeleteDialogConfirm}
+						variant="danger"
+					/>
+				</DialogBody>
+			</Dialog>
 		</Container>
 	)
 }

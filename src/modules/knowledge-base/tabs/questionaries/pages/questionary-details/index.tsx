@@ -115,6 +115,15 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 		setQuestionaryNameEditable(false)
 	}
 
+	const handleDeleteGrouping = (groupingId: string) => {
+		setQuestionary({
+			...questionary,
+			groupings: questionary.groupings.filter(
+				grouping => grouping._eq !== groupingId,
+			),
+		})
+	}
+
 	return (
 		<Container>
 			<div className="new-questionary-header">
@@ -184,7 +193,11 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 			</div>
 			<div className="groupings">
 				{questionary.groupings?.map(grouping => (
-					<GroupingAccordion grouping={grouping} />
+					<GroupingAccordion
+						grouping={grouping}
+						questionaryId={questionary._eq}
+						onDelete={handleDeleteGrouping}
+					/>
 				))}
 			</div>
 			<AuditorsDialog
