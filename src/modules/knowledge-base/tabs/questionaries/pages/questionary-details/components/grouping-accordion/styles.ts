@@ -1,11 +1,17 @@
-import { Accordion, styled as MUIStyled } from '@mui/material'
+import { Accordion, styled } from '@mui/material'
 import MuiAccordionSummary from '@mui/material/AccordionSummary'
-import styled from 'styled-components'
+import styledC from 'styled-components'
 
-export const Container = MUIStyled(Accordion)`
+export const Container = styled(Accordion)`
 	background: #cfd7e8;
 	border-radius: 10px !important;
 	box-shadow: none;
+	margin-bottom: 12px;
+
+	& .Mui-focusVisible {
+		background: #cfd7e8 !important;
+		border-radius: 10px !important;
+	}
 
 	::before {
 		display: none;
@@ -42,7 +48,7 @@ export const Container = MUIStyled(Accordion)`
 	}
 `
 
-export const AccordionSummary = MUIStyled(MuiAccordionSummary)`
+export const AccordionSummary = styled(MuiAccordionSummary)`
 	flex-direction: row-reverse;
 	cursor: default !important;
 
@@ -74,16 +80,26 @@ export const AccordionSummary = MUIStyled(MuiAccordionSummary)`
 			display: flex;
 			align-items: center;
 
+			form {
+				display: flex;
+				align-items: center;
+
+				.MuiTextField-root {
+					background: #cfd7e8;
+				}
+			}
+
 			.title {
 				font-family: 'Inter';
 				font-weight: 600;
 				font-size: 20px;
 				color: #323e57;
-				margin-right: 12px;
 			}
 
 			svg {
 				color: #323e57;
+				cursor: pointer;
+				margin-left: 8px;
 			}
 		}
 
@@ -104,7 +120,7 @@ export const AccordionSummary = MUIStyled(MuiAccordionSummary)`
 	}
 `
 
-export const DialogBody = styled.div`
+export const DialogBody = styledC.div`
 	width: 500px;
 	padding: 32px;
 

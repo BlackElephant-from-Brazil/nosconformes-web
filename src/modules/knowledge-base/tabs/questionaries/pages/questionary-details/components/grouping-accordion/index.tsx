@@ -10,9 +10,13 @@ import { Question } from 'interfaces/question.type'
 import { Chip } from 'components/chip'
 import { capitalizeFirstLetter } from 'utils/captalize-firs-letter'
 import { Grouping } from 'interfaces/grouping.type'
-
+import CheckIcon from '@mui/icons-material/Check'
+import ClearIcon from '@mui/icons-material/Clear'
 import CloseIcon from '@mui/icons-material/Close'
 import { Dialog } from 'components/dialog'
+import { Form } from '@unform/web'
+import { Input } from 'components/input'
+import { FormHandles } from '@unform/core'
 import { AccordionSummary, Container, DialogBody } from './styles'
 
 const headerTitles = ['ID', 'Pergunta', 'Função', 'Tag', 'Referência']
@@ -28,9 +32,16 @@ export const GroupingAccordion: React.FC<GroupingAccordionProps> = ({
 	questionaryId,
 	onDelete,
 }) => {
+	const formGroupingNameRef = React.useRef<FormHandles>(null)
 	const [isExpanded, setIsExpanded] = useState(false)
 	const [dialogDeleteGroupingOpen, setDialogDeleteGroupingOpen] =
 		useState(false)
+	const [editingName, setEditingName] = useState(false)
+	const [newGroupingName, setNewGroupingName] = useState('')
+
+	useEffect(() => {
+		setNewGroupingName(grouping.name)
+	}, [grouping.name])
 
 	const renderTableBodyInfo = () => {
 		const renderedTableRow = grouping.questions.map(question => {
@@ -89,6 +100,33 @@ export const GroupingAccordion: React.FC<GroupingAccordionProps> = ({
 		}
 	}
 
+	const toggleEditingName = () => {
+		setEditingName(!editingName)
+	}
+
+	const handleEditGroupingName = () => {
+		toggleEditingName()
+	}
+
+	const handleSaveGroupingName = async () => {
+		const groupingName = formGroupingNameRef.current?.getFieldValue('name')
+
+		try {
+			await api.put(`/groupings/${grouping._eq}`, {
+				name: groupingName,
+			})
+		} catch (err) {
+			handleApiError(err)
+			return
+		}
+		setNewGroupingName(groupingName)
+		toggleEditingName()
+	}
+
+	const handleCancelEditGroupingName = () => {
+		toggleEditingName()
+	}
+
 	return (
 		<Container expanded={isExpanded}>
 			<AccordionSummary
@@ -100,8 +138,26 @@ export const GroupingAccordion: React.FC<GroupingAccordionProps> = ({
 				}
 			>
 				<div className="accordion-grouping-name">
-					<p className="title">{`Muito bom ${grouping._eq}`}</p>
-					<ModeIcon />
+					{editingName ? (
+						<Form onSubmit={e => e.preventDefault()} ref={formGroupingNameRef}>
+							<Input
+								name="name"
+								variant="standard"
+								initialValue={newGroupingName}
+							/>
+							<CheckIcon onClick={handleSaveGroupingName} />
+							<ClearIcon onClick={handleCancelEditGroupingName} />
+						</Form>
+					) : (
+						<>
+							<p className="title">
+								{newGroupingName !== ''
+									? newGroupingName
+									: 'Insira o nome do agrupamento'}
+							</p>
+							<ModeIcon onClick={handleEditGroupingName} />
+						</>
+					)}
 				</div>
 				<div
 					className="empty-space"

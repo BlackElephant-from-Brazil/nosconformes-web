@@ -41,7 +41,6 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 					`/questionaries/${questionaryId}`,
 				)
 
-				console.log('findQuestionary', findQuestionary)
 				setQuestionary(findQuestionary)
 				setNewQuestionaryName(findQuestionary.name)
 			} catch (err) {
