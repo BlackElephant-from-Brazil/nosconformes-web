@@ -14,6 +14,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Questionary } from 'interfaces/questionary.type'
+import { Menu } from 'components/menu'
 import { Container } from './styles'
 import { GroupingAccordion } from './components/grouping-accordion'
 import { AuditorsDialog } from './components/auditors-dialog'
@@ -21,10 +22,12 @@ import { CompaniesDialog } from './components/companies-dialog'
 
 type QuestionaryDetailsProps = {
 	questionaryId: string
+	closeQuestionaryDetails: () => void
 }
 
 export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 	questionaryId,
+	closeQuestionaryDetails,
 }) => {
 	const formSearchInputRef = React.useRef<FormHandles>(null)
 	const formQuestionaryNameRef = React.useRef<FormHandles>(null)
@@ -33,6 +36,10 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 	const [questionaryNameEditable, setQuestionaryNameEditable] = useState(false)
 	const [newQuestionaryName, setNewQuestionaryName] = useState('')
 	const [questionary, setQuestionary] = useState({} as Questionary)
+	const [addGroupingMenuOpen, setAddGroupingMenuOpen] = useState(false)
+	const [menuAddGroupingAnchorEl, setMenuAddGroupingAnchorEl] =
+		useState<HTMLElement | null>(null)
+	const [availableGroupings, setAvailableGroupings] = useState<Grouping[]>([])
 
 	useEffect(() => {
 		;(async () => {
@@ -49,7 +56,19 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 		})()
 	}, [questionaryId])
 
-	if (!questionaryId) return null
+	useEffect(() => {
+		;(async () => {
+			if (!questionary._eq) return
+			try {
+				const { data: findGroupings } = await api.get(
+					`/questionaries/available-groupings/${questionary._eq}`,
+				)
+				setAvailableGroupings(findGroupings)
+			} catch (err) {
+				handleApiError(err)
+			}
+		})()
+	}, [questionary._eq])
 
 	const toggleAuditorsDialogOpen = () => {
 		setAuditorsDialogOpen(!auditorsDialogOpen)
@@ -73,20 +92,24 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 		}
 	}
 
+	const toggleAddGroupingMenuOpen = () => {
+		setAddGroupingMenuOpen(!addGroupingMenuOpen)
+	}
+
 	const handleCreateNewGroupingButtonClick = async () => {
-		let newGrouping: Grouping
 		try {
-			newGrouping = await api.post('/groupings', {
+			const { data: newGrouping } = await api.post('/groupings', {
 				questionaryId: questionary._eq,
 			})
+			setQuestionary({
+				...questionary,
+				groupings: [...questionary.groupings, newGrouping],
+			})
+
+			toggleAddGroupingMenuOpen()
 		} catch (err) {
 			handleApiError(err)
-			return
 		}
-		setQuestionary({
-			...questionary,
-			groupings: [...questionary.groupings, newGrouping],
-		})
 	}
 
 	const handleEditQuestionaryNameClick = () => {
@@ -123,10 +146,41 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 		})
 	}
 
+	const handleAddGroupingButtonClick = (
+		event?: React.MouseEvent<HTMLButtonElement>,
+	) => {
+		setMenuAddGroupingAnchorEl(event?.currentTarget || null)
+		setAddGroupingMenuOpen(true)
+	}
+
+	const handleAddGroupingToQuestionary = async (groupingId: string) => {
+		try {
+			await api.put(`/questionaries/${questionaryId}/groupings/${groupingId}`)
+		} catch (err) {
+			handleApiError(err)
+			return
+		}
+
+		try {
+			const { data: findGrouping } = await api.get(`/groupings/${groupingId}`)
+			setQuestionary({
+				...questionary,
+				groupings: [...questionary.groupings, findGrouping],
+			})
+		} catch (err) {
+			handleApiError(err)
+			return
+		}
+		setAvailableGroupings([
+			...availableGroupings.filter(grouping => grouping._eq !== groupingId),
+		])
+		toggleAddGroupingMenuOpen()
+	}
+
 	return (
 		<Container>
 			<div className="new-questionary-header">
-				<BackButton handleClick={() => console.log('back')} />
+				<BackButton handleClick={closeQuestionaryDetails} />
 				<div className="questionary-name">
 					<p>Questionário:</p>
 					{questionaryNameEditable ? (
@@ -187,7 +241,7 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 					variant="secondary"
 					text="Adicionar agrupamento +"
 					className="new-grouping-button"
-					onClick={handleCreateNewGroupingButtonClick}
+					onClick={e => handleAddGroupingButtonClick(e)}
 				/>
 			</div>
 			<div className="groupings">
@@ -210,6 +264,23 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 				toggleOpen={toggleCompaniesDialogOpen}
 				questionaryId={questionary._eq}
 				currentCompanies={questionary.companies}
+			/>
+			<Menu
+				open={addGroupingMenuOpen}
+				closeMenu={toggleAddGroupingMenuOpen}
+				menuItems={[
+					{
+						label: 'Novo agrupamento +',
+						click: handleCreateNewGroupingButtonClick,
+						isPrimary: true,
+					},
+					...availableGroupings.map(grouping => ({
+						label: grouping.name,
+						click: () => handleAddGroupingToQuestionary(grouping._eq),
+					})),
+				]}
+				menuId="add-grouping-menu"
+				anchorEl={menuAddGroupingAnchorEl}
 			/>
 		</Container>
 	)

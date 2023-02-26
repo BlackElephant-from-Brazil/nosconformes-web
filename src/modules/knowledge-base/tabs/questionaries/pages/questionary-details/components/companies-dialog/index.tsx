@@ -39,6 +39,7 @@ export const CompaniesDialog: React.FC<CompaniesDialogProps> = ({
 	useEffect(() => {
 		;(async () => {
 			try {
+				if (!questionaryId) return
 				const { data: findAvailableCompanies } = await api.get(
 					`/questionaries/available-companies/${questionaryId}`,
 				)

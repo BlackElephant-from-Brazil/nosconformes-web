@@ -41,6 +41,7 @@ export const AuditorsDialog: React.FC<AuditorsDialogProps> = ({
 	useEffect(() => {
 		;(async () => {
 			try {
+				if (!questionaryId) return
 				const { data: findAvailableAuditors } = await api.get(
 					`/questionaries/available-auditors/${questionaryId}`,
 				)

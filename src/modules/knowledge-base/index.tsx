@@ -21,6 +21,11 @@ export const KnowledgeBase: React.FC = () => {
 		setQuestionaryId(currentQuestionaryId)
 	}
 
+	const handleCloseQuestionaryDetails = () => {
+		setTabActive('/questionarios')
+		setQuestionaryId('')
+	}
+
 	useEffect(() => {
 		setTabs([
 			{
@@ -40,7 +45,12 @@ export const KnowledgeBase: React.FC = () => {
 			{
 				title: 'Questionários',
 				link: '/detalhes-do-questionario',
-				element: <QuestionaryDetails questionaryId={questionaryId} />,
+				element: (
+					<QuestionaryDetails
+						questionaryId={questionaryId}
+						closeQuestionaryDetails={handleCloseQuestionaryDetails}
+					/>
+				),
 				hidden: true,
 			},
 		])
