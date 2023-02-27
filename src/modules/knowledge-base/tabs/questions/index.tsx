@@ -12,11 +12,12 @@ import { RightDrawer } from 'components/right-drawer'
 import CloseIcon from '@mui/icons-material/Close'
 import { Chip } from 'components/chip'
 import { capitalizeFirstLetter } from 'utils/captalize-firs-letter'
-import { MenuItem } from '@mui/material'
+import { Menu, MenuItem } from '@mui/material'
 import { enqueueSnackbar } from 'notistack'
 import { Checkbox } from 'components/checkbox/input'
 import { ContextMenu } from 'components/context-menu'
 import { Dialog } from 'components/dialog'
+import { Grouping } from 'interfaces/grouping.type'
 import { AddNewQuestionContainer, Container, DialogBody } from './styles'
 import { FormQuestion } from './components/form-question'
 
@@ -34,6 +35,21 @@ export const Questions: React.FC = () => {
 	const [selectedQuestions, setSelectedQuestions] = useState<string[]>([])
 	const [anchorEl, setAnchorEl] = useState(null)
 	const [dialogOpen, setDialogOpen] = useState(false)
+	const [subMenuAnchorEl, setSubMenuAnchorEl] = useState<HTMLElement | null>(
+		null,
+	)
+	const [allGroupings, setAllGroupings] = useState<Grouping[]>([])
+
+	useEffect(() => {
+		;(async () => {
+			try {
+				const { data: groupings } = await api.get('/groupings')
+				setAllGroupings(groupings)
+			} catch (error) {
+				handleApiError(error)
+			}
+		})()
+	}, [])
 
 	const handleContextMenu = (event: any) => {
 		event.preventDefault()
@@ -47,8 +63,7 @@ export const Questions: React.FC = () => {
 	}
 
 	useEffect(() => {
-		// eslint-disable-next-line prettier/prettier
-		; (async () => {
+		;(async () => {
 			try {
 				const { data } = await api.get('/questions')
 				setQuestions(data)
@@ -188,6 +203,18 @@ export const Questions: React.FC = () => {
 		setDialogOpen(!dialogOpen)
 	}
 
+	const handleDeleteButtonClick = () => {
+		if (selectedQuestions.length === 0) {
+			enqueueSnackbar('Selecione pelo menos uma pergunta para deletar.', {
+				variant: 'warning',
+			})
+
+			setAnchorEl(null)
+			return
+		}
+		toggleDialog()
+	}
+
 	const reloadTable = async () => {
 		try {
 			const { data } = await api.get('/questions')
@@ -210,6 +237,41 @@ export const Questions: React.FC = () => {
 		setDialogOpen(false)
 		setAnchorEl(null)
 		enqueueSnackbar('Perguntas deletadas com sucesso!', { variant: 'success' })
+		setSelectedQuestions([])
+	}
+
+	const handleSubMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+		setSubMenuAnchorEl(event.currentTarget)
+	}
+
+	const handleSubMenuClose = () => {
+		setSubMenuAnchorEl(null)
+	}
+
+	const handleAddQuestionsToGrouping = async (groupingId: string) => {
+		if (selectedQuestions.length === 0) {
+			enqueueSnackbar('Selecione pelo menos uma pergunta para adicionar.', {
+				variant: 'warning',
+			})
+
+			setAnchorEl(null)
+			setSubMenuAnchorEl(null)
+			return
+		}
+
+		try {
+			await api.put(`/groupings/add-questions/${groupingId}`, {
+				questionsIds: selectedQuestions,
+			})
+		} catch (err) {
+			handleApiError(err)
+			return
+		}
+		enqueueSnackbar('Perguntas adicionadas ao agrupamento com sucesso!', {
+			variant: 'success',
+		})
+		setAnchorEl(null)
+		setSubMenuAnchorEl(null)
 		setSelectedQuestions([])
 	}
 
@@ -267,9 +329,31 @@ export const Questions: React.FC = () => {
 				handleClose={handleClose}
 				mousePosition={mousePosition}
 			>
-				<MenuItem onClick={handleClose}>Mover para o agrupamento</MenuItem>
-				<MenuItem onClick={toggleDialog} className="danger">
-					Remover pergunta
+				<MenuItem
+					onMouseEnter={(e: any) => handleSubMenuOpen(e)}
+					onMouseLeave={handleSubMenuClose}
+				>
+					Mover para o agrupamento {'>'}
+					<Menu
+						anchorEl={subMenuAnchorEl}
+						open={Boolean(subMenuAnchorEl)}
+						onClose={handleSubMenuClose}
+						anchorOrigin={{
+							horizontal: 'right',
+							vertical: 'top',
+						}}
+					>
+						{allGroupings.map(grouping => (
+							<MenuItem
+								onClick={() => handleAddQuestionsToGrouping(grouping._eq)}
+							>
+								{grouping.name}
+							</MenuItem>
+						))}
+					</Menu>
+				</MenuItem>
+				<MenuItem onClick={handleDeleteButtonClick} className="danger">
+					Remover perguntas
 				</MenuItem>
 			</ContextMenu>
 			<Dialog
