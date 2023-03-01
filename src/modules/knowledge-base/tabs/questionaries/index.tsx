@@ -25,8 +25,7 @@ export const Questionaries: React.FC<QuestionariesProps> = ({
 	const [auditorsMenuOpen, setAuditorsMenuOpen] = useState(false)
 
 	useEffect(() => {
-		// eslint-disable-next-line prettier/prettier
-		; (async () => {
+		;(async () => {
 			try {
 				const { data } = await api.get('/questionaries')
 				setQuestionaries(data)

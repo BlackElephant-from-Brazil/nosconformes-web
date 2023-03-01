@@ -51,17 +51,6 @@ export const Questions: React.FC = () => {
 		})()
 	}, [])
 
-	const handleContextMenu = (event: any) => {
-		event.preventDefault()
-		setAnchorEl(event.currentTarget)
-		setMousePosition({ x: event.clientX, y: event.clientY })
-	}
-
-	const handleClose = () => {
-		setMousePosition({ x: null, y: null })
-		setAnchorEl(null)
-	}
-
 	useEffect(() => {
 		;(async () => {
 			try {
@@ -77,11 +66,6 @@ export const Questions: React.FC = () => {
 		setDrawerOpen(!drawerOpen)
 	}
 
-	const handleOpenEditQuestion = (questionId: string) => {
-		setEditableQuestion(questions.find(question => question._eq === questionId))
-		toggleDrawer()
-	}
-
 	const toggleSelectedQuestion = (questionId: string) => {
 		if (selectedQuestions.includes(questionId)) {
 			setSelectedQuestions(
@@ -92,8 +76,134 @@ export const Questions: React.FC = () => {
 		}
 	}
 
+	const toggleSelectAllRows = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (event.target.checked) {
+			const allQuestionsIds = questions.map(question => question._eq)
+			setSelectedQuestions(allQuestionsIds)
+			return
+		}
+		setSelectedQuestions([])
+	}
+
+	const toggleDialog = () => {
+		setDialogOpen(!dialogOpen)
+	}
+
+	const handleContextMenu = (event: any) => {
+		event.preventDefault()
+		setAnchorEl(event.currentTarget)
+		setMousePosition({ x: event.clientX, y: event.clientY })
+	}
+
+	const handleClose = () => {
+		setMousePosition({ x: null, y: null })
+		setAnchorEl(null)
+	}
+
+	const handleOpenEditQuestion = (questionId: string) => {
+		setEditableQuestion(questions.find(question => question._eq === questionId))
+		toggleDrawer()
+	}
+
 	const handleCheckChange = (questionId: string) => {
 		toggleSelectedQuestion(questionId)
+	}
+
+	const handleSearchInputChange = async () => {
+		const searchInputValue =
+			formSearchInputRef.current?.getFieldValue('searchQuestion')
+
+		try {
+			const { data: findQuestions } = await api.get(
+				`/questions?query=${searchInputValue}`,
+			)
+			setQuestions(findQuestions)
+		} catch (err) {
+			handleApiError(err)
+		}
+	}
+
+	const handleCreateNewQuestionButtonClick = () => {
+		setEditableQuestion({} as Question)
+		toggleDrawer()
+	}
+
+	const handleImportExcelButtonClick = () => {
+		inputFileRef.current?.click()
+	}
+
+	const handleFileExcelSelected = async (event: any) => {
+		const file = event.target.files[0]
+		try {
+			await api.post('/questions/import', file)
+		} catch (err) {
+			handleApiError(err)
+			return
+		}
+		enqueueSnackbar('Perguntas importadas com sucesso!', { variant: 'success' })
+	}
+
+	const handleDeleteButtonClick = () => {
+		if (selectedQuestions.length === 0) {
+			enqueueSnackbar('Selecione pelo menos uma pergunta para deletar.', {
+				variant: 'warning',
+			})
+
+			setAnchorEl(null)
+			return
+		}
+		toggleDialog()
+	}
+
+	const handleDeleteQuesitons = async () => {
+		try {
+			await api.delete('/questions', {
+				data: { questions: selectedQuestions },
+			})
+		} catch (err) {
+			handleApiError(err)
+			return
+		}
+		reloadTable()
+		setDialogOpen(false)
+		setAnchorEl(null)
+		enqueueSnackbar('Perguntas deletadas com sucesso!', { variant: 'success' })
+		setSelectedQuestions([])
+	}
+
+	const handleSubMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+		setSubMenuAnchorEl(event.currentTarget)
+	}
+
+	const handleSubMenuClose = () => {
+		setSubMenuAnchorEl(null)
+	}
+
+	const handleAddQuestionsToGrouping = async (groupingId: string) => {
+		if (selectedQuestions.length === 0) {
+			enqueueSnackbar('Selecione pelo menos uma pergunta para adicionar.', {
+				variant: 'warning',
+			})
+
+			setAnchorEl(null)
+			setSubMenuAnchorEl(null)
+			return
+		}
+
+		try {
+			await api.put(`/groupings/add-questions/${groupingId}`, {
+				questionsIds: selectedQuestions,
+			})
+		} catch (err) {
+			handleApiError(err)
+			return
+		}
+		enqueueSnackbar('Perguntas adicionadas ao agrupamento com sucesso!', {
+			variant: 'success',
+		})
+		setAnchorEl(null)
+		setSubMenuAnchorEl(null)
+		setSelectedQuestions([])
 	}
 
 	const renderTableBodyInfo = () => {
@@ -156,65 +266,6 @@ export const Questions: React.FC = () => {
 		return renderedTableRow
 	}
 
-	const handleSearchInputChange = async () => {
-		const searchInputValue =
-			formSearchInputRef.current?.getFieldValue('searchQuestion')
-
-		try {
-			const { data: findQuestions } = await api.get(
-				`/questions?query=${searchInputValue}`,
-			)
-			setQuestions(findQuestions)
-		} catch (err) {
-			handleApiError(err)
-		}
-	}
-
-	const handleCreateNewQuestionButtonClick = () => {
-		setEditableQuestion({} as Question)
-		toggleDrawer()
-	}
-
-	const handleImportExcelButtonClick = () => {
-		inputFileRef.current?.click()
-	}
-
-	const handleFileExcelSelected = async (event: any) => {
-		const file = event.target.files[0]
-		try {
-			await api.post('/questions/import', file)
-		} catch (err) {
-			handleApiError(err)
-			return
-		}
-		enqueueSnackbar('Perguntas importadas com sucesso!', { variant: 'success' })
-	}
-
-	const toggleSelectAllRows = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (event.target.checked) {
-			const allQuestionsIds = questions.map(question => question._eq)
-			setSelectedQuestions(allQuestionsIds)
-			return
-		}
-		setSelectedQuestions([])
-	}
-
-	const toggleDialog = () => {
-		setDialogOpen(!dialogOpen)
-	}
-
-	const handleDeleteButtonClick = () => {
-		if (selectedQuestions.length === 0) {
-			enqueueSnackbar('Selecione pelo menos uma pergunta para deletar.', {
-				variant: 'warning',
-			})
-
-			setAnchorEl(null)
-			return
-		}
-		toggleDialog()
-	}
-
 	const reloadTable = async () => {
 		try {
 			const { data } = await api.get('/questions')
@@ -222,57 +273,6 @@ export const Questions: React.FC = () => {
 		} catch (error) {
 			handleApiError(error)
 		}
-	}
-
-	const handleDeleteQuesitons = async () => {
-		try {
-			await api.delete('/questions', {
-				data: { questions: selectedQuestions },
-			})
-		} catch (err) {
-			handleApiError(err)
-			return
-		}
-		reloadTable()
-		setDialogOpen(false)
-		setAnchorEl(null)
-		enqueueSnackbar('Perguntas deletadas com sucesso!', { variant: 'success' })
-		setSelectedQuestions([])
-	}
-
-	const handleSubMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-		setSubMenuAnchorEl(event.currentTarget)
-	}
-
-	const handleSubMenuClose = () => {
-		setSubMenuAnchorEl(null)
-	}
-
-	const handleAddQuestionsToGrouping = async (groupingId: string) => {
-		if (selectedQuestions.length === 0) {
-			enqueueSnackbar('Selecione pelo menos uma pergunta para adicionar.', {
-				variant: 'warning',
-			})
-
-			setAnchorEl(null)
-			setSubMenuAnchorEl(null)
-			return
-		}
-
-		try {
-			await api.put(`/groupings/add-questions/${groupingId}`, {
-				questionsIds: selectedQuestions,
-			})
-		} catch (err) {
-			handleApiError(err)
-			return
-		}
-		enqueueSnackbar('Perguntas adicionadas ao agrupamento com sucesso!', {
-			variant: 'success',
-		})
-		setAnchorEl(null)
-		setSubMenuAnchorEl(null)
-		setSelectedQuestions([])
 	}
 
 	return (

@@ -27,12 +27,16 @@ export const Container = styled(Accordion)`
 		th {
 			color: #6d7c99;
 
-			:nth-child(1) {
+			:nth-child(2) {
 				width: 120px;
 			}
-			:nth-child(2) {
+			:nth-child(3) {
 				width: 30%;
 			}
+		}
+
+		tr {
+			cursor: pointer;
 		}
 
 		.question-table-row {
@@ -44,6 +48,13 @@ export const Container = styled(Accordion)`
 				font-size: 14px;
 				color: #0f141e;
 			}
+		}
+
+		.active {
+			background: #d6e4ff;
+		}
+		.unactive {
+			background: #ffffff;
 		}
 	}
 `

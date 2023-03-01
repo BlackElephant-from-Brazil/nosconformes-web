@@ -6,12 +6,14 @@ import { Container } from './styles'
 import { Questions } from './tabs/questions'
 import { Questionaries } from './tabs/questionaries'
 import { QuestionaryDetails } from './tabs/questionaries/pages/questionary-details'
+import { SelectQuestions } from './tabs/questionaries/pages/select-questions'
 
 export const KnowledgeBase: React.FC = () => {
 	const [tabs, setTabs] = useState<Tab[]>([])
 	const [tabActive, setTabActive] = useState('/perguntas')
 	const [questionaryId, setQuestionaryId] = useState('')
 	const [loadedBody, setLoadedBody] = useState<JSX.Element | null>(null)
+	const [groupingId, setGroupingId] = useState('')
 
 	const handleOpenQuestionaryDetails = (
 		link: string,
@@ -24,6 +26,15 @@ export const KnowledgeBase: React.FC = () => {
 	const handleCloseQuestionaryDetails = () => {
 		setTabActive('/questionarios')
 		setQuestionaryId('')
+	}
+
+	const handleOpenSelectQuestions = (
+		link: string,
+		selectedGroupingId: string,
+	) => {
+		console.log(selectedGroupingId)
+		setTabActive(link)
+		setGroupingId(selectedGroupingId)
 	}
 
 	useEffect(() => {
@@ -49,12 +60,21 @@ export const KnowledgeBase: React.FC = () => {
 					<QuestionaryDetails
 						questionaryId={questionaryId}
 						closeQuestionaryDetails={handleCloseQuestionaryDetails}
+						openTab={handleOpenSelectQuestions}
 					/>
 				),
 				hidden: true,
 			},
+			{
+				title: 'Questionários',
+				link: '/selecione-as-perguntas',
+				element: (
+					<SelectQuestions openTab={setTabActive} groupingId={groupingId} />
+				),
+				hidden: true,
+			},
 		])
-	}, [questionaryId])
+	}, [groupingId, questionaryId])
 
 	useEffect(() => {
 		setLoadedBody(() => {

@@ -218,7 +218,8 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 		}
 
 		try {
-			if (question) {
+			if (question && !isObjectEmpty(question)) {
+				console.log('put')
 				await api.put(`/questions/${question._eq}`, {
 					...questionData,
 				})
@@ -226,6 +227,7 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 					variant: 'success',
 				})
 			} else {
+				console.log('post')
 				await api.post('/questions', {
 					...questionData,
 				})

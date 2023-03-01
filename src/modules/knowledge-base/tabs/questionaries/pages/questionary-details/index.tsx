@@ -23,11 +23,13 @@ import { CompaniesDialog } from './components/companies-dialog'
 type QuestionaryDetailsProps = {
 	questionaryId: string
 	closeQuestionaryDetails: () => void
+	openTab: (link: string, groupingId: string) => void
 }
 
 export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 	questionaryId,
 	closeQuestionaryDetails,
+	openTab,
 }) => {
 	const formSearchInputRef = React.useRef<FormHandles>(null)
 	const formQuestionaryNameRef = React.useRef<FormHandles>(null)
@@ -247,9 +249,10 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 			<div className="groupings">
 				{questionary.groupings?.map(grouping => (
 					<GroupingAccordion
-						grouping={grouping}
+						groupingId={grouping._eq}
 						questionaryId={questionary._eq}
 						onDelete={handleDeleteGrouping}
+						openTab={openTab}
 					/>
 				))}
 			</div>
