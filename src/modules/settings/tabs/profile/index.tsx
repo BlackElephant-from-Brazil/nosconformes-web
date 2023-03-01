@@ -155,7 +155,7 @@ export const Profile: React.FC = () => {
 		<Container>
 			<Button
 				text="Salvar"
-				buttonStyle="primary"
+				variant="primary"
 				onClick={handleClickSubmitFormButton}
 				className="save-button"
 			/>

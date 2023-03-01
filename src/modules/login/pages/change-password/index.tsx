@@ -124,7 +124,7 @@ const ChangePassword: React.FC = () => {
 						<Alert text={displayErrors} type="error" />
 						<Button
 							text="Atualizar senha"
-							buttonStyle="primary"
+							variant="primary"
 							type="submit"
 						/>
 					</Form>

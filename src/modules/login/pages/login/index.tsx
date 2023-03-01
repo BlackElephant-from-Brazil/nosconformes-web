@@ -143,7 +143,7 @@ export const Login: React.FC = () => {
 							Esqueci a senha
 						</a>
 						<Alert text={displayError} type="error" />
-						<Button type="submit" text="Login" buttonStyle="primary" />
+						<Button type="submit" text="Login" variant="primary" />
 					</Form>
 				</div>
 				<div className="footer">

@@ -17,5 +17,6 @@ export const handleYupErrors = (
 		})
 		formRef.current?.setErrors(validationErrors)
 		callbackDisplayErros(allErrors)
+		return validationErrors
 	}
 }

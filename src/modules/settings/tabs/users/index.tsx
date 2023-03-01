@@ -124,13 +124,17 @@ export const Users: React.FC = () => {
 					/>
 				</Form>
 				<Button
-					buttonStyle="primary"
+					variant="primary"
 					text="Criar novo usuário +"
 					className="new-user-button"
 					onClick={handleCreateNewUserButtonClick}
 				/>
 			</div>
-			<Table headerTitles={tableTitles} tableRows={renderTableBodyInfo()} />
+			<Table
+				headerTitles={tableTitles}
+				tableRows={renderTableBodyInfo()}
+				className="table-users"
+			/>
 			<RightDrawer toggleDrawer={toggleDrawer} drawerOpen={drawerOpen}>
 				<AddNewUserContainer>
 					<CloseIcon className="close-drawer-icon" onClick={toggleDrawer} />

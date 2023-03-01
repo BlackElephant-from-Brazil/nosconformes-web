@@ -28,7 +28,7 @@ export const Container = styled.div`
 		margin-right: 10px;
 	}
 
-	table {
+	.table-users {
 		margin-top: 24px;
 
 		.user-table-row {

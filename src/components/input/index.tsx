@@ -3,7 +3,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { useField } from '@unform/core'
 
 import React, { ChangeEventHandler, useEffect, useRef, useState } from 'react'
-import { PrimaryInput } from './styles'
+import { OutlinedInput } from './styles'
 
 type InputProps = {
 	label?: string
@@ -16,6 +16,8 @@ type InputProps = {
 	autoFocus?: boolean
 	onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 	disabled?: boolean
+	variant?: 'standard' | 'outlined'
+	initialValue?: string
 }
 
 const Input: React.FC<InputProps> = ({
@@ -29,11 +31,21 @@ const Input: React.FC<InputProps> = ({
 	autoFocus,
 	onChange,
 	disabled,
+	variant,
+	initialValue,
 }) => {
 	const [showPassword, setShowPassword] = useState(false)
-	const inputRef = useRef()
+	const inputRef = useRef<HTMLInputElement>(null)
 	const { fieldName, defaultValue, registerField, clearError, error } =
 		useField(name)
+
+	useEffect(() => {
+		if (initialValue != null) {
+			if (inputRef.current) {
+				inputRef.current.value = initialValue
+			}
+		}
+	}, [initialValue, inputRef])
 
 	useEffect(() => {
 		registerField({
@@ -79,12 +91,12 @@ const Input: React.FC<InputProps> = ({
 	}
 
 	return (
-		<PrimaryInput
+		<OutlinedInput
 			inputRef={inputRef}
 			defaultValue={defaultValue}
 			autoFocus={autoFocus}
 			className={className}
-			variant="outlined"
+			variant={variant || 'outlined'}
 			label={label}
 			placeholder={placeholder || ' '}
 			name={name}
