@@ -5,7 +5,7 @@ type ContainerProps = {
 }
 
 export const Container = styled.div<ContainerProps>`
-	overflow-y: scroll;
+	overflow-y: auto;
 	width: 100vw;
 	padding-left: 180px;
 	padding-right: 180px;
