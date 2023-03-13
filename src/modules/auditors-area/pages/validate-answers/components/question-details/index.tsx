@@ -1,10 +1,17 @@
+import { Question } from 'interfaces/question.type'
 import React from 'react'
 import { Container } from './styles'
 
-export const QuestionDetails: React.FC = () => {
+type QuestionDetailsProps = {
+	question: Question
+}
+
+export const QuestionDetails: React.FC<QuestionDetailsProps> = ({
+	question,
+}) => {
 	return (
 		<Container>
-			<h3 className="question-question">A empresa realiza análise de risco?</h3>
+			<h3 className="question-question">{question?.question}</h3>
 			<div className="tags">
 				<span className="protect">Protect</span>
 				<span className="extreme">Extrema</span>

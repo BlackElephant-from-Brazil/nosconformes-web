@@ -4,10 +4,17 @@ import { StyledButton } from './styles'
 
 export type ButtonProps = {
 	text: string
-	variant: 'primary' | 'secondary' | 'primary-orange' | 'excel' | 'danger'
+	variant:
+		| 'primary'
+		| 'secondary'
+		| 'primary-orange'
+		| 'excel'
+		| 'danger'
+		| 'success'
 	onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void
 	className?: string
-	icon?: JSX.Element
+	endIcon?: JSX.Element
+	startIcon?: JSX.Element
 	type?: 'submit' | 'button' | 'reset'
 	testid?: string
 }
@@ -17,7 +24,8 @@ const Button: React.FC<ButtonProps> = ({
 	variant,
 	onClick,
 	className,
-	icon,
+	endIcon,
+	startIcon,
 	type,
 	testid,
 }) => {
@@ -32,7 +40,8 @@ const Button: React.FC<ButtonProps> = ({
 			}}
 			className={className}
 			buttonstyle={variant}
-			endIcon={icon || null}
+			endIcon={endIcon || null}
+			startIcon={startIcon || null}
 		>
 			{text}
 			{variant === 'excel' && <img src={excelIcon} alt="Ícone do excel" />}

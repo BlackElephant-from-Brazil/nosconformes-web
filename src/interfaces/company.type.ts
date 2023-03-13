@@ -10,6 +10,7 @@ export type Company = {
 	cnpj: string
 	site: string
 	points: number
+	progress: number
 	status: 'late' | 'finished' | 'inprogress' | 'notstarted'
 	auditors: Auditor[]
 }

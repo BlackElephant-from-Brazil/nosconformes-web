@@ -4,4 +4,5 @@ export type Grouping = {
 	_eq: string
 	name: string
 	questions: Question[]
+	percentage?: number
 }

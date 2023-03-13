@@ -9,7 +9,7 @@ const auditorsAreaRoutes: RouteObject[] = [
 		element: <AuditorArea />,
 	},
 	{
-		path: '/validar-respostas/:groupingId',
+		path: '/validar-respostas/:companyId/:groupingId',
 		element: <ValidateAnswers />,
 	},
 ]

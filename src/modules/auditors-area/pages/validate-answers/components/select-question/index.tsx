@@ -1,41 +1,54 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { Question } from 'interfaces/question.type'
 import { Container } from './styles'
-
-type Question = {
-	_eq: string
-	question: string
-}
 
 type SelectQuestionProps = {
 	questions: Question[]
-	selectedQuestionId: string
-	onSelect: (questionId: string) => void
+	selectedQuestion: Question
+	onSelect: (question: Question) => void
 }
 
 export const SelectQuestion: React.FC<SelectQuestionProps> = ({
 	questions,
-	selectedQuestionId,
+	selectedQuestion,
 	onSelect,
 }) => {
-	const [selectedQuestion, setSelectedQuestion] = React.useState<Question>(
-		questions[0],
-	)
 	const [isExpanded, setIsExpanded] = React.useState(false)
 
-	useEffect(() => {
-		const currentQuestion = questions.find(
-			question => question._eq === selectedQuestionId,
+	const toggleExpand = () => {
+		setIsExpanded(!isExpanded)
+	}
+
+	const handleSelectQuestion = (questionId: string) => {
+		toggleExpand()
+		const userSelectedQuestion = questions.find(
+			question => question._eq === questionId,
 		)
-		if (currentQuestion) {
-			setSelectedQuestion(currentQuestion)
-		}
-	}, [questions, selectedQuestionId])
+		if (!userSelectedQuestion) return
+		onSelect(userSelectedQuestion)
+	}
 
 	return (
-		<Container>
-			<h3>{selectedQuestion.question}</h3>
-			<ExpandMoreIcon />
+		<Container isExpanded={isExpanded}>
+			<div
+				className="selected-question"
+				onClick={toggleExpand}
+				role="presentation"
+			>
+				{selectedQuestion && <h3>{selectedQuestion.question}</h3>}
+				<ExpandMoreIcon />
+			</div>
+			<div className="question-list">
+				{questions.map(question => (
+					<h3
+						onClick={() => handleSelectQuestion(question._eq)}
+						role="presentation"
+					>
+						{question.question}
+					</h3>
+				))}
+			</div>
 		</Container>
 	)
 }

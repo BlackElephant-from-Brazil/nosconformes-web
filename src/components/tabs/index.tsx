@@ -53,12 +53,16 @@ export const Tabs: React.FC<TabsProps> = ({ tabTitles, tabContents }) => {
 				aria-label="full width tabs example"
 			>
 				{tabTitles.map(tabTitle => (
-					<Tab label={tabTitle} />
+					<Tab label={tabTitle} key={tabTitle} />
 				))}
 			</MuiTabs>
 			<SwipeableViews index={value} onChangeIndex={handleChangeIndex}>
 				{tabContents.map((tabContent, index) => (
-					<TabPanel value={value} index={index}>
+					<TabPanel
+						value={value}
+						index={index}
+						key={`tab-pannel-${index.toString()}`}
+					>
 						{tabContent}
 					</TabPanel>
 				))}

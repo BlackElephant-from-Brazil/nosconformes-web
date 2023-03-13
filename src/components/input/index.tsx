@@ -17,6 +17,8 @@ type InputProps = {
 	onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 	disabled?: boolean
 	variant?: 'standard' | 'outlined'
+	multiline?: boolean
+	rows?: number
 	initialValue?: string
 }
 
@@ -32,6 +34,8 @@ const Input: React.FC<InputProps> = ({
 	onChange,
 	disabled,
 	variant,
+	multiline,
+	rows,
 	initialValue,
 }) => {
 	const [showPassword, setShowPassword] = useState(false)
@@ -104,6 +108,8 @@ const Input: React.FC<InputProps> = ({
 			type={type === 'password' && showPassword ? 'text' : type}
 			error={!!error}
 			onChange={onChange}
+			multiline={multiline}
+			rows={rows}
 			InputProps={{
 				startAdornment: startAdornmentIcon ? (
 					<InputAdornment position="start">{startAdornmentIcon}</InputAdornment>
