@@ -99,47 +99,6 @@ export const Questionaries: React.FC<QuestionariesProps> = ({
 						>
 							{questionary.name}
 						</h3>
-						<div
-							className={`auditors ${
-								questionary.auditors.length >= 2 && 'multiple'
-							}`}
-							data-testid="auditors"
-							onClick={e => toggleAuditorsMenu(e)}
-							role="presentation"
-						>
-							{questionary.auditors.length === 0 ? (
-								<p className="no-registered-auditor">
-									Nenhum auditor cadastrado
-								</p>
-							) : (
-								<>
-									<p>Auditores</p>
-									<div className="auditors-photos">
-										{questionary.auditors.map((auditor, i) => {
-											const imageRef = React.createRef<HTMLImageElement>()
-											if (i >= 2) return
-											return (
-												<img
-													key={auditor._eq}
-													src={auditor.profilePicture}
-													alt={`Foto do auditor: ${auditor.name}`}
-													ref={imageRef}
-													onError={() => handleUserImageError(imageRef)}
-												/>
-											)
-										})}
-										<AuditorsMenu
-											anchorEl={anchorEl}
-											closeMenu={toggleAuditorsMenu}
-											open={auditorsMenuOpen}
-											auditors={questionary.auditors}
-											menuId="addNewGroupingButtonMenu"
-										/>
-									</div>
-									<KeyboardArrowDownRoundedIcon />
-								</>
-							)}
-						</div>
 						<div className="clients-list">
 							<p className="clients">Clientes</p>
 							{questionary.companies.map(company => (

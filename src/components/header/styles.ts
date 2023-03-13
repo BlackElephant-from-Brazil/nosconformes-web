@@ -15,6 +15,7 @@ export const Container = styled.div`
 		align-items: center;
 		padding-top: 48px;
 		padding-bottom: 48px;
+		margin: 0 auto;
 
 		.title {
 			display: flex;

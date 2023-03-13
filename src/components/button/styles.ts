@@ -91,5 +91,24 @@ export const StyledButton = styled(Button)<PrimaryButtonProps>`
 				}
 			`
 		}
+
+		if (buttonStyle === 'success') {
+			return `
+				background: #69B345;
+				color: #FFFFFF;
+
+				:hover {
+					background: #538f37;
+				}
+
+				:active {
+					background: #69B345;
+				}
+
+				img {
+					margin-left: 6px;
+				}
+			`
+		}
 	}}
 `

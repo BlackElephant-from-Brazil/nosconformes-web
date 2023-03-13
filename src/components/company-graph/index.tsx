@@ -34,31 +34,31 @@ export const CompanyGraph: React.FC<CompanyGraphProps> = ({
 		const r = 6
 		let cx = 0
 		let cy = 0
-		if (points <= 100) {
+		if (points < 100) {
 			cx = 8
 			cy = 44
-		} else if (points <= 200) {
+		} else if (points < 200) {
 			cx = 14
 			cy = 30
-		} else if (points <= 333) {
+		} else if (points < 333) {
 			cx = 22
 			cy = 18
-		} else if (points <= 400) {
+		} else if (points < 400) {
 			cx = 31
 			cy = 14
-		} else if (points <= 500) {
+		} else if (points < 500) {
 			cx = 50
 			cy = 9
-		} else if (points <= 666) {
+		} else if (points < 666) {
 			cx = 69
 			cy = 14
-		} else if (points <= 700) {
+		} else if (points < 700) {
 			cx = 70
 			cy = 14
-		} else if (points <= 800) {
+		} else if (points < 800) {
 			cx = 81
 			cy = 22
-		} else if (points <= 900) {
+		} else if (points < 900) {
 			cx = 87
 			cy = 30
 		} else {

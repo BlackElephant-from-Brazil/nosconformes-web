@@ -8,4 +8,5 @@ export type Questionary = {
 	auditors: Auditor[]
 	companies: Company[]
 	groupings: Grouping[]
+	percentage?: number
 }
