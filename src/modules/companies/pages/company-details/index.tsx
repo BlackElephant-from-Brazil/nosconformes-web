@@ -83,6 +83,7 @@ export const CompanyDetails: React.FC = () => {
 	const formManagerRef = useRef<FormHandles>(null)
 	const [displayErrors, setDisplayErrors] = useState('')
 	const [dataLoaded, setDataLoaded] = useState(false)
+	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
 		;(async () => {
@@ -90,6 +91,7 @@ export const CompanyDetails: React.FC = () => {
 				const { data } = await api.get(`/companies/${companyId}`)
 				setDataLoaded(true)
 				setCompany(data)
+				setIsLoading(false)
 			} catch (err: any) {
 				enqueueSnackbar(err.response.data.message, { variant: 'error' })
 			}
@@ -247,7 +249,7 @@ export const CompanyDetails: React.FC = () => {
 	return (
 		<Container>
 			<Header icon={<BusinessIcon />} title="Empresas" />
-			<Body data-testid="company-details-body">
+			<Body data-testid="company-details-body" isLoading={isLoading}>
 				<TabCompanyDetails active={active}>
 					<div className="tab-header">
 						<BackButton

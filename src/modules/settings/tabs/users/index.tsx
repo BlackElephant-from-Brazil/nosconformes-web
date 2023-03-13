@@ -24,8 +24,7 @@ export const Users: React.FC = () => {
 	const [editableUser, setEditableUser] = useState<User | null>(null)
 
 	useEffect(() => {
-		// eslint-disable-next-line prettier/prettier
-		; (async () => {
+		;(async () => {
 			try {
 				const { data } = await api.get('/users')
 				setUsers(data)

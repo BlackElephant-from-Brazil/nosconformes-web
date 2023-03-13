@@ -29,6 +29,7 @@ export const AuditorArea: React.FC = () => {
 	const selectedCompanyLogoRef = React.useRef<HTMLImageElement>(null)
 	const navigate = useNavigate()
 	const formSearchCompanyRef = React.useRef<FormHandles>(null)
+	const [isLoading, setIsLoading] = React.useState(true)
 
 	useEffect(() => {
 		;(async () => {
@@ -53,6 +54,7 @@ export const AuditorArea: React.FC = () => {
 					setSelectedQuestionary(data[0])
 					data.shift()
 					setQuestionaries(data)
+					setIsLoading(false)
 				}
 			} catch (error) {
 				handleApiError(error)
@@ -123,7 +125,7 @@ export const AuditorArea: React.FC = () => {
 	return (
 		<Container>
 			<Header icon={<PeopleIcon />} title="Área do auditor" />
-			<Body cardContext>
+			<Body cardContext isLoading={isLoading}>
 				<SelectCompany selectCompanyOpen={selectCompanyOpen}>
 					<div
 						className="selected-company"

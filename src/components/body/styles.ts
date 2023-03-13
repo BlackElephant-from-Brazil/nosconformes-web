@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 type ContainerProps = {
 	cardContext?: boolean
+	isLoading?: boolean
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -11,6 +12,15 @@ export const Container = styled.div<ContainerProps>`
 	padding-right: 180px;
 	flex: 1;
 	background: ${({ cardContext }) => (cardContext ? '#e9eff5' : '#fff')};
+
+	${({ isLoading }) =>
+		isLoading &&
+		`
+		display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+	`}
 
 	.wrapper {
 		width: 100%;

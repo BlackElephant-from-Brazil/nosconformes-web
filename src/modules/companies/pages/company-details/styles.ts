@@ -16,6 +16,7 @@ export const Container = styled.div`
 
 export const TabCompanyDetails = styled.ul<TabCompanyDetailsProps>`
 	list-style: none;
+	margin-top: 80px;
 
 	.tab-header {
 		display: flex;
