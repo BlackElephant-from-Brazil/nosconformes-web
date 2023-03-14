@@ -55,8 +55,7 @@ export const Profile: React.FC = () => {
 	const { user } = useAuth()
 
 	useEffect(() => {
-		// eslint-disable-next-line prettier/prettier
-		; (async () => {
+		;(async () => {
 			try {
 				const { data } = await api.get(`/users/${user._eq}`)
 				setUserData({ ...data, password: '**********' })
@@ -80,20 +79,20 @@ export const Profile: React.FC = () => {
 		if (data.password === '**********') {
 			delete data.password
 			profileData = {
-				name: data.name,
-				email: data.email,
+				name: data.name.trim(),
+				email: data.email.trim(),
 				phone,
-				office: data.office,
-				accessLevel: data.accessLevel,
+				office: data.office.trim(),
+				accessLevel: data.accessLevel.trim(),
 			}
 		} else {
 			profileData = {
-				name: data.name,
-				email: data.email,
+				name: data.name.trim(),
+				email: data.email.trim(),
 				phone,
-				office: data.office,
-				password: data.password,
-				accessLevel: data.accessLevel,
+				office: data.office.trim(),
+				password: data.password?.trim(),
+				accessLevel: data.accessLevel.trim(),
 			}
 		}
 

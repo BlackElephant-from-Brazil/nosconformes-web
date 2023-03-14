@@ -164,9 +164,9 @@ export const CompanyDetails: React.FC = () => {
 		setDisplayErrors('')
 		const cnpj = revertCnpj(data.cnpj)
 		const companyFormData = {
-			name: data.name,
+			name: data.name.trim(),
 			cnpj,
-			site: data.site,
+			site: data.site.trim(),
 		}
 		try {
 			const schema = Yup.object().shape({
@@ -205,10 +205,10 @@ export const CompanyDetails: React.FC = () => {
 		setDisplayErrors('')
 		const phone = revertPhone(data.phone)
 		const managerFormData = {
-			name: data.name,
-			email: data.email,
-			department: data.department,
-			office: data.office,
+			name: data.name.trim(),
+			email: data.email.trim(),
+			department: data.department.trim(),
+			office: data.office.trim(),
 			phone,
 		}
 		try {

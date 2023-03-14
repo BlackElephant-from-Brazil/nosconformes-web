@@ -38,6 +38,10 @@ export const Login: React.FC = () => {
 
 	const handleSubmitFormLogin: SubmitHandler<LoginForm> = async data => {
 		setDisplayError('')
+		const useLoginData = {
+			email: data.email.trim(),
+			password: data.password.trim(),
+		}
 		try {
 			const schema = Yup.object().shape({
 				email: Yup.string()
@@ -46,7 +50,7 @@ export const Login: React.FC = () => {
 				password: Yup.string().required(errorMessages.unfilledPass),
 			})
 
-			await schema.validate(data, {
+			await schema.validate(useLoginData, {
 				abortEarly: false,
 			})
 		} catch (err) {

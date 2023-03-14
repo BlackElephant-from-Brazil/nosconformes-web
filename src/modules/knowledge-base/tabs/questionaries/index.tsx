@@ -7,10 +7,7 @@ import { api } from 'api'
 import { Questionary } from 'interfaces/questionary.type'
 import { handleApiError } from 'utils/handle-api-error'
 import { Button } from 'components/button'
-import { handleUserImageError } from 'utils/handle-image-error'
-import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded'
 import { Container, QuestionaryCard } from './styles'
-import { AuditorsMenu } from './components/auditors-menu'
 
 type QuestionariesProps = {
 	openQuestionaryDetails: (link: string, questionaryId: string) => void
@@ -21,8 +18,6 @@ export const Questionaries: React.FC<QuestionariesProps> = ({
 }) => {
 	const formSearchInputRef = React.useRef<FormHandles>(null)
 	const [questionaries, setQuestionaries] = useState<Questionary[]>([])
-	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-	const [auditorsMenuOpen, setAuditorsMenuOpen] = useState(false)
 
 	useEffect(() => {
 		;(async () => {
@@ -58,13 +53,6 @@ export const Questionaries: React.FC<QuestionariesProps> = ({
 			handleApiError(err)
 		}
 		openQuestionaryDetails('/detalhes-do-questionario', newQuestionaryId)
-	}
-
-	const toggleAuditorsMenu = (event?: React.MouseEvent<HTMLDivElement>) => {
-		if (auditorsMenuOpen) setAnchorEl(null)
-		else setAnchorEl(event?.currentTarget || null)
-
-		setAuditorsMenuOpen(!auditorsMenuOpen)
 	}
 
 	const handleOpenQuestionaryDetails = (questionaryId: string) => {

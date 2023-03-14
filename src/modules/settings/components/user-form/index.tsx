@@ -71,11 +71,11 @@ export const UserForm: React.FC<UserFormProps> = ({
 		setDisplayErrors('')
 		const phone = revertPhone(data.phone)
 		const userData = {
-			name: data.name,
-			email: data.email,
+			name: data.name.trim(),
+			email: data.email.trim(),
 			phone,
-			office: data.office,
-			accessLevel: data.accessLevel,
+			office: data.office.trim(),
+			accessLevel: data.accessLevel.trim(),
 		}
 
 		try {

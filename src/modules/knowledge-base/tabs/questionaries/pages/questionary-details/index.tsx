@@ -1,7 +1,6 @@
 import { BackButton } from 'components/back-button'
 import { Button } from 'components/button'
 import React, { useEffect, useState } from 'react'
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt'
 import LockIcon from '@mui/icons-material/Lock'
 import { Form } from '@unform/web'
 import { Input } from 'components/input'
@@ -17,7 +16,6 @@ import { Questionary } from 'interfaces/questionary.type'
 import { Menu } from 'components/menu'
 import { Container } from './styles'
 import { GroupingAccordion } from './components/grouping-accordion'
-// import { AuditorsDialog } from './components/auditors-dialog'
 import { CompaniesDialog } from './components/companies-dialog'
 
 type QuestionaryDetailsProps = {
@@ -33,7 +31,6 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 }) => {
 	const formSearchInputRef = React.useRef<FormHandles>(null)
 	const formQuestionaryNameRef = React.useRef<FormHandles>(null)
-	// const [auditorsDialogOpen, setAuditorsDialogOpen] = useState(false)
 	const [companiesDialogOpen, setCompaniesDialogOpen] = useState(false)
 	const [questionaryNameEditable, setQuestionaryNameEditable] = useState(false)
 	const [newQuestionaryName, setNewQuestionaryName] = useState('')
@@ -71,10 +68,6 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 			}
 		})()
 	}, [questionary._eq])
-
-	// const toggleAuditorsDialogOpen = () => {
-	// 	setAuditorsDialogOpen(!auditorsDialogOpen)
-	// }
 
 	const toggleCompaniesDialogOpen = () => {
 		setCompaniesDialogOpen(!companiesDialogOpen)
@@ -123,8 +116,9 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 	}
 
 	const handleSaveQuestionaryName = async () => {
-		const questionaryName =
-			formQuestionaryNameRef.current?.getFieldValue('name')
+		const questionaryName = formQuestionaryNameRef.current
+			?.getFieldValue('name')
+			.trim()
 
 		try {
 			await api.put(`/questionaries/${questionaryId}`, {
@@ -210,13 +204,6 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 					)}
 				</div>
 				<div className="questionary-buttons">
-					{/* <Button
-						text="Auditores"
-						variant="primary-orange"
-						icon={<PeopleAltIcon />}
-						className="auditors-button"
-						onClick={toggleAuditorsDialogOpen}
-					/> */}
 					<Button
 						text="Compartilhar"
 						endIcon={<LockIcon />}
@@ -256,12 +243,6 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 					/>
 				))}
 			</div>
-			{/* <AuditorsDialog
-				open={auditorsDialogOpen}
-				toggleOpen={toggleAuditorsDialogOpen}
-				questionaryId={questionary._eq}
-				currentAuditors={questionary.auditors}
-			/> */}
 			<CompaniesDialog
 				open={companiesDialogOpen}
 				toggleOpen={toggleCompaniesDialogOpen}

@@ -127,7 +127,9 @@ export const ValidateAnswers: React.FC = () => {
 	const handleSendMessage = async () => {
 		setButtonSendMessageLoading(true)
 		try {
-			const message = formSendMessageRef.current?.getFieldValue('message')
+			const message = formSendMessageRef.current
+				?.getFieldValue('message')
+				.trim()
 			await api.post(`/answers/${selectedAnalyzingAnswer._eq}/messages`, {
 				message,
 			})

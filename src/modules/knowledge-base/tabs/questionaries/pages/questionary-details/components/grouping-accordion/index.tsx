@@ -254,7 +254,9 @@ export const GroupingAccordion: React.FC<GroupingAccordionProps> = ({
 	}
 
 	const handleSaveGroupingName = async () => {
-		const groupingName = formGroupingNameRef.current?.getFieldValue('name')
+		const groupingName = formGroupingNameRef.current
+			?.getFieldValue('name')
+			.trim()
 
 		try {
 			await api.put(`/groupings/${grouping._eq}`, {

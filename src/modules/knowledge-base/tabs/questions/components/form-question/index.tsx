@@ -167,14 +167,14 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 		setErrorTags(false)
 		const questionData = {
 			id: 'NC QQCOISA22',
-			question: data.question,
+			question: data.question.trim(),
 			funcs: [...selectedFuncs.map(func => func.name)],
 			groupings: [...selectedGoupings.map(grouping => grouping._eq)],
 			tags: [...selectedTags.map(tag => tag._eq)],
 			references: [...selectedReferences.map(reference => reference._eq)],
-			threat: data.threat,
-			recommendation: data.recommendation,
-			description: data.description,
+			threat: data.threat.trim(),
+			recommendation: data.recommendation.trim(),
+			description: data.description.trim(),
 			accordingButtons: [...accordingButtons],
 			partialAccordingButtons: [...partialAccordingButtons],
 		}
