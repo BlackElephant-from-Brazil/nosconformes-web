@@ -5,5 +5,5 @@ export type User = {
 	email: string
 	office: string
 	phone: string
-	accessLevel: 'master' | 'manager' | 'consultant' | 'auditor'
+	accessLevel: 'master' | 'gestor' | 'consultor' | 'auditor'
 }

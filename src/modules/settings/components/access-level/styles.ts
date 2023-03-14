@@ -17,9 +17,9 @@ export const Container = styled.div<ContainerProps>`
 		switch (accessLevel) {
 			case 'master':
 				return '#1F4CD5'
-			case 'consultant':
+			case 'consultor':
 				return '#69B345'
-			case 'manager':
+			case 'gestor':
 				return '#FF2163'
 			case 'auditor':
 				return '#23067D'

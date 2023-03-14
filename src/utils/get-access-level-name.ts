@@ -4,9 +4,9 @@ export const getAccessLevelName = (accessLevel: User['accessLevel']) => {
 	switch (accessLevel) {
 		case 'auditor':
 			return 'Auditor'
-		case 'consultant':
+		case 'consultor':
 			return 'Consultor'
-		case 'manager':
+		case 'gestor':
 			return 'Gestor'
 		case 'master':
 			return 'Master'

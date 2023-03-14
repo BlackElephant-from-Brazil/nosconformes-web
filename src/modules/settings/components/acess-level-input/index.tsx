@@ -27,7 +27,7 @@ export const AccessLevelInput: React.FC<AccessLevelInputProps> = ({
 	}, [accessLevel])
 
 	const handleAccessLevelChange = (
-		event: SelectChangeEvent<'master' | 'manager' | 'consultant' | 'auditor'>,
+		event: SelectChangeEvent<'master' | 'gestor' | 'consultor' | 'auditor'>,
 	) => {
 		setSelectedAccessLevel(event.target.value as User['accessLevel'])
 		formRef.current?.setFieldValue('accessLevel', event.target.value)
@@ -54,11 +54,11 @@ export const AccessLevelInput: React.FC<AccessLevelInputProps> = ({
 						<ChromeReaderModeIcon />
 						Master
 					</MenuItem>
-					<MenuItem value="consultant" className="consultant">
+					<MenuItem value="consultor" className="consultor">
 						<AnalyticsIcon />
 						Consultor
 					</MenuItem>
-					<MenuItem value="manager" className="manager">
+					<MenuItem value="gestor" className="gestor">
 						<FaceIcon />
 						Gestor
 					</MenuItem>

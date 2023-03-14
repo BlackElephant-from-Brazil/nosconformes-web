@@ -31,9 +31,9 @@ export const Container = styled.div<ContainerProps>`
 			switch (accessLevel) {
 				case 'master':
 					return '#1F4CD5'
-				case 'consultant':
+				case 'consultor':
 					return '#69B345'
-				case 'manager':
+				case 'gestor':
 					return '#FF2163'
 				case 'auditor':
 					return '#23067D'
@@ -79,10 +79,10 @@ export const MenuItem = muiStyled(MuiMenuItem)(() => ({
 	'&.master': {
 		color: '#1F4CD5',
 	},
-	'&.consultant': {
+	'&.consultor': {
 		color: '#69B345',
 	},
-	'&.manager': {
+	'&.gestor': {
 		color: '#FF2163',
 	},
 	'&.auditor': {

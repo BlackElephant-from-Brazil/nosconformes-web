@@ -20,14 +20,14 @@ export const AccessLevel: React.FC<AccessLevelProps> = ({ accessLevel }) => {
 						<p>Master</p>
 					</>
 				)
-			case 'consultant':
+			case 'consultor':
 				return (
 					<>
 						<AnalyticsIcon />
 						<p>Consultor</p>
 					</>
 				)
-			case 'manager':
+			case 'gestor':
 				return (
 					<>
 						<FaceIcon />

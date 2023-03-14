@@ -9,6 +9,7 @@ import { settingsRoutes } from '../modules/settings/configurations.routes'
 import { knowledgeBaseRoutes } from '../modules/knowledge-base/knowledge-base.routes'
 import { SideBar } from '../components/side-bar'
 import { RouteContainer } from './styles'
+import { Support } from './pages/support'
 
 // TODO: FINISH LOGIN VALIDATION
 const validateLogin = () => {
@@ -30,6 +31,10 @@ const allPrivateRoutes = [
 	...settingsRoutes,
 	...knowledgeBaseRoutes,
 	...auditorsAreaRoutes,
+	{
+		path: '/suporte',
+		element: <Support />,
+	},
 ]
 
 const privateRoutes = allPrivateRoutes.map(route => {

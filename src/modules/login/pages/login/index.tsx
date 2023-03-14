@@ -33,12 +33,11 @@ export const Login: React.FC = () => {
 	const navigate = useNavigate()
 	const { signIn } = useAuth()
 	const formRef = useRef<FormHandles>(null)
-
 	const [displayError, setDisplayError] = useState<string>('')
 
 	const handleSubmitFormLogin: SubmitHandler<LoginForm> = async data => {
 		setDisplayError('')
-		const useLoginData = {
+		const userLoginData = {
 			email: data.email.trim(),
 			password: data.password.trim(),
 		}
@@ -50,7 +49,7 @@ export const Login: React.FC = () => {
 				password: Yup.string().required(errorMessages.unfilledPass),
 			})
 
-			await schema.validate(useLoginData, {
+			await schema.validate(userLoginData, {
 				abortEarly: false,
 			})
 		} catch (err) {
