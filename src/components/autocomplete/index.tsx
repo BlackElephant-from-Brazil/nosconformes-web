@@ -13,6 +13,7 @@ type AutocompleteProps = {
 	multiple?: boolean
 	disableCloseOnSelect?: boolean
 	error?: boolean
+	renderTags?: (value: any[], getTagProps: any) => JSX.Element
 }
 
 export const Autocomplete: React.FC<AutocompleteProps> = ({
@@ -26,6 +27,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
 	multiple = true,
 	disableCloseOnSelect = true,
 	error,
+	renderTags,
 }) => {
 	const [placeholder, setPlaceholder] = useState(' ')
 	const handleChangeAutocompleteChange = (event: any, values: unknown) => {
@@ -45,6 +47,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
 			onChange={handleChangeAutocompleteChange}
 			getOptionLabel={optionLabel}
 			renderOption={renderOption}
+			renderTags={renderTags}
 			renderInput={params => (
 				<TextField
 					{...params}

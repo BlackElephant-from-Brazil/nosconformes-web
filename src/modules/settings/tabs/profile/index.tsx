@@ -52,7 +52,7 @@ export const Profile: React.FC = () => {
 	const formRef = React.useRef<FormHandles>(null)
 	const [userData, setUserData] = useState({} as User)
 	const [displayErrors, setDisplayErrors] = useState('')
-	const { user } = useAuth()
+	const { user, updateUser } = useAuth()
 
 	useEffect(() => {
 		;(async () => {
@@ -152,11 +152,12 @@ export const Profile: React.FC = () => {
 
 	const handleDeleteUserPic = async () => {
 		try {
-			await api.delete(`/users/${user._eq}/picture`)
+			await api.delete(`/users/${user._eq}/photo`)
 			enqueueSnackbar('Foto de perfil removida com sucesso!', {
 				variant: 'success',
 			})
 			setUserData({ ...userData, profilePicture: '' })
+			updateUser({ ...user, profilePicture: '' })
 		} catch (err) {
 			handleApiError(err)
 		}
@@ -165,15 +166,13 @@ export const Profile: React.FC = () => {
 	const handleUploadUserProfilePicture = async (file: File) => {
 		try {
 			const data = new FormData()
-			data.append('file', file)
-			const response = await api.post(
-				`/users/${user._eq}/profile-picture`,
-				data,
-			)
+			data.append('photo', file)
+			const response = await api.post(`/users/${user._eq}/photo`, data)
 			enqueueSnackbar('Foto de perfil atualizada com sucesso!', {
 				variant: 'success',
 			})
-			setUserData({ ...userData, profilePicture: response.data.profilePicture })
+			setUserData({ ...userData, profilePicture: response.data })
+			updateUser({ ...user, profilePicture: response.data })
 		} catch (err) {
 			handleApiError(err)
 		}

@@ -119,3 +119,55 @@ export const AuditorsDialogContent = styled.div`
 		}
 	}
 `
+
+export const CompanyChip = styled.div`
+	display: flex;
+	align-items: center;
+	border: 1px solid #99a7c2;
+	border-radius: 50px;
+	padding: 4px;
+	transition: 0.2s;
+	margin-right: 8px;
+
+	:hover {
+		background: #e9eff5;
+	}
+
+	img {
+		width: 18px;
+		height: 18px;
+		border-radius: 50%;
+		object-fit: cover;
+	}
+
+	p {
+		font-weight: 500;
+		font-size: 14px;
+		color: #0f141e;
+		margin-left: 6px;
+	}
+
+	.remove-button {
+		width: 18px;
+		height: 18px;
+		margin-left: 6px;
+		cursor: pointer;
+		border-radius: 50%;
+		background: #e9eff5;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: 0.2s;
+		border: 1px solid #99a7c2;
+
+		svg {
+			width: 14px;
+			height: 14px;
+			font-weight: bold;
+		}
+
+		:hover {
+			background: #d8e0e9;
+		}
+	}
+`

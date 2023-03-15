@@ -127,7 +127,7 @@ export const UserForm: React.FC<UserFormProps> = ({
 
 	const handleDeleteUserPic = async () => {
 		try {
-			await api.delete(`/users/${user?._eq}/picture`)
+			await api.delete(`/users/${user?._eq}/photo`)
 			enqueueSnackbar('Foto de perfil removida com sucesso!', {
 				variant: 'success',
 			})
@@ -140,11 +140,8 @@ export const UserForm: React.FC<UserFormProps> = ({
 	const handleUploadUserProfilePicture = async (file: File) => {
 		try {
 			const data = new FormData()
-			data.append('file', file)
-			const response = await api.post(
-				`/users/${user?._eq}/profile-picture`,
-				data,
-			)
+			data.append('photo', file)
+			const response = await api.post(`/users/${user?._eq}/photo`, data)
 			enqueueSnackbar('Foto de perfil atualizada com sucesso!', {
 				variant: 'success',
 			})
