@@ -150,6 +150,35 @@ export const Profile: React.FC = () => {
 		formRef.current?.submitForm()
 	}
 
+	const handleDeleteUserPic = async () => {
+		try {
+			await api.delete(`/users/${user._eq}/picture`)
+			enqueueSnackbar('Foto de perfil removida com sucesso!', {
+				variant: 'success',
+			})
+			setUserData({ ...userData, profilePicture: '' })
+		} catch (err) {
+			handleApiError(err)
+		}
+	}
+
+	const handleUploadUserProfilePicture = async (file: File) => {
+		try {
+			const data = new FormData()
+			data.append('file', file)
+			const response = await api.post(
+				`/users/${user._eq}/profile-picture`,
+				data,
+			)
+			enqueueSnackbar('Foto de perfil atualizada com sucesso!', {
+				variant: 'success',
+			})
+			setUserData({ ...userData, profilePicture: response.data.profilePicture })
+		} catch (err) {
+			handleApiError(err)
+		}
+	}
+
 	return (
 		<Container>
 			<Button
@@ -163,7 +192,11 @@ export const Profile: React.FC = () => {
 				onSubmit={handleSubmitFormUpdateProfile}
 				className="form"
 			>
-				<ImageUploader />
+				<ImageUploader
+					onDelete={handleDeleteUserPic}
+					initialImage={user.profilePicture}
+					onEdit={handleUploadUserProfilePicture}
+				/>
 				<Input label="Nome" name="name" />
 				<Input label="Email" name="email" />
 				<Input label="Telefone" name="phone" />

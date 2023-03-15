@@ -16,6 +16,7 @@ import { isObjectEmpty } from 'utils/is-object-empty'
 import { BackButton } from 'components/back-button'
 import { handleYupErrors } from 'utils/handle-yup-errors'
 import { Body } from 'components/body'
+import { ImageUploader } from 'components/image-uploader'
 import { Input } from '../../../../components/input'
 import { Button } from '../../../../components/button'
 import { Container, TabCompanyDetails } from './styles'
@@ -246,6 +247,38 @@ export const CompanyDetails: React.FC = () => {
 		}
 	}
 
+	const handleDeleteCompanyLogo = async () => {
+		try {
+			await api.delete(`/companies/${companyId}/logo`)
+			enqueueSnackbar('Logo da empresa removido com sucesso!', {
+				variant: 'success',
+			})
+			setCompany({
+				...company,
+				logo: '',
+			})
+		} catch (err) {
+			handleApiError(err)
+		}
+	}
+
+	const handleUploadCompanyLogo = async (file: File) => {
+		try {
+			const data = new FormData()
+			data.append('logo', file)
+			const response = await api.post(`/companies/${companyId}/logo`, data)
+			enqueueSnackbar('Logo da empresa atualizado com sucesso!', {
+				variant: 'success',
+			})
+			setCompany({
+				...company,
+				logo: response.data,
+			})
+		} catch (err) {
+			handleApiError(err)
+		}
+	}
+
 	return (
 		<Container>
 			<Header icon={<BusinessIcon />} title="Empresas" />
@@ -275,12 +308,11 @@ export const CompanyDetails: React.FC = () => {
 					</div>
 					{active === TAB_COMPANY_DATA && (
 						<li className="company-data" data-testid="tab-company-form">
-							<div className="company-photo">
-								<InsertPhotoOutlinedIcon />
-								<p>
-									Clique para <br /> adicionar uma foto
-								</p>
-							</div>
+							<ImageUploader
+								initialImage={company.logo}
+								onDelete={handleDeleteCompanyLogo}
+								onEdit={handleUploadCompanyLogo}
+							/>
 							{dataLoaded && (
 								<Form
 									className="add-company-data-form"
