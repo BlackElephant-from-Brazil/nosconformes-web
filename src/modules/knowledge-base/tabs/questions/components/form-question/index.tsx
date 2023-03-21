@@ -16,6 +16,7 @@ import { enqueueSnackbar } from 'notistack'
 import { handleApiError } from 'utils/handle-api-error'
 import { isObjectEmpty } from 'utils/is-object-empty'
 import { generateRandomCode } from 'utils/generate-random-code'
+import { createFilterOptions } from '@mui/material'
 import { AnswerGroup, Container } from './styles'
 
 type QuestionForm = {
@@ -26,22 +27,24 @@ type QuestionForm = {
 }
 
 type Func = {
-	name: Question['funcs'][0]
+	name: Question['func']
 	label: string
 }
 
 type Grouping = {
 	_eq: string
-	label: string
+	name: string
 }
 
 type Tag = {
-	_eq: string
+	_eq?: string
+	inputValue?: string
 	label: string
 }
 
 type Reference = {
-	_eq: string
+	_eq?: string
+	inputValue?: string
 	label: string
 }
 
@@ -51,39 +54,6 @@ const availableFuncs: Func[] = [
 	{ name: 'detect', label: 'Detect' },
 	{ name: 'respond', label: 'Respond' },
 	{ name: 'recover', label: 'Recover' },
-]
-
-const availableGroupings: Grouping[] = [
-	{
-		_eq: 'valid-id-1',
-		label: 'Análise de risco',
-	},
-	{
-		_eq: 'valid-id-2',
-		label: 'Análise de vulnerabilidade',
-	},
-]
-
-const availableTags: Tag[] = [
-	{
-		_eq: 'valid-id-1',
-		label: 'ISO 27.001',
-	},
-	{
-		_eq: 'valid-id-2',
-		label: 'ISO 27.002',
-	},
-]
-
-const availableReferences: Reference[] = [
-	{
-		_eq: 'valid-id-1',
-		label: 'Classificação de informações',
-	},
-	{
-		_eq: 'valid-id-2',
-		label: 'Classificação de risco',
-	},
 ]
 
 type FormQuestionProps = {
@@ -97,7 +67,7 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 	toggleDrawer,
 	question,
 }) => {
-	const [selectedFuncs, setSelectedFuncs] = React.useState<Func[]>([])
+	const [selectedFunc, setSelectedFunc] = React.useState<Func>()
 	const [selectedGoupings, setSelectedGroupings] = React.useState<Grouping[]>(
 		[],
 	)
@@ -114,6 +84,67 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 	const [errorFuncs, setErrorFuncs] = useState(false)
 	const [errorTags, setErrorTags] = useState(false)
 	const [errorReferences, setErrorReferences] = useState(false)
+	const [availableGroupings, setAvailableGroupings] = useState<Grouping[]>([])
+	const [groupingsOpen, setGroupingsOpen] = useState(false)
+	const [availableTags, setAvailableTags] = useState<Tag[]>([])
+	const [tagsOpen, setTagsOpen] = useState(false)
+	const [availableReferences, setAvailableReferences] = useState<Reference[]>(
+		[],
+	)
+	const [referencesOpen, setReferencesOpen] = useState(false)
+	const filterTag = createFilterOptions<Tag>()
+	const filterReference = createFilterOptions<Reference>()
+	const [
+		partialAccordingAllowInformation,
+		setPartialAccordingAllowInformation,
+	] = useState(true)
+	const [nonAccordingAllowInformation, setNonAccordingAllowInformation] =
+		useState(true)
+
+	useEffect(() => {
+		if (!groupingsOpen) {
+			setAvailableGroupings([])
+		} else {
+			;(async () => {
+				try {
+					const { data } = await api.get('/groupings')
+					setAvailableGroupings(data)
+				} catch (error) {
+					handleApiError(error)
+				}
+			})()
+		}
+	}, [groupingsOpen, setAvailableGroupings])
+
+	useEffect(() => {
+		if (!tagsOpen) {
+			setAvailableTags([])
+		} else {
+			;(async () => {
+				try {
+					const { data } = await api.get('/tags')
+					setAvailableTags(data)
+				} catch (error) {
+					handleApiError(error)
+				}
+			})()
+		}
+	}, [tagsOpen, setAvailableTags])
+
+	useEffect(() => {
+		if (!referencesOpen) {
+			setAvailableReferences([])
+		} else {
+			;(async () => {
+				try {
+					const { data } = await api.get('/references')
+					setAvailableReferences(data)
+				} catch (error) {
+					handleApiError(error)
+				}
+			})()
+		}
+	}, [referencesOpen, setAvailableReferences])
 
 	useEffect(() => {
 		if (question && !isObjectEmpty(question)) {
@@ -160,6 +191,14 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 		}
 	}, [question])
 
+	const togglePartialAccordingAllowInformation = () => {
+		setPartialAccordingAllowInformation(!partialAccordingAllowInformation)
+	}
+
+	const toggleNonAccordingAllowInformation = () => {
+		setNonAccordingAllowInformation(!nonAccordingAllowInformation)
+	}
+
 	const handleFormQuestionSubmit: SubmitHandler<QuestionForm> = async data => {
 		setDisplayErrors('')
 		setErrorFuncs(false)
@@ -168,15 +207,25 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 		const questionData = {
 			id: 'NC QQCOISA22',
 			question: data.question.trim(),
-			funcs: [...selectedFuncs.map(func => func.name)],
+			func: selectedFunc?.name,
 			groupings: [...selectedGoupings.map(grouping => grouping._eq)],
-			tags: [...selectedTags.map(tag => tag._eq)],
-			references: [...selectedReferences.map(reference => reference._eq)],
+			tags: [
+				...selectedTags.map(tag => {
+					return tag._eq === undefined ? tag.label : tag._eq
+				}),
+			],
+			references: [
+				...selectedReferences.map(reference =>
+					reference._eq === undefined ? reference.label : reference._eq,
+				),
+			],
 			threat: data.threat.trim(),
 			recommendation: data.recommendation.trim(),
 			description: data.description.trim(),
 			accordingButtons: [...accordingButtons],
 			partialAccordingButtons: [...partialAccordingButtons],
+			partialAccordingAllowInformation,
+			nonAccordingAllowInformation,
 		}
 
 		try {
@@ -204,8 +253,6 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 				),
 			})
 
-			console.log(questionData)
-
 			await schema.validate(questionData, {
 				abortEarly: false,
 			})
@@ -219,7 +266,6 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 
 		try {
 			if (question && !isObjectEmpty(question)) {
-				console.log('put')
 				await api.put(`/questions/${question._eq}`, {
 					...questionData,
 				})
@@ -227,7 +273,6 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 					variant: 'success',
 				})
 			} else {
-				console.log('post')
 				await api.post('/questions', {
 					...questionData,
 				})
@@ -305,10 +350,12 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 					<h3>Função</h3>
 					<Autocomplete
 						error={errorFuncs}
-						handleChange={(_, funcs: any) => setSelectedFuncs(funcs as Func[])}
+						handleChange={(_, func: any) => setSelectedFunc(func)}
 						options={availableFuncs}
-						selectedValues={selectedFuncs}
+						selectedValues={selectedFunc}
 						optionLabel={func => func.label}
+						multiple={false}
+						disableCloseOnSelect={false}
 					/>
 				</div>
 				<div className="form-autocomplete">
@@ -321,29 +368,90 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 						}
 						options={availableGroupings}
 						selectedValues={selectedGoupings}
-						optionLabel={grouping => grouping.label}
+						optionLabel={grouping => grouping.name}
+						open={groupingsOpen}
+						setOpen={() => setGroupingsOpen(true)}
+						setClose={() => setGroupingsOpen(false)}
+						loading={groupingsOpen && availableGroupings.length === 0}
+						isOptionEqualToValue={(option, value) => option._eq === value._eq}
 					/>
 				</div>
 				<div className="form-autocomplete">
 					<h3>Tag</h3>
 					<Autocomplete
 						error={errorTags}
-						handleChange={(_, tags: any) => setSelectedTags(tags as Tag[])}
+						handleChange={(_, tags: any) => {
+							if (tags[tags.length - 1]?.inputValue) {
+								const newTag = { label: tags[tags.length - 1].inputValue }
+								const tagsToSave = tags.filter(
+									(tag: any) => tag.inputValue === undefined,
+								)
+								setSelectedTags([...tagsToSave, newTag])
+							} else {
+								setSelectedTags(tags)
+							}
+						}}
+						filterOptions={(options, params) => {
+							const filtered = filterTag(options, params)
+							const { inputValue } = params
+							const isExisting = options.some(
+								option => inputValue === option.label,
+							)
+							if (inputValue !== '' && !isExisting) {
+								filtered.push({
+									inputValue,
+									label: `Criar tag "${inputValue}"`,
+								})
+							}
+
+							return filtered
+						}}
 						options={availableTags}
 						selectedValues={selectedTags}
 						optionLabel={tag => tag.label}
+						open={tagsOpen}
+						setOpen={() => setTagsOpen(true)}
+						setClose={() => setTagsOpen(false)}
 					/>
 				</div>
 				<div className="form-autocomplete">
 					<h3>Referência</h3>
 					<Autocomplete
 						error={errorReferences}
-						handleChange={(_, references: any) =>
-							setSelectedReferences(references as Reference[])
-						}
+						handleChange={(_, references: any) => {
+							if (references[references.length - 1]?.inputValue) {
+								const newReference = {
+									label: references[references.length - 1].inputValue,
+								}
+								const referencesToSave = references.filter(
+									(reference: any) => reference.inputValue === undefined,
+								)
+								setSelectedReferences([...referencesToSave, newReference])
+							} else {
+								setSelectedReferences(references)
+							}
+						}}
+						filterOptions={(options, params) => {
+							const filtered = filterReference(options, params)
+							const { inputValue } = params
+							const isExisting = options.some(
+								option => inputValue === option.label,
+							)
+							if (inputValue !== '' && !isExisting) {
+								filtered.push({
+									inputValue,
+									label: `Criar referência "${inputValue}"`,
+								})
+							}
+
+							return filtered
+						}}
 						options={availableReferences}
 						selectedValues={selectedReferences}
 						optionLabel={reference => reference.label}
+						open={referencesOpen}
+						setOpen={() => setReferencesOpen(true)}
+						setClose={() => setReferencesOpen(false)}
 					/>
 				</div>
 				<div className="form-input">
@@ -402,7 +510,10 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 						<hr />
 						<div className="switch-field">
 							<p>Permitir que usuário deixe um comentário</p>
-							<Switch />
+							<Switch
+								value={partialAccordingAllowInformation}
+								onChange={togglePartialAccordingAllowInformation}
+							/>
 						</div>
 						<div className="button-field">
 							<Button
@@ -448,7 +559,10 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 						<hr />
 						<div className="switch-field">
 							<p>Permitir que usuário deixe um comentário</p>
-							<Switch />
+							<Switch
+								value={nonAccordingAllowInformation}
+								onChange={toggleNonAccordingAllowInformation}
+							/>
 						</div>
 					</div>
 				</AnswerGroup>

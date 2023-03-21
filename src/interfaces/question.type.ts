@@ -4,18 +4,18 @@ type Grouping = {
 }
 type Tag = {
 	_eq: string
-	text: string
+	label: string
 }
 type Reference = {
 	_eq: string
-	text: string
+	label: string
 }
 
 export type Question = {
 	_eq: string
 	id: string
 	question: string
-	funcs: Array<'protect' | 'identify' | 'detect' | 'respond' | 'recover'>
+	func: 'protect' | 'identify' | 'detect' | 'respond' | 'recover'
 	groupings: Grouping[]
 	tags: Tag[]
 	references: Reference[]

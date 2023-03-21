@@ -39,6 +39,8 @@ export const Questions: React.FC = () => {
 		null,
 	)
 	const [allGroupings, setAllGroupings] = useState<Grouping[]>([])
+	const [pages, setPages] = useState(0)
+	const [currentPage, setCurrentPage] = useState(1)
 
 	useEffect(() => {
 		;(async () => {
@@ -55,7 +57,8 @@ export const Questions: React.FC = () => {
 		;(async () => {
 			try {
 				const { data } = await api.get('/questions')
-				setQuestions(data)
+				setQuestions(data.findQuestions)
+				setPages(data.pageCount)
 			} catch (error) {
 				handleApiError(error)
 			}
@@ -117,7 +120,8 @@ export const Questions: React.FC = () => {
 			const { data: findQuestions } = await api.get(
 				`/questions?query=${searchInputValue}`,
 			)
-			setQuestions(findQuestions)
+			setQuestions(findQuestions.findQuestions)
+			setPages(findQuestions.pageCount)
 		} catch (err) {
 			handleApiError(err)
 		}
@@ -236,29 +240,27 @@ export const Questions: React.FC = () => {
 						onClick={() => handleOpenEditQuestion(question._eq)}
 						role="presentation"
 					>
-						{question.funcs.map(func => (
-							<Chip
-								className={func}
-								info={capitalizeFirstLetter(func)}
-								key={func}
-							/>
+						<Chip
+							className={question.func}
+							info={capitalizeFirstLetter(question.func)}
+							key={question.func}
+						/>
+					</td>
+					<td
+						onClick={() => handleOpenEditQuestion(question._eq)}
+						role="presentation"
+					>
+						{question.tags.map(tag => (
+							<Chip info={tag.label} />
 						))}
 					</td>
 					<td
 						onClick={() => handleOpenEditQuestion(question._eq)}
 						role="presentation"
 					>
-						<Chip info="Uma tag bem complexa" />
-						<Chip info="Uma tag bem complexa e muito grande também que precisaria ser quebrada" />
-						{/* <p>{question.tags[0].text}</p> */}
-					</td>
-					<td
-						onClick={() => handleOpenEditQuestion(question._eq)}
-						role="presentation"
-					>
-						<Chip info="Uma referência bem complexa" />
-						<Chip info="Uma referência bem complexa e muito grande também que precisaria ser quebrada" />
-						{/* <p>{question.references[0]?.text}</p> */}
+						{question.references.map(ref => (
+							<Chip info={ref.label} />
+						))}
 					</td>
 				</tr>
 			)
@@ -269,9 +271,26 @@ export const Questions: React.FC = () => {
 	const reloadTable = async () => {
 		try {
 			const { data } = await api.get('/questions')
-			setQuestions(data)
+			setQuestions(data.findQuestions)
+			setPages(data.pageCount)
 		} catch (error) {
 			handleApiError(error)
+		}
+	}
+
+	const handleSelectPage = async (page: number) => {
+		const searchInputValue =
+			formSearchInputRef.current?.getFieldValue('searchQuestion')
+
+		try {
+			const { data: findQuestions } = await api.get(
+				`/questions?query=${searchInputValue}&page=${page}`,
+			)
+			setQuestions(findQuestions.findQuestions)
+			setPages(findQuestions.pageCount)
+			setCurrentPage(page)
+		} catch (err) {
+			handleApiError(err)
 		}
 	}
 
@@ -313,6 +332,9 @@ export const Questions: React.FC = () => {
 				className="table-questions"
 				selectAllRows={toggleSelectAllRows}
 				isSelectable
+				pages={pages}
+				currentPage={currentPage}
+				selectPage={handleSelectPage}
 			/>
 			<RightDrawer toggleDrawer={toggleDrawer} drawerOpen={drawerOpen}>
 				<AddNewQuestionContainer>

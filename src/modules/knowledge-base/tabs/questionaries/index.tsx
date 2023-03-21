@@ -85,7 +85,9 @@ export const Questionaries: React.FC<QuestionariesProps> = ({
 							onClick={() => handleOpenQuestionaryDetails(questionary._eq)}
 							role="presentation"
 						>
-							{questionary.name}
+							{questionary.name === ''
+								? '(Questionário sem nome)'
+								: questionary.name}
 						</h3>
 						<div className="clients-list">
 							<p className="clients">Clientes</p>

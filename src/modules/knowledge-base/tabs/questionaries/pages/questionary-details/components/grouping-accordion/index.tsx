@@ -148,9 +148,10 @@ export const GroupingAccordion: React.FC<GroupingAccordionProps> = ({
 						onClick={() => handleCheckChange(question._eq)}
 						role="presentation"
 					>
-						{question.funcs?.map(func => (
-							<Chip className={func} info={capitalizeFirstLetter(func)} />
-						))}
+						<Chip
+							className={question.func}
+							info={capitalizeFirstLetter(question.func)}
+						/>
 					</td>
 					<td
 						onClick={() => handleCheckChange(question._eq)}

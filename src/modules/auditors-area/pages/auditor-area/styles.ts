@@ -156,7 +156,7 @@ export const SelectCompany = styled.div<SelectCompanyProps>`
 			width: 50px;
 			height: 50px;
 			margin-left: 32px;
-			object-fit: contain;
+			object-fit: cover;
 			border-radius: 50%;
 		}
 
@@ -231,7 +231,7 @@ export const SelectCompany = styled.div<SelectCompanyProps>`
 				img {
 					width: 50px;
 					height: 50px;
-					object-fit: contain;
+					object-fit: cover;
 					border-radius: 50%;
 				}
 
