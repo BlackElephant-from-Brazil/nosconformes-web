@@ -101,6 +101,12 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 	const [nonAccordingAllowInformation, setNonAccordingAllowInformation] =
 		useState(true)
 	const [questionId, setQuestionId] = useState<string>('')
+	const [selectedPriority, setSelectedPriority] = useState<number>()
+	const [errorPriority, setErrorPriority] = useState(false)
+	const [selectedProbability, setSelectedProbability] = useState<number>()
+	const [errorProbability, setErrorProbability] = useState(false)
+	const [selectedImpact, setSelectedImpact] = useState<number>()
+	const [errorImpact, setErrorImpact] = useState(false)
 
 	useEffect(() => {
 		if (!groupingsOpen) {
@@ -235,6 +241,9 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 					reference._eq === undefined ? reference.label : reference._eq,
 				),
 			],
+			priority: selectedPriority,
+			probability: selectedProbability,
+			impact: selectedImpact,
 			threat: data.threat.trim(),
 			recommendation: data.recommendation.trim(),
 			description: data.description.trim(),
@@ -468,6 +477,52 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 						open={referencesOpen}
 						setOpen={() => setReferencesOpen(true)}
 						setClose={() => setReferencesOpen(false)}
+					/>
+				</div>
+				<div className="form-autocomplete">
+					<h3>Prioridade</h3>
+					<Autocomplete
+						error={errorPriority}
+						handleChange={(_, priority: any) =>
+							setSelectedPriority(priority.value)
+						}
+						options={[
+							{ label: 'Baixa', value: 1 },
+							{ label: 'Média', value: 2 },
+							{ label: 'Alta', value: 3 },
+							{ label: 'Crítica', value: 4 },
+							{ label: 'Extrema', value: 5 },
+						]}
+						selectedValues={selectedPriority}
+						optionLabel={priority => priority.label}
+						multiple={false}
+						disableCloseOnSelect={false}
+					/>
+				</div>
+				<div className="form-autocomplete">
+					<h3>Probabilidade</h3>
+					<Autocomplete
+						error={errorProbability}
+						handleChange={(_, probability: any) =>
+							setSelectedProbability(probability)
+						}
+						options={[1, 2, 3, 4, 5]}
+						selectedValues={selectedProbability}
+						optionLabel={probability => probability}
+						multiple={false}
+						disableCloseOnSelect={false}
+					/>
+				</div>
+				<div className="form-autocomplete">
+					<h3>Impacto</h3>
+					<Autocomplete
+						error={errorImpact}
+						handleChange={(_, impact: any) => setSelectedImpact(impact)}
+						options={[1, 2, 3, 4, 5]}
+						selectedValues={selectedImpact}
+						optionLabel={impact => impact}
+						multiple={false}
+						disableCloseOnSelect={false}
 					/>
 				</div>
 				<div className="form-input">
