@@ -270,7 +270,7 @@ export const AuditorArea: React.FC = () => {
 											/>
 										</div>
 									)}
-									{questionaries.map((questionary, index) => (
+									{questionaries.map(questionary => (
 										<div className="questionary" key={questionary._eq}>
 											<p className="questionary-title">
 												Questionário:{' '}

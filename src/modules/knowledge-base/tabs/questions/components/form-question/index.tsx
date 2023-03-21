@@ -100,6 +100,7 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 	] = useState(true)
 	const [nonAccordingAllowInformation, setNonAccordingAllowInformation] =
 		useState(true)
+	const [questionId, setQuestionId] = useState<string>('')
 
 	useEffect(() => {
 		if (!groupingsOpen) {
@@ -191,6 +192,21 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 		}
 	}, [question])
 
+	useEffect(() => {
+		;(async () => {
+			try {
+				if (!question || isObjectEmpty(question)) {
+					const { data } = await api.get('questions/new-id')
+					setQuestionId(data)
+				} else {
+					setQuestionId(question.id)
+				}
+			} catch (error) {
+				handleApiError(error)
+			}
+		})()
+	}, [question])
+
 	const togglePartialAccordingAllowInformation = () => {
 		setPartialAccordingAllowInformation(!partialAccordingAllowInformation)
 	}
@@ -205,7 +221,7 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 		setErrorReferences(false)
 		setErrorTags(false)
 		const questionData = {
-			id: 'NC QQCOISA22',
+			id: questionId,
 			question: data.question.trim(),
 			func: selectedFunc?.name,
 			groupings: [...selectedGoupings.map(grouping => grouping._eq)],
@@ -337,7 +353,7 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 		<Container>
 			<Form onSubmit={handleFormQuestionSubmit} ref={formRef}>
 				<div className="id">
-					<h2>ID NC221009-02</h2>
+					<h2>{questionId}</h2>
 					<FileCopyIcon />
 				</div>
 				<Input
