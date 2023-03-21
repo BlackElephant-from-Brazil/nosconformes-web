@@ -52,11 +52,10 @@ export const Profile: React.FC = () => {
 	const formRef = React.useRef<FormHandles>(null)
 	const [userData, setUserData] = useState({} as User)
 	const [displayErrors, setDisplayErrors] = useState('')
-	const { user } = useAuth()
+	const { user, updateUser } = useAuth()
 
 	useEffect(() => {
-		// eslint-disable-next-line prettier/prettier
-		; (async () => {
+		;(async () => {
 			try {
 				const { data } = await api.get(`/users/${user._eq}`)
 				setUserData({ ...data, password: '**********' })
@@ -80,20 +79,20 @@ export const Profile: React.FC = () => {
 		if (data.password === '**********') {
 			delete data.password
 			profileData = {
-				name: data.name,
-				email: data.email,
+				name: data.name.trim(),
+				email: data.email.trim(),
 				phone,
-				office: data.office,
-				accessLevel: data.accessLevel,
+				office: data.office.trim(),
+				accessLevel: data.accessLevel.trim(),
 			}
 		} else {
 			profileData = {
-				name: data.name,
-				email: data.email,
+				name: data.name.trim(),
+				email: data.email.trim(),
 				phone,
-				office: data.office,
-				password: data.password,
-				accessLevel: data.accessLevel,
+				office: data.office.trim(),
+				password: data.password?.trim(),
+				accessLevel: data.accessLevel.trim(),
 			}
 		}
 
@@ -151,6 +150,34 @@ export const Profile: React.FC = () => {
 		formRef.current?.submitForm()
 	}
 
+	const handleDeleteUserPic = async () => {
+		try {
+			await api.delete(`/users/${user._eq}/photo`)
+			enqueueSnackbar('Foto de perfil removida com sucesso!', {
+				variant: 'success',
+			})
+			setUserData({ ...userData, profilePicture: '' })
+			updateUser({ ...user, profilePicture: '' })
+		} catch (err) {
+			handleApiError(err)
+		}
+	}
+
+	const handleUploadUserProfilePicture = async (file: File) => {
+		try {
+			const data = new FormData()
+			data.append('photo', file)
+			const response = await api.post(`/users/${user._eq}/photo`, data)
+			enqueueSnackbar('Foto de perfil atualizada com sucesso!', {
+				variant: 'success',
+			})
+			setUserData({ ...userData, profilePicture: response.data })
+			updateUser({ ...user, profilePicture: response.data })
+		} catch (err) {
+			handleApiError(err)
+		}
+	}
+
 	return (
 		<Container>
 			<Button
@@ -164,7 +191,11 @@ export const Profile: React.FC = () => {
 				onSubmit={handleSubmitFormUpdateProfile}
 				className="form"
 			>
-				<ImageUploader />
+				<ImageUploader
+					onDelete={handleDeleteUserPic}
+					initialImage={user.profilePicture}
+					onEdit={handleUploadUserProfilePicture}
+				/>
 				<Input label="Nome" name="name" />
 				<Input label="Email" name="email" />
 				<Input label="Telefone" name="phone" />

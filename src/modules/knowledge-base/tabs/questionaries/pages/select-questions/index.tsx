@@ -32,12 +32,15 @@ export const SelectQuestions: React.FC<SelectQuestionsProps> = ({
 	const [questions, setQuestions] = React.useState<Question[]>([])
 	const [selectedQuestions, setSelectedQuestions] = useState<string[]>([])
 	const [saveDialogOpen, setSaveDialogOpen] = useState(false)
+	const [pages, setPages] = useState(0)
+	const [currentPage, setCurrentPage] = useState(1)
 
 	useEffect(() => {
 		;(async () => {
 			try {
 				const { data } = await api.get('/questions')
-				setQuestions(data)
+				setQuestions(data.findQuestions)
+				setPages(data.pageCount)
 			} catch (error) {
 				handleApiError(error)
 			}
@@ -121,6 +124,22 @@ export const SelectQuestions: React.FC<SelectQuestionsProps> = ({
 		openTab('/detalhes-do-questionario')
 	}
 
+	const handleSelectPage = async (page: number) => {
+		const searchInputValue =
+			formSearchInputRef.current?.getFieldValue('searchQuestion')
+
+		try {
+			const { data } = await api.get(
+				`/questions?query=${searchInputValue}&page=${page}`,
+			)
+			setQuestions(data.findQuestions)
+			setPages(data.pageCount)
+			setCurrentPage(page)
+		} catch (err) {
+			handleApiError(err)
+		}
+	}
+
 	const renderTableBodyInfo = () => {
 		const renderedTableRow = questions.map(question => {
 			return (
@@ -151,13 +170,11 @@ export const SelectQuestions: React.FC<SelectQuestionsProps> = ({
 						onClick={() => handleCheckChange(question._eq)}
 						role="presentation"
 					>
-						{question.funcs.map(func => (
-							<Chip
-								className={func}
-								info={capitalizeFirstLetter(func)}
-								key={func}
-							/>
-						))}
+						<Chip
+							className={question.func}
+							info={capitalizeFirstLetter(question.func)}
+							key={question.func}
+						/>
 					</td>
 					<td
 						onClick={() => handleCheckChange(question._eq)}
@@ -194,8 +211,8 @@ export const SelectQuestions: React.FC<SelectQuestionsProps> = ({
 					className="search-input"
 				>
 					<Input
-						name="searchGrouping"
-						placeholder="Pesquise por agrupamento, pergunta, função, tag, ou referência"
+						name="searchQuestion"
+						placeholder="Pesquise por nome da pergunta"
 						endAdornmentIcon={<SearchRoundedIcon />}
 						onChange={handleSearchInputChange}
 					/>
@@ -208,6 +225,9 @@ export const SelectQuestions: React.FC<SelectQuestionsProps> = ({
 					className="table-questions"
 					selectAllRows={toggleSelectAllRows}
 					isSelectable
+					pages={pages}
+					currentPage={currentPage}
+					selectPage={handleSelectPage}
 				/>
 			</div>
 			<Button

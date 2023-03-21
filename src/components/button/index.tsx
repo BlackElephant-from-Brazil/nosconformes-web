@@ -1,5 +1,6 @@
 import React from 'react'
 import excelIcon from 'assets/excel-icon.png'
+import { CircularProgress } from '@mui/material'
 import { StyledButton } from './styles'
 
 export type ButtonProps = {
@@ -17,6 +18,7 @@ export type ButtonProps = {
 	startIcon?: JSX.Element
 	type?: 'submit' | 'button' | 'reset'
 	testid?: string
+	isLoading?: boolean
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -28,6 +30,7 @@ const Button: React.FC<ButtonProps> = ({
 	startIcon,
 	type,
 	testid,
+	isLoading,
 }) => {
 	return (
 		<StyledButton
@@ -42,9 +45,23 @@ const Button: React.FC<ButtonProps> = ({
 			buttonstyle={variant}
 			endIcon={endIcon || null}
 			startIcon={startIcon || null}
+			disabled={isLoading}
 		>
 			{text}
 			{variant === 'excel' && <img src={excelIcon} alt="Ícone do excel" />}
+			{isLoading && (
+				<CircularProgress
+					size={24}
+					sx={{
+						color: '#1F4CD5',
+						position: 'absolute',
+						top: '50%',
+						left: '50%',
+						marginTop: '-12px',
+						marginLeft: '-12px',
+					}}
+				/>
+			)}
 		</StyledButton>
 	)
 }

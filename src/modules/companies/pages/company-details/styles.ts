@@ -16,6 +16,7 @@ export const Container = styled.div`
 
 export const TabCompanyDetails = styled.ul<TabCompanyDetailsProps>`
 	list-style: none;
+	margin-top: 80px;
 
 	.tab-header {
 		display: flex;
@@ -105,32 +106,6 @@ export const TabCompanyDetails = styled.ul<TabCompanyDetailsProps>`
 		display: ${({ active }) => (active === TAB_COMPANY_DATA ? 'flex' : 'none')};
 		flex-direction: column;
 		align-items: center;
-
-		.company-photo {
-			background: #242424;
-			width: 162px;
-			height: 162px;
-			border-radius: 50%;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			margin-bottom: 10px;
-
-			svg {
-				width: 52px;
-				height: 52px;
-				color: #6d7c99;
-			}
-
-			p {
-				font-family: 'Inter';
-				font-size: 12px;
-				color: #ffffff;
-				font-weight: 700;
-				text-align: center;
-			}
-		}
 	}
 
 	.manager-data {

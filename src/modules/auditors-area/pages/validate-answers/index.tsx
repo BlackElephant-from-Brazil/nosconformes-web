@@ -32,6 +32,9 @@ export const ValidateAnswers: React.FC = () => {
 	const formSendMessageRef = React.useRef<FormHandles>(null)
 	const { groupingId, companyId } = useParams()
 	const navigate = useNavigate()
+	const [isLoading, setIsLoading] = useState(true)
+	const [buttonSendMessageLoading, setButtonSendMessageLoading] =
+		useState(false)
 
 	useEffect(() => {
 		;(async () => {
@@ -41,6 +44,7 @@ export const ValidateAnswers: React.FC = () => {
 				setAnalyzingQuestions(data.questions)
 				setSelectedAnalyzingAnswer(data.questions[0])
 				data.questions.shift()
+				setIsLoading(false)
 			} catch (error) {
 				handleApiError(error)
 			}
@@ -121,21 +125,26 @@ export const ValidateAnswers: React.FC = () => {
 	const toggleChatDrawer = () => setChatDrawerOpen(!chatDrawerOpen)
 
 	const handleSendMessage = async () => {
+		setButtonSendMessageLoading(true)
 		try {
-			const message = formSendMessageRef.current?.getFieldValue('message')
+			const message = formSendMessageRef.current
+				?.getFieldValue('message')
+				.trim()
 			await api.post(`/answers/${selectedAnalyzingAnswer._eq}/messages`, {
 				message,
 			})
 			formSendMessageRef.current?.reset()
+			setButtonSendMessageLoading(false)
 		} catch (error) {
 			handleApiError(error)
+			setButtonSendMessageLoading(false)
 		}
 	}
 
 	return (
 		<Container>
 			<Header icon={<PeopleIcon />} title="Área do auditor" />
-			<Body cardContext>
+			<Body cardContext isLoading={isLoading}>
 				<div className="page-wrapper">
 					<div className="page-header">
 						<BackButton handleClick={handleBackButtonClick} />
@@ -227,6 +236,7 @@ export const ValidateAnswers: React.FC = () => {
 									variant="primary"
 									onClick={handleSendMessage}
 									className="send-message-button"
+									isLoading={buttonSendMessageLoading}
 								/>
 							</Form>
 						</div>

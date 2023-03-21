@@ -7,12 +7,11 @@ type ContainerProps = {
 export const Container = styled(Autocomplete)<ContainerProps>(props => ({
 	'& .MuiAutocomplete-inputRoot': {
 		borderRadius: 8,
-		background: '#E9EFF5',
-		backgroundColor: '#E9EFF5',
+		backgroundColor: '#ffffff',
 		borderColor: '#E9EFF5',
 
 		'& fieldset': {
-			borderColor: props.error ? '#d32f2f' : '#FFFFFF',
+			borderColor: props.error ? '#d32f2f' : '#99A7C2',
 		},
 
 		'&:hover fieldset': {

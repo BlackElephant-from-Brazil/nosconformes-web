@@ -54,6 +54,7 @@ export const UserForm: React.FC<UserFormProps> = ({
 }) => {
 	const formRef = React.useRef<FormHandles>(null)
 	const [displayErrors, setDisplayErrors] = useState('')
+	const [profilePicture, setProfilePicture] = useState('')
 
 	useEffect(() => {
 		if (user) {
@@ -64,6 +65,7 @@ export const UserForm: React.FC<UserFormProps> = ({
 				office: user.office,
 				accessLevel: user.accessLevel,
 			})
+			setProfilePicture(user.profilePicture)
 		}
 	}, [user])
 
@@ -71,11 +73,11 @@ export const UserForm: React.FC<UserFormProps> = ({
 		setDisplayErrors('')
 		const phone = revertPhone(data.phone)
 		const userData = {
-			name: data.name,
-			email: data.email,
+			name: data.name.trim(),
+			email: data.email.trim(),
 			phone,
-			office: data.office,
-			accessLevel: data.accessLevel,
+			office: data.office.trim(),
+			accessLevel: data.accessLevel.trim(),
 		}
 
 		try {
@@ -122,9 +124,40 @@ export const UserForm: React.FC<UserFormProps> = ({
 			handleApiError(err)
 		}
 	}
+
+	const handleDeleteUserPic = async () => {
+		try {
+			await api.delete(`/users/${user?._eq}/photo`)
+			enqueueSnackbar('Foto de perfil removida com sucesso!', {
+				variant: 'success',
+			})
+			setProfilePicture('')
+		} catch (err) {
+			handleApiError(err)
+		}
+	}
+
+	const handleUploadUserProfilePicture = async (file: File) => {
+		try {
+			const data = new FormData()
+			data.append('photo', file)
+			const response = await api.post(`/users/${user?._eq}/photo`, data)
+			enqueueSnackbar('Foto de perfil atualizada com sucesso!', {
+				variant: 'success',
+			})
+			setProfilePicture(response.data.profilePicture)
+		} catch (err) {
+			handleApiError(err)
+		}
+	}
+
 	return (
 		<Container>
-			<ImageUploader />
+			<ImageUploader
+				onDelete={handleDeleteUserPic}
+				initialImage={profilePicture}
+				onEdit={handleUploadUserProfilePicture}
+			/>
 			<div className="space" />
 			<Form onSubmit={handleSubmitFormUser} ref={formRef}>
 				<Input name="name" label="Nome" />

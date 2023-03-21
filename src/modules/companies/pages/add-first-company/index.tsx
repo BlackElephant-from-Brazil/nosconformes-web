@@ -17,8 +17,7 @@ const AddFirstCompany: React.FC = () => {
 	}
 
 	useEffect(() => {
-		// eslint-disable-next-line prettier/prettier
-		; (async () => {
+		;(async () => {
 			const { data } = await api.get('/companies')
 			if (data.length > 0) {
 				navigate('/empresas')

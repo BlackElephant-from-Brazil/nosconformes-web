@@ -33,11 +33,14 @@ export const Login: React.FC = () => {
 	const navigate = useNavigate()
 	const { signIn } = useAuth()
 	const formRef = useRef<FormHandles>(null)
-
 	const [displayError, setDisplayError] = useState<string>('')
 
 	const handleSubmitFormLogin: SubmitHandler<LoginForm> = async data => {
 		setDisplayError('')
+		const userLoginData = {
+			email: data.email.trim(),
+			password: data.password.trim(),
+		}
 		try {
 			const schema = Yup.object().shape({
 				email: Yup.string()
@@ -46,7 +49,7 @@ export const Login: React.FC = () => {
 				password: Yup.string().required(errorMessages.unfilledPass),
 			})
 
-			await schema.validate(data, {
+			await schema.validate(userLoginData, {
 				abortEarly: false,
 			})
 		} catch (err) {

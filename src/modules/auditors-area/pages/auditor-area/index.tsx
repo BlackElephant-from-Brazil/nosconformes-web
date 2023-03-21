@@ -29,6 +29,7 @@ export const AuditorArea: React.FC = () => {
 	const selectedCompanyLogoRef = React.useRef<HTMLImageElement>(null)
 	const navigate = useNavigate()
 	const formSearchCompanyRef = React.useRef<FormHandles>(null)
+	const [isLoading, setIsLoading] = React.useState(true)
 
 	useEffect(() => {
 		;(async () => {
@@ -53,6 +54,7 @@ export const AuditorArea: React.FC = () => {
 					setSelectedQuestionary(data[0])
 					data.shift()
 					setQuestionaries(data)
+					setIsLoading(false)
 				}
 			} catch (error) {
 				handleApiError(error)
@@ -123,7 +125,7 @@ export const AuditorArea: React.FC = () => {
 	return (
 		<Container>
 			<Header icon={<PeopleIcon />} title="Área do auditor" />
-			<Body cardContext>
+			<Body cardContext isLoading={isLoading}>
 				<SelectCompany selectCompanyOpen={selectCompanyOpen}>
 					<div
 						className="selected-company"
@@ -198,7 +200,12 @@ export const AuditorArea: React.FC = () => {
 						{selectedQuestionary ? (
 							<>
 								<p>
-									Questionário: <span>{selectedQuestionary.name}</span>
+									Questionário:{' '}
+									<span>
+										{selectedQuestionary.name
+											? selectedQuestionary.name
+											: '(Questionário sem nome)'}
+									</span>
 								</p>
 								<ExpandMoreIcon className="expand" />
 							</>
@@ -221,7 +228,12 @@ export const AuditorArea: React.FC = () => {
 											role="presentation"
 										>
 											<p>
-												Questionário: <span>{questionary.name}</span>
+												Questionário:{' '}
+												<span>
+													{questionary.name
+														? questionary.name
+														: '(Questionário sem nome)'}
+												</span>
 											</p>
 										</div>
 									))
@@ -247,7 +259,10 @@ export const AuditorArea: React.FC = () => {
 									{selectedQuestionary && (
 										<div className="questionary" key={selectedQuestionary._eq}>
 											<p className="questionary-title">
-												Questionário: {selectedQuestionary.name}
+												Questionário:{' '}
+												{selectedQuestionary.name
+													? selectedQuestionary.name
+													: '(Questionário sem nome)'}
 											</p>
 											<ProgressGraph
 												percentage={selectedQuestionary.percentage || 0}
@@ -255,10 +270,13 @@ export const AuditorArea: React.FC = () => {
 											/>
 										</div>
 									)}
-									{questionaries.map((questionary, index) => (
+									{questionaries.map(questionary => (
 										<div className="questionary" key={questionary._eq}>
 											<p className="questionary-title">
-												Questionário: {questionary.name}
+												Questionário:{' '}
+												{questionary.name
+													? questionary.name
+													: '(Questionário sem nome)'}
 											</p>
 											<ProgressGraph
 												percentage={questionary.percentage || 0}

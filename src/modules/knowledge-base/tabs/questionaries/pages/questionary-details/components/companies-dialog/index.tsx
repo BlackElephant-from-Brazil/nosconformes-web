@@ -10,7 +10,8 @@ import { Box } from '@mui/material'
 import { Button } from 'components/button'
 import { enqueueSnackbar } from 'notistack'
 import { Company } from 'interfaces/company.type'
-import { AuditorsDialogContent } from './styles'
+import ClearIcon from '@mui/icons-material/Clear'
+import { AuditorsDialogContent, CompanyChip } from './styles'
 
 type CompaniesDialogProps = {
 	questionaryId: string
@@ -150,6 +151,29 @@ export const CompaniesDialog: React.FC<CompaniesDialogProps> = ({
 								</Box>
 							)
 						}}
+						renderTags={(value: any, getTagProps: any) =>
+							value.map((option: any, index: any) => (
+								<CompanyChip>
+									<img
+										src={option.logo}
+										alt={`Foto da empresa: ${option.name}`}
+									/>
+									<p>{option.name}</p>
+									<div
+										className="remove-button"
+										onClick={() => {
+											const companiesToSave = selectedCompanies.filter(
+												company => company._eq !== option._eq,
+											)
+											setSelectedCompanies(companiesToSave)
+										}}
+										role="presentation"
+									>
+										<ClearIcon />
+									</div>
+								</CompanyChip>
+							))
+						}
 						label="Adicione empresas"
 					/>
 
