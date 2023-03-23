@@ -3,16 +3,18 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Question } from 'interfaces/question.type'
 import { Container } from './styles'
 
-type SelectQuestionProps = {
+type SelectAnswerProps = {
 	questions: Question[]
-	selectedQuestion: Question
+	selectedQuestion?: string
 	onSelect: (question: Question) => void
+	nonAnsweredQuestions?: Question[]
 }
 
-export const SelectQuestion: React.FC<SelectQuestionProps> = ({
+export const SelectQuestion: React.FC<SelectAnswerProps> = ({
 	questions,
 	selectedQuestion,
 	onSelect,
+	nonAnsweredQuestions,
 }) => {
 	const [isExpanded, setIsExpanded] = React.useState(false)
 
@@ -29,6 +31,16 @@ export const SelectQuestion: React.FC<SelectQuestionProps> = ({
 		onSelect(userSelectedQuestion)
 	}
 
+	if (!questions || (questions.length === 0 && !selectedQuestion)) {
+		return (
+			<Container isExpanded={false}>
+				<div className="selected-question unclickable">
+					<h3>Nenhuma pergunta foi encontrada...</h3>
+				</div>
+			</Container>
+		)
+	}
+
 	return (
 		<Container isExpanded={isExpanded}>
 			<div
@@ -36,7 +48,7 @@ export const SelectQuestion: React.FC<SelectQuestionProps> = ({
 				onClick={toggleExpand}
 				role="presentation"
 			>
-				{selectedQuestion && <h3>{selectedQuestion.question}</h3>}
+				{selectedQuestion && <h3>{selectedQuestion}</h3>}
 				<ExpandMoreIcon />
 			</div>
 			<div className="question-list">
@@ -45,9 +57,18 @@ export const SelectQuestion: React.FC<SelectQuestionProps> = ({
 						onClick={() => handleSelectQuestion(question._eq)}
 						role="presentation"
 					>
-						{question.question}
+						{question.question ? 'Selecione uma pergunta' : question.question}
 					</h3>
 				))}
+				{nonAnsweredQuestions &&
+					nonAnsweredQuestions.map(question => (
+						<h3
+							onClick={() => handleSelectQuestion(question._eq)}
+							role="presentation"
+						>
+							{question.question}
+						</h3>
+					))}
 			</div>
 		</Container>
 	)

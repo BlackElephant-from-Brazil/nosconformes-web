@@ -58,6 +58,10 @@ export const Container = styled.div<ContainerProps>`
 		}
 	}
 
+	.unclickable {
+		cursor: inherit;
+	}
+
 	.question-list {
 		display: flex;
 		width: 100%;

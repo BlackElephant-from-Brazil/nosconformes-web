@@ -10,41 +10,64 @@ import { Question } from 'interfaces/question.type'
 import { handleApiError } from 'utils/handle-api-error'
 import { api } from 'api'
 import { Grouping } from 'interfaces/grouping.type'
-import { Button } from 'components/button'
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import CancelIcon from '@mui/icons-material/Cancel'
-import ModeCommentIcon from '@mui/icons-material/ModeComment'
-import { RightDrawer } from 'components/right-drawer'
-import CloseIcon from '@mui/icons-material/Close'
-import { Form } from '@unform/web'
-import { Input } from 'components/input'
-import { FormHandles } from '@unform/core'
-import { ChatDrawerContainer, Container, Message } from './styles'
-import { SelectQuestion } from './components/select-question'
-import { QuestionDetails } from './components/question-details'
+import { Container } from './styles'
+import { SelectQuestion } from './components/select-answer'
+import { AnswerDetails } from './components/answer-details'
+import { ContextButtons } from './components/context-buttons'
 
 export const ValidateAnswers: React.FC = () => {
-	const [chatDrawerOpen, setChatDrawerOpen] = useState(false)
-	const [analyzingQuestions, setAnalyzingQuestions] = useState<Question[]>([])
-	const [selectedAnalyzingAnswer, setSelectedAnalyzingAnswer] =
-		useState<Question>({} as Question)
 	const [grouping, setGrouping] = useState<Grouping>()
-	const formSendMessageRef = React.useRef<FormHandles>(null)
 	const { groupingId, companyId } = useParams()
 	const navigate = useNavigate()
 	const [isLoading, setIsLoading] = useState(true)
-	const [buttonSendMessageLoading, setButtonSendMessageLoading] =
-		useState(false)
+	const [approvedAnsweredQuestions, setApprovedAnsweredQuestions] = useState<
+		Question[]
+	>([])
+	const [selectedApprovedAnswer, setSelectedApprovedAnswer] =
+		useState<Question>()
+	const [rejectedAnsweredQuestions, setRejectedAnsweredQuestions] = useState<
+		Question[]
+	>([])
+	const [selectedRejectedAnswer, setSelectedRejectedAnswer] =
+		useState<Question>()
+	const [pendingQuestions, setPendingQuestions] = useState<Question[]>([])
+	const [nonAnsweredQuestions, setNonAnsweredQuestions] = useState<Question[]>(
+		[],
+	)
+	const [selectedPendingQuestion, setSelectedPendingQuestion] =
+		useState<Question>()
+	const [contextQuestionId, setContextQuestionId] = useState<string>('')
+
+	useEffect(() => {
+		;(async () => {
+			try {
+				const { data } = await api.get(`/answers/${companyId}/${groupingId}`)
+				if (data.pendingAnsweredQuestions.length > 0) {
+					setSelectedPendingQuestion(data.pendingAnsweredQuestions[0])
+					setContextQuestionId(data.pendingAnsweredQuestions[0].question._eq)
+					data.pendingAnsweredQuestions.shift()
+				} else {
+					setSelectedPendingQuestion(data.nonAnsweredQuestions[0])
+					setContextQuestionId(data.nonAnsweredQuestions[0]._eq)
+					data.nonAnsweredQuestions.shift()
+				}
+				setApprovedAnsweredQuestions(data.approvedAnswers)
+				setRejectedAnsweredQuestions(data.rejectedAnswers)
+				setPendingQuestions(data.pendingAnsweredQuestions)
+				setNonAnsweredQuestions(data.nonAnsweredQuestions)
+
+				setIsLoading(false)
+			} catch (error) {
+				handleApiError(error)
+			}
+		})()
+	}, [companyId, groupingId])
 
 	useEffect(() => {
 		;(async () => {
 			try {
 				const { data } = await api.get(`/groupings/${groupingId}`)
 				setGrouping(data)
-				setAnalyzingQuestions(data.questions)
-				setSelectedAnalyzingAnswer(data.questions[0])
-				data.questions.shift()
-				setIsLoading(false)
 			} catch (error) {
 				handleApiError(error)
 			}
@@ -55,90 +78,62 @@ export const ValidateAnswers: React.FC = () => {
 		navigate(-1)
 	}
 
-	const handleSelectAnalyzingQuestion = async (question: Question) => {
-		setSelectedAnalyzingAnswer(question)
-		try {
-			const { data } = await api.get(`/groupings/${groupingId}`)
-			const questionsLessSelected = data.questions.filter(
-				(questionData: Question) => questionData._eq !== question._eq,
-			)
-			setAnalyzingQuestions(questionsLessSelected)
-		} catch (error) {
-			handleApiError(error)
-		}
+	const handleSelectedPendingQuestion = async (question: Question) => {
+		setSelectedPendingQuestion(question)
+		setContextQuestionId(question._eq)
 	}
 
-	const renderTabAnalising = () => {
+	const handleSelectedApprovedQuestion = async (question: Question) => {
+		setSelectedApprovedAnswer(question)
+		setContextQuestionId(question._eq)
+	}
+
+	const handleSelectedRejectedQuestion = async (question: Question) => {
+		setSelectedRejectedAnswer(question)
+		setContextQuestionId(question._eq)
+	}
+
+	const renderTabPending = () => {
 		return (
 			<div key="tabAnalising">
 				<SelectQuestion
-					questions={analyzingQuestions}
-					selectedQuestion={selectedAnalyzingAnswer}
-					onSelect={handleSelectAnalyzingQuestion}
+					questions={pendingQuestions}
+					nonAnsweredQuestions={nonAnsweredQuestions}
+					selectedQuestion={selectedPendingQuestion?.question}
+					onSelect={handleSelectedPendingQuestion}
 				/>
 				<div className="select-question-space" />
-				<QuestionDetails question={selectedAnalyzingAnswer} />
+				<AnswerDetails question={selectedPendingQuestion} />
 			</div>
 		)
 	}
+
 	const renderTabApproved = () => {
 		return (
 			<div key="tabApproved">
-				<h1>Tab Aprovado</h1>
+				<SelectQuestion
+					questions={approvedAnsweredQuestions}
+					selectedQuestion={selectedApprovedAnswer?.question}
+					onSelect={handleSelectedApprovedQuestion}
+				/>
+				<div className="select-question-space" />
+				<AnswerDetails question={selectedApprovedAnswer} />
 			</div>
 		)
 	}
-	const renderTabReproved = () => {
+
+	const renderTabRejected = () => {
 		return (
 			<div key="tabReproved">
-				<h1>Tab Reprovado</h1>
+				<SelectQuestion
+					questions={rejectedAnsweredQuestions}
+					selectedQuestion={selectedRejectedAnswer?.question}
+					onSelect={handleSelectedRejectedQuestion}
+				/>
+				<div className="select-question-space" />
+				<AnswerDetails question={selectedRejectedAnswer} />
 			</div>
 		)
-	}
-
-	const handleClickApproveAnswer = async () => {
-		try {
-			await api.post(`/answers/${selectedAnalyzingAnswer._eq}/approve`)
-			const { data } = await api.get(`/groupings/${groupingId}`)
-			setGrouping(data)
-			setAnalyzingQuestions(data.questions)
-			setSelectedAnalyzingAnswer(data.questions[0])
-			data.questions.shift()
-		} catch (error) {
-			handleApiError(error)
-		}
-	}
-
-	const handleClickReproveAnswer = async () => {
-		try {
-			await api.post(`/answers/${selectedAnalyzingAnswer._eq}/reprove`)
-			const { data } = await api.get(`/groupings/${groupingId}`)
-			setGrouping(data)
-			setAnalyzingQuestions(data.questions)
-			setSelectedAnalyzingAnswer(data.questions[0])
-			data.questions.shift()
-		} catch (error) {
-			handleApiError(error)
-		}
-	}
-
-	const toggleChatDrawer = () => setChatDrawerOpen(!chatDrawerOpen)
-
-	const handleSendMessage = async () => {
-		setButtonSendMessageLoading(true)
-		try {
-			const message = formSendMessageRef.current
-				?.getFieldValue('message')
-				.trim()
-			await api.post(`/answers/${selectedAnalyzingAnswer._eq}/messages`, {
-				message,
-			})
-			formSendMessageRef.current?.reset()
-			setButtonSendMessageLoading(false)
-		} catch (error) {
-			handleApiError(error)
-			setButtonSendMessageLoading(false)
-		}
 	}
 
 	return (
@@ -157,92 +152,22 @@ export const ValidateAnswers: React.FC = () => {
 						<Tabs
 							tabTitles={['Em análise', 'Aprovadas', 'Reprovadas']}
 							tabContents={[
-								renderTabAnalising(),
+								renderTabPending(),
 								renderTabApproved(),
-								renderTabReproved(),
+								renderTabRejected(),
 							]}
 						/>
 					</div>
 				</div>
 			</Body>
-			<div className="action-buttons">
-				<div className="approval-buttons">
-					<Button
-						className="button-approve"
-						text="Aprovar"
-						variant="success"
-						endIcon={<CheckCircleIcon />}
-						onClick={handleClickApproveAnswer}
-					/>
-					<Button
-						className="button-reprove"
-						text="Reprovar"
-						variant="danger"
-						endIcon={<CancelIcon />}
-						onClick={handleClickReproveAnswer}
-					/>
-				</div>
-				<Button
-					startIcon={<ModeCommentIcon />}
-					className="button-chat"
-					text="Chat da pergunta"
-					variant="primary"
-					onClick={toggleChatDrawer}
-				/>
-			</div>
-			<RightDrawer drawerOpen={chatDrawerOpen} toggleDrawer={toggleChatDrawer}>
-				<ChatDrawerContainer>
-					<CloseIcon
-						className="close-drawer-icon"
-						onClick={toggleChatDrawer}
-						data-testid="close-drawer-button"
-					/>
-					<div className="chat-drawer-content">
-						<div className="chat-drawer-header">
-							<ModeCommentIcon />
-							<h2>Chat da pergunta</h2>
-						</div>
-						<div className="messages">
-							<Message>
-								<div className="message-header">
-									<img
-										src="https://img.freepik.com/fotos-gratis/estilo-de-vida-beleza-e-moda-conceito-de-emocoes-de-pessoas-jovem-gerente-de-escritorio-feminino-asiatico-ceo-com-expressao-satisfeita-em-pe-sobre-um-fundo-branco-sorrindo-com-os-bracos-cruzados-sobre-o-peito_1258-59329.jpg"
-										alt="Foto de perfil de Barbara Santana"
-										// onError={}
-									/>
-									<h4>
-										Barbara Santana <span>5h atrás</span>
-									</h4>
-								</div>
-								<div className="message-body">
-									<p>
-										Não entendi o que significa esta pergunta, poderia me
-										explicar?
-									</p>
-								</div>
-							</Message>
-						</div>
-						<div className="send-message">
-							<Form ref={formSendMessageRef} onSubmit={e => e.preventDefault()}>
-								<Input
-									className="input-send-message"
-									name="message"
-									placeholder="Deixe seu comentário..."
-									multiline
-									rows={4}
-								/>
-								<Button
-									text="Enviar"
-									variant="primary"
-									onClick={handleSendMessage}
-									className="send-message-button"
-									isLoading={buttonSendMessageLoading}
-								/>
-							</Form>
-						</div>
-					</div>
-				</ChatDrawerContainer>
-			</RightDrawer>
+			<ContextButtons
+				contextQuestionId={contextQuestionId}
+				companyId={companyId}
+				hasAnswer={
+					pendingQuestions.find(q => q._eq === contextQuestionId)?.answer !==
+					undefined
+				}
+			/>
 		</Container>
 	)
 }

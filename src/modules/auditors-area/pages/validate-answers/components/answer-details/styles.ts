@@ -18,15 +18,21 @@ export const Container = styled.div`
 	.tags {
 		display: flex;
 		margin-top: 44px;
+		max-width: 100%;
+		flex-wrap: wrap;
 
 		span {
 			font-weight: 500;
 			font-size: 18px;
 			border-radius: 4px;
 			padding: 4px 12px;
+			margin-bottom: 10px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 
-			&:not(:first-child) {
-				margin-left: 10px;
+			&:not(:last-child) {
+				margin-right: 10px;
 			}
 
 			&.protect {
@@ -34,7 +40,27 @@ export const Container = styled.div`
 				color: #fff;
 			}
 
-			&.extreme {
+			&.identify {
+				background: #ff2163;
+				color: #fff;
+			}
+
+			&.detect {
+				background: #1f4cd5;
+				color: #fff;
+			}
+
+			&.respond {
+				background: #ff991c;
+				color: #fff;
+			}
+
+			&.recover {
+				background: #582be7;
+				color: #fff;
+			}
+
+			&.five {
 				background: #ff2163;
 				color: #fff;
 			}
@@ -69,6 +95,13 @@ export const Container = styled.div`
 			font-weight: 700;
 			font-size: 16px;
 			color: #6d7c99;
+		}
+
+		p {
+			font-weight: 700;
+			font-size: 20px;
+			color: #0f141e;
+			margin-top: 12px;
 		}
 	}
 `
