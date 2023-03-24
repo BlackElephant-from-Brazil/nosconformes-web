@@ -1,6 +1,8 @@
+import { Answer } from './answer.type'
+
 type Grouping = {
 	_eq: string
-	text: string
+	name: string
 }
 type Tag = {
 	_eq: string
@@ -19,9 +21,13 @@ export type Question = {
 	groupings: Grouping[]
 	tags: Tag[]
 	references: Reference[]
+	priority: number
+	probability: number
+	impact: number
 	threat: string
 	recommendation: string
 	description: string
 	accordingButtons: string[]
 	partialAccordingButtons: string[]
+	answer: Answer
 }
