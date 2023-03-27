@@ -9,7 +9,7 @@ import { Select, SelectChangeEvent } from '@mui/material'
 import { Container, MenuItem } from './styles'
 
 type AccessLevelInputProps = {
-	accessLevel: User['accessLevel']
+	accessLevel: 'master' | 'gestor' | 'consultor' | 'auditor' | 'steakholder'
 	name: string
 	formRef: React.RefObject<FormHandles>
 }
@@ -27,7 +27,9 @@ export const AccessLevelInput: React.FC<AccessLevelInputProps> = ({
 	}, [accessLevel])
 
 	const handleAccessLevelChange = (
-		event: SelectChangeEvent<'master' | 'gestor' | 'consultor' | 'auditor'>,
+		event: SelectChangeEvent<
+			'master' | 'gestor' | 'consultor' | 'auditor' | 'steakholder'
+		>,
 	) => {
 		setSelectedAccessLevel(event.target.value as User['accessLevel'])
 		formRef.current?.setFieldValue('accessLevel', event.target.value)

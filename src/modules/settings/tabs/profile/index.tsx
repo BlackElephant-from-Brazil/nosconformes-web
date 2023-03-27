@@ -14,6 +14,7 @@ import { handleApiError } from 'utils/handle-api-error'
 import { revertPhone } from 'utils/handlePhoneChange'
 import { handleYupErrors } from 'utils/handle-yup-errors'
 import * as Yup from 'yup'
+import { Employee } from 'interfaces/employee.type'
 import { Container } from './styles'
 
 type UpdateProfileForm = {
@@ -50,35 +51,40 @@ const errorMessages = {
 
 export const Profile: React.FC = () => {
 	const formRef = React.useRef<FormHandles>(null)
-	const [userData, setUserData] = useState({} as User)
+	const [profileData, setProfileData] = useState({} as User | Employee)
 	const [displayErrors, setDisplayErrors] = useState('')
-	const { user, updateUser } = useAuth()
+	const { user, updateUser, employee } = useAuth()
 
 	useEffect(() => {
 		;(async () => {
 			try {
-				const { data } = await api.get(`/users/${user._eq}`)
-				setUserData({ ...data, password: '**********' })
+				if (user) {
+					const { data } = await api.get(`/users/${user._eq}`)
+					setProfileData({ ...data, password: '**********' })
+				} else if (employee) {
+					const { data } = await api.get(`/employees/${employee._eq}`)
+					setProfileData({ ...data, password: '**********' })
+				}
 			} catch (err) {
 				handleApiError(err)
 			}
 		})()
-	}, [user._eq])
+	}, [employee, user])
 
 	useEffect(() => {
-		formRef.current?.setData({ ...userData, accessLevel: userData.name })
-	}, [userData])
+		formRef.current?.setData({ ...profileData, accessLevel: profileData.name })
+	}, [profileData])
 
 	const handleSubmitFormUpdateProfile: SubmitHandler<
 		UpdateProfileForm
 	> = async data => {
 		setDisplayErrors('')
-		let profileData
+		let updateProfileData
 		const phone = revertPhone(data.phone)
 
 		if (data.password === '**********') {
 			delete data.password
-			profileData = {
+			updateProfileData = {
 				name: data.name.trim(),
 				email: data.email.trim(),
 				phone,
@@ -86,7 +92,7 @@ export const Profile: React.FC = () => {
 				accessLevel: data.accessLevel.trim(),
 			}
 		} else {
-			profileData = {
+			updateProfileData = {
 				name: data.name.trim(),
 				email: data.email.trim(),
 				phone,
@@ -128,7 +134,7 @@ export const Profile: React.FC = () => {
 				})
 			}
 
-			await schema.validate(profileData, {
+			await schema.validate(updateProfileData, {
 				abortEarly: false,
 			})
 		} catch (err) {
@@ -137,9 +143,15 @@ export const Profile: React.FC = () => {
 		}
 
 		try {
-			await api.put(`/users/${user._eq}`, {
-				...profileData,
-			})
+			if (user) {
+				await api.put(`/users/${user._eq}`, {
+					...updateProfileData,
+				})
+			} else if (employee) {
+				await api.put(`/employees/${employee._eq}`, {
+					...updateProfileData,
+				})
+			}
 			enqueueSnackbar('Dados atualizados com sucesso!', { variant: 'success' })
 		} catch (err) {
 			handleApiError(err)
@@ -150,29 +162,49 @@ export const Profile: React.FC = () => {
 		formRef.current?.submitForm()
 	}
 
-	const handleDeleteUserPic = async () => {
+	const handleDeleteProfilePicture = async () => {
 		try {
-			await api.delete(`/users/${user._eq}/photo`)
-			enqueueSnackbar('Foto de perfil removida com sucesso!', {
-				variant: 'success',
-			})
-			setUserData({ ...userData, profilePicture: '' })
-			updateUser({ ...user, profilePicture: '' })
+			if (user) {
+				await api.delete(`/users/${user._eq}/photo`)
+
+				enqueueSnackbar('Foto de perfil removida com sucesso!', {
+					variant: 'success',
+				})
+				setProfileData({ ...profileData, profilePicture: '' })
+				updateUser({ ...user, profilePicture: '' })
+			} else if (employee) {
+				await api.delete(`/employees/${employee._eq}/photo`)
+
+				enqueueSnackbar('Foto de perfil removida com sucesso!', {
+					variant: 'success',
+				})
+				setProfileData({ ...profileData, profilePicture: '' })
+				updateUser(undefined, { ...employee, profilePicture: '' })
+			}
 		} catch (err) {
 			handleApiError(err)
 		}
 	}
 
-	const handleUploadUserProfilePicture = async (file: File) => {
+	const handleUploadProfilePicture = async (file: File) => {
 		try {
 			const data = new FormData()
 			data.append('photo', file)
-			const response = await api.post(`/users/${user._eq}/photo`, data)
+			let response: any
+			if (user) {
+				response = await api.post(`/users/${user._eq}/photo`, data)
+				setProfileData({ ...profileData, profilePicture: response.data })
+
+				updateUser({ ...user, profilePicture: response.data })
+			} else if (employee) {
+				response = await api.post(`/users/${employee._eq}/photo`, data)
+				setProfileData({ ...profileData, profilePicture: response.data })
+
+				updateUser(undefined, { ...employee, profilePicture: response.data })
+			}
 			enqueueSnackbar('Foto de perfil atualizada com sucesso!', {
 				variant: 'success',
 			})
-			setUserData({ ...userData, profilePicture: response.data })
-			updateUser({ ...user, profilePicture: response.data })
 		} catch (err) {
 			handleApiError(err)
 		}
@@ -192,9 +224,9 @@ export const Profile: React.FC = () => {
 				className="form"
 			>
 				<ImageUploader
-					onDelete={handleDeleteUserPic}
-					initialImage={user.profilePicture}
-					onEdit={handleUploadUserProfilePicture}
+					onDelete={handleDeleteProfilePicture}
+					initialImage={user?.profilePicture || employee?.profilePicture}
+					onEdit={handleUploadProfilePicture}
 				/>
 				<Input label="Nome" name="name" />
 				<Input label="Email" name="email" />
@@ -206,8 +238,8 @@ export const Profile: React.FC = () => {
 					caractere especial.
 				</p>
 				<AccessLevelInput
-					accessLevel={userData.accessLevel}
-					name={userData.name}
+					accessLevel={profileData.accessLevel}
+					name={profileData.name}
 					formRef={formRef}
 				/>
 				<Input type="hidden" name="accessLevel" />
