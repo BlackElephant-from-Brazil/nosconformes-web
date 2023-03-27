@@ -9,12 +9,17 @@ type RouteProtectionProps = {
 export const RouteProtection: React.FC<RouteProtectionProps> = ({
 	children,
 }) => {
-	const { user } = useAuth()
+	const { user, employee } = useAuth()
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		if (Object.keys(user).length === 0) navigate('/')
-	}, [navigate, user])
+		if (!user && !employee) {
+			navigate('/')
+			return
+		}
+		if (employee && Object.keys(employee).length === 0) navigate('/')
+		if (user && Object.keys(user).length === 0) navigate('/')
+	}, [employee, navigate, user])
 
 	return <>({children})</>
 }

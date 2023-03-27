@@ -4,76 +4,50 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import BusinessIcon from '@mui/icons-material/Business'
 import CommentBankIcon from '@mui/icons-material/CommentBank'
 import PeopleIcon from '@mui/icons-material/People'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { useAuth } from 'hooks/authentication.hook'
 import { getAccessLevelName } from 'utils/get-access-level-name'
 import { getFirstWord } from 'utils/get-first-word'
 import { handleUserImageError } from 'utils/handle-image-error'
+import DashboardIcon from '@mui/icons-material/Dashboard'
+import PendingActionsIcon from '@mui/icons-material/PendingActions'
 import ncMenuOpen from '../../assets/nc-menu-open.png'
 import ncMenuClose from '../../assets/nc-menu-close.png'
 import ncShortLogo from '../../assets/nc-short-logo.png'
 import ncWhiteText from '../../assets/nc-white-text.png'
 import { Container, MenuItem, UserTag } from './styles'
 
-const COMPANIES = 'companies'
-const KNOWLEDGE_BASE = 'knowledge_base'
-const AUDITOR_AREA = 'auditor_area'
-
 export const SideBar: React.FC = () => {
-	const [open, setOpen] = useState(false)
-	const [active, setActive] = useState(COMPANIES)
+	const [isOpen, setIsOpen] = useState(false)
+	const [active, setActive] = useState('/empresas')
 	const navigate = useNavigate()
+	const location = useLocation()
 	const { enqueueSnackbar } = useSnackbar()
 	const { signOut } = useAuth()
 	const [displayMenuOpen, setDisplayMenuOpen] = useState(false)
-	const { user } = useAuth()
+	const { user, employee } = useAuth()
 	const avatarRef = useRef<HTMLImageElement>(null)
 
 	useEffect(() => {
-		if (open) {
+		if (isOpen) {
 			const timer = setTimeout(() => {
 				setDisplayMenuOpen(true)
 			}, 200)
 			return () => clearTimeout(timer)
 		}
 		setDisplayMenuOpen(false)
-	}, [open])
+	}, [isOpen])
 
 	useEffect(() => {
-		const path = window.location.pathname
-		switch (path) {
-			case '/empresas':
-				setActive(COMPANIES)
-				break
-			case '/base-de-conhecimento':
-				setActive(KNOWLEDGE_BASE)
-				break
-			case '/area-do-auditor':
-				setActive(AUDITOR_AREA)
-				break
-			default:
-				setActive('')
-				break
-		}
-	}, [])
+		const path = location.pathname
+		setActive(path)
+	}, [location.pathname])
 
 	const handleOpenMenu = (menu: string) => {
 		setActive(menu)
-		switch (menu) {
-			case COMPANIES:
-				navigate('/empresas')
-				break
-			case KNOWLEDGE_BASE:
-				navigate('/base-de-conhecimento')
-				break
-			case AUDITOR_AREA:
-				navigate('/area-do-auditor')
-				break
-			default:
-				break
-		}
+		navigate(menu)
 	}
 
 	const handleClickLogout = () => {
@@ -85,7 +59,7 @@ export const SideBar: React.FC = () => {
 	}
 
 	const handleToggleMenuOpen = () => {
-		setOpen(!open)
+		setIsOpen(!isOpen)
 	}
 
 	const handleClickUserTag = () => {
@@ -93,13 +67,13 @@ export const SideBar: React.FC = () => {
 	}
 
 	return (
-		<Container open={open} textShow={displayMenuOpen}>
+		<Container open={isOpen} textShow={displayMenuOpen}>
 			<span
 				className="toggle-menu-button"
 				onClick={handleToggleMenuOpen}
 				role="presentation"
 			>
-				{open ? <KeyboardArrowLeftIcon /> : <KeyboardArrowRightIcon />}
+				{isOpen ? <KeyboardArrowLeftIcon /> : <KeyboardArrowRightIcon />}
 			</span>
 			<div className="nosconformes-logo-container">
 				<img className="logo-nc-top" src={ncShortLogo} alt="Logo DM11" />
@@ -112,36 +86,74 @@ export const SideBar: React.FC = () => {
 				)}
 			</div>
 			<div className="app-menu">
-				<MenuItem
-					textShow={displayMenuOpen}
-					open={open}
-					active={active === COMPANIES}
-					onClick={() => handleOpenMenu(COMPANIES)}
-				>
-					<div className="side-border" />
-					<BusinessIcon />
-					<p className="item-name">Empresas</p>
-				</MenuItem>
-				<MenuItem
-					textShow={displayMenuOpen}
-					open={open}
-					active={active === KNOWLEDGE_BASE}
-					onClick={() => handleOpenMenu(KNOWLEDGE_BASE)}
-				>
-					<div className="side-border" />
-					<CommentBankIcon />
-					<p className="item-name">Base de conhecimento</p>
-				</MenuItem>
-				<MenuItem
-					textShow={displayMenuOpen}
-					open={open}
-					active={active === AUDITOR_AREA}
-					onClick={() => handleOpenMenu(AUDITOR_AREA)}
-				>
-					<div className="side-border" />
-					<PeopleIcon />
-					<p className="item-name">Área do auditor</p>
-				</MenuItem>
+				{user && (
+					<>
+						<MenuItem
+							textShow={displayMenuOpen}
+							open={isOpen}
+							active={active === '/empresas'}
+							onClick={() => handleOpenMenu('/empresas')}
+						>
+							<div className="side-border" />
+							<BusinessIcon />
+							<p className="item-name">Empresas</p>
+						</MenuItem>
+						<MenuItem
+							textShow={displayMenuOpen}
+							open={isOpen}
+							active={active === '/base-de-conhecimento'}
+							onClick={() => handleOpenMenu('/base-de-conhecimento')}
+						>
+							<div className="side-border" />
+							<CommentBankIcon />
+							<p className="item-name">Base de conhecimento</p>
+						</MenuItem>
+						<MenuItem
+							textShow={displayMenuOpen}
+							open={isOpen}
+							active={active === '/area-do-auditor'}
+							onClick={() => handleOpenMenu('/area-do-auditor')}
+						>
+							<div className="side-border" />
+							<PeopleIcon />
+							<p className="item-name">Área do auditor</p>
+						</MenuItem>
+					</>
+				)}
+				{employee && (
+					<>
+						<MenuItem
+							textShow={displayMenuOpen}
+							open={isOpen}
+							active={active === '/dashboard-da-empresa'}
+							onClick={() => handleOpenMenu('/dashboard-da-empresa')}
+						>
+							<div className="side-border" />
+							<DashboardIcon />
+							<p className="item-name">Dashboard</p>
+						</MenuItem>
+						<MenuItem
+							textShow={displayMenuOpen}
+							open={isOpen}
+							active={active === '/questionarios'}
+							onClick={() => handleOpenMenu('/questionarios')}
+						>
+							<div className="side-border" />
+							<CommentBankIcon />
+							<p className="item-name">Questionários</p>
+						</MenuItem>
+						<MenuItem
+							textShow={displayMenuOpen}
+							open={isOpen}
+							active={active === '/plano-de-acao'}
+							onClick={() => handleOpenMenu('/plano-de-acao')}
+						>
+							<div className="side-border" />
+							<PendingActionsIcon />
+							<p className="item-name">Plano de ação</p>
+						</MenuItem>
+					</>
+				)}
 			</div>
 			<div className="bottom">
 				<div
@@ -154,20 +166,22 @@ export const SideBar: React.FC = () => {
 				</div>
 				<UserTag
 					displayOpen={displayMenuOpen}
-					menuOpen={open}
+					menuOpen={isOpen}
 					onClick={handleClickUserTag}
 				>
 					<img
-						src={user.profilePicture}
+						src={user?.profilePicture || employee?.profilePicture}
 						alt="Avatar do usuário"
 						className="avatar"
 						ref={avatarRef}
 						onError={() => handleUserImageError(avatarRef)}
 					/>
 					<div className="user-infos">
-						<p className="user-name">{getFirstWord(user.name)}</p>
+						<p className="user-name">
+							{getFirstWord(user?.name || employee?.name)}
+						</p>
 						<p className="user-office">
-							{getAccessLevelName(user.accessLevel)}
+							{getAccessLevelName(user?.accessLevel || employee?.accessLevel)}
 						</p>
 					</div>
 				</UserTag>

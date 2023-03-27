@@ -13,6 +13,7 @@ import { handleApiError } from 'utils/handle-api-error'
 import { Message as MessageInterface } from 'interfaces/message.type'
 import { FormHandles } from '@unform/core'
 import { useAuth } from 'hooks/authentication.hook'
+import { enqueueSnackbar } from 'notistack'
 import { Container, ChatDrawerContainer, Message } from './styles'
 
 type ContextButtonsProps = {
@@ -90,6 +91,13 @@ export const ContextButtons: React.FC<ContextButtonsProps> = ({
 
 	const handleSendMessage = async () => {
 		setButtonSendMessageLoading(true)
+		if (!user) {
+			enqueueSnackbar('Você precisa estar logado para enviar uma mensagem', {
+				variant: 'error',
+			})
+			setButtonSendMessageLoading(false)
+			return
+		}
 		try {
 			const message = formSendMessageRef.current
 				?.getFieldValue('message')

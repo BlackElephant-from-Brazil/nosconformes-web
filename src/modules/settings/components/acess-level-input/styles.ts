@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { styled as muiStyled, MenuItem as MuiMenuItem } from '@mui/material'
 
 type ContainerProps = {
-	accessLevel: User['accessLevel']
+	accessLevel: 'master' | 'gestor' | 'consultor' | 'auditor' | 'steakholder'
 }
 
 export const Container = styled.div<ContainerProps>`
