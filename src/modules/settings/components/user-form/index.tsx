@@ -10,6 +10,7 @@ import * as Yup from 'yup'
 import { revertPhone } from 'utils/handlePhoneChange'
 import { Alert } from 'components/alert'
 import { api } from 'api'
+import { useAuth } from 'hooks/authentication.hook'
 import { ImageUploader } from '../../../../components/image-uploader'
 import { Input } from '../../../../components/input'
 import { Container } from './styles'
@@ -55,6 +56,7 @@ export const UserForm: React.FC<UserFormProps> = ({
 	const formRef = React.useRef<FormHandles>(null)
 	const [displayErrors, setDisplayErrors] = useState('')
 	const [profilePicture, setProfilePicture] = useState('')
+	const { employee } = useAuth()
 
 	useEffect(() => {
 		if (user) {
@@ -71,6 +73,7 @@ export const UserForm: React.FC<UserFormProps> = ({
 
 	const handleSubmitFormUser: SubmitHandler<FormData> = async data => {
 		setDisplayErrors('')
+
 		const phone = revertPhone(data.phone)
 		const userData = {
 			name: data.name.trim(),
@@ -109,8 +112,16 @@ export const UserForm: React.FC<UserFormProps> = ({
 				enqueueSnackbar('Usuário atualizado com sucesso!', {
 					variant: 'success',
 				})
-			} else {
+			} else if (!employee) {
 				await api.post('/users', {
+					...userData,
+					profilePicture: 'photo.png',
+				})
+				enqueueSnackbar('Usuário cadastrado com sucesso!', {
+					variant: 'success',
+				})
+			} else {
+				await api.post('/employees', {
 					...userData,
 					profilePicture: 'photo.png',
 				})
@@ -127,7 +138,11 @@ export const UserForm: React.FC<UserFormProps> = ({
 
 	const handleDeleteUserPic = async () => {
 		try {
-			await api.delete(`/users/${user?._eq}/photo`)
+			if (!employee) {
+				await api.delete(`/users/${user?._eq}/photo`)
+			} else {
+				await api.delete(`/employees/${user?._eq}/photo`)
+			}
 			enqueueSnackbar('Foto de perfil removida com sucesso!', {
 				variant: 'success',
 			})
@@ -141,11 +156,16 @@ export const UserForm: React.FC<UserFormProps> = ({
 		try {
 			const data = new FormData()
 			data.append('photo', file)
-			const response = await api.post(`/users/${user?._eq}/photo`, data)
+			if (!employee) {
+				const response = await api.post(`/users/${user?._eq}/photo`, data)
+				setProfilePicture(response.data.profilePicture)
+			} else {
+				const response = await api.post(`/employees/${user?._eq}/photo`, data)
+				setProfilePicture(response.data.profilePicture)
+			}
 			enqueueSnackbar('Foto de perfil atualizada com sucesso!', {
 				variant: 'success',
 			})
-			setProfilePicture(response.data.profilePicture)
 		} catch (err) {
 			handleApiError(err)
 		}
@@ -167,7 +187,10 @@ export const UserForm: React.FC<UserFormProps> = ({
 				<AccessLevelInput
 					name="Selecione o perfil"
 					formRef={formRef}
-					accessLevel={user?.accessLevel || 'auditor'}
+					accessLevel={
+						user?.accessLevel || !!employee ? 'stackholder' : 'auditor'
+					}
+					isEmployee={!!employee}
 				/>
 				<Input type="hidden" name="accessLevel" />
 				<Alert text={displayErrors} type="error" />

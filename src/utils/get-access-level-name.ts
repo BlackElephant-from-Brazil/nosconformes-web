@@ -1,5 +1,11 @@
 export const getAccessLevelName = (
-	accessLevel?: 'master' | 'gestor' | 'consultor' | 'auditor' | 'steakholder',
+	accessLevel?:
+		| 'master'
+		| 'gestor'
+		| 'consultor'
+		| 'auditor'
+		| 'patrocinador'
+		| 'stackholder',
 ) => {
 	if (!accessLevel) return 'Usuário'
 	switch (accessLevel) {

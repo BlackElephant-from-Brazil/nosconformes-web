@@ -18,7 +18,7 @@ const auditorsAreaRoutes: RouteObject[] = [
 	},
 ]
 
-const isUserOrEmployeeLogged = () => {
+const loader = () => {
 	const storagedUser = localStorage.getItem(STORAGE_USER_KEY)
 	const storagedEmployee = localStorage.getItem(STORAGE_EMPLOYEE_KEY)
 	if (storagedUser === 'null' && storagedEmployee !== 'null') {
@@ -33,7 +33,7 @@ const isUserOrEmployeeLogged = () => {
 const loaderedAuditorsAreaRoutes = auditorsAreaRoutes.map(route => {
 	return {
 		...route,
-		loader: isUserOrEmployeeLogged,
+		loader,
 		element: route.element,
 	}
 })

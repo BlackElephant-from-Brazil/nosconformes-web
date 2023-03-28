@@ -16,11 +16,11 @@ type SignInCredentials = {
 }
 
 type AuthContextData = {
-	user?: User
-	employee?: Employee
+	user: User | null
+	employee: Employee | null
 	signIn: (credentials: SignInCredentials) => Promise<boolean>
 	signOut: () => void
-	updateUser: (user?: User, employee?: Employee) => void
+	updateUser: (user: User | null, employee: Employee | null) => void
 }
 
 type AuthProviderProps = {
@@ -30,8 +30,8 @@ type AuthProviderProps = {
 
 type AuthState = {
 	token: string
-	user?: User
-	employee?: Employee
+	user: User | null
+	employee: Employee | null
 }
 
 export const STORAGE_USER_KEY = '@nosconformes:user'
@@ -96,7 +96,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
 	)
 
 	const updateUser = useCallback(
-		(user?: User, employee?: Employee) => {
+		(user: User | null, employee: Employee | null) => {
 			localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(user))
 			localStorage.setItem(STORAGE_EMPLOYEE_KEY, JSON.stringify(employee))
 

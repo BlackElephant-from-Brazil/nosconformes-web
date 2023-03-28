@@ -13,6 +13,8 @@ import { api } from 'api'
 import { handleUserImageError } from 'utils/handle-image-error'
 import { AccessLevel } from 'modules/settings/components/access-level'
 import { handleApiError } from 'utils/handle-api-error'
+import { useAuth } from 'hooks/authentication.hook'
+import { Employee } from 'interfaces/employee.type'
 import { AddNewUserContainer, Container } from './styles'
 
 const tableTitles = ['Nome', 'E-mail', 'Cargo', 'Responsabilidade']
@@ -20,19 +22,25 @@ const tableTitles = ['Nome', 'E-mail', 'Cargo', 'Responsabilidade']
 export const Users: React.FC = () => {
 	const [drawerOpen, setDrawerOpen] = useState(false)
 	const formSearchInputRef = React.useRef<FormHandles>(null)
-	const [users, setUsers] = useState<User[]>([])
+	const [users, setUsers] = useState<User[] | Employee[]>([])
 	const [editableUser, setEditableUser] = useState<User | null>(null)
+	const { user, employee } = useAuth()
 
 	useEffect(() => {
 		;(async () => {
 			try {
-				const { data } = await api.get('/users')
-				setUsers(data)
+				if (user) {
+					const { data } = await api.get('/users')
+					setUsers(data)
+				} else if (employee) {
+					const { data } = await api.get('/employees')
+					setUsers(data)
+				}
 			} catch (error) {
 				handleApiError(error)
 			}
 		})()
-	}, [])
+	}, [employee, user])
 
 	const toggleDrawer = () => {
 		setDrawerOpen(!drawerOpen)
@@ -40,41 +48,47 @@ export const Users: React.FC = () => {
 
 	const handleUserRowClicked = async (userId: string) => {
 		try {
-			const { data } = await api.get(`/users/${userId}`)
-			setEditableUser(data as User)
-			toggleDrawer()
+			if (user) {
+				const { data } = await api.get(`/users/${userId}`)
+				setEditableUser(data as User)
+				toggleDrawer()
+			} else if (employee) {
+				const { data } = await api.get(`/employees/${userId}`)
+				setEditableUser(data as User)
+				toggleDrawer()
+			}
 		} catch (err) {
 			handleApiError(err)
 		}
 	}
 
 	const renderTableBodyInfo = () => {
-		const renderedTableRow = users.map(user => {
+		const renderedTableRow = users.map(u => {
 			const userImageRef = React.createRef<HTMLImageElement>()
 			return (
 				<tr
-					key={user._eq}
-					onClick={() => handleUserRowClicked(user._eq)}
+					key={u._eq}
+					onClick={() => handleUserRowClicked(u._eq)}
 					className="user-table-row"
 				>
 					<td>
 						<img
-							src={user.profilePicture}
-							alt={`Foto de perfil de ${user.name}`}
+							src={u.profilePicture}
+							alt={`Foto de perfil de ${u.name}`}
 							className="user-avatar"
 							ref={userImageRef}
 							onError={() => handleUserImageError(userImageRef)}
 						/>
-						<p>{user.name}</p>
+						<p>{u.name}</p>
 					</td>
 					<td>
-						<p>{user.email}</p>
+						<p>{u.email}</p>
 					</td>
 					<td>
-						<p>{user.office}</p>
+						<p>{u.office}</p>
 					</td>
 					<td>
-						<AccessLevel accessLevel={user.accessLevel} />
+						<AccessLevel accessLevel={u.accessLevel} />
 					</td>
 				</tr>
 			)

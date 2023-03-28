@@ -135,8 +135,8 @@ export const SideBar: React.FC = () => {
 						<MenuItem
 							textShow={displayMenuOpen}
 							open={isOpen}
-							active={active === '/questionarios'}
-							onClick={() => handleOpenMenu('/questionarios')}
+							active={active === '/questionarios-da-empresa'}
+							onClick={() => handleOpenMenu('/questionarios-da-empresa')}
 						>
 							<div className="side-border" />
 							<CommentBankIcon />

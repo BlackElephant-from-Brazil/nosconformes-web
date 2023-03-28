@@ -4,7 +4,7 @@ export type Employee = {
 	profilePicture: string
 	office: string
 	department: string
-	accessLevel: 'master' | 'steakholder'
+	accessLevel: 'patrocinador' | 'stackholder'
 	email: string
 	phone: string
 	companyId: string

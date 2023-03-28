@@ -4,20 +4,20 @@ import {
 	STORAGE_USER_KEY,
 } from 'hooks/authentication.hook'
 import { redirect, RouteObject } from 'react-router-dom'
-import { KnowledgeBase } from '.'
+import { CompanyActionPlan } from '.'
 
-const knowledgeBaseRoutes: RouteObject[] = [
+const companyActionPlanRoutes: RouteObject[] = [
 	{
-		path: '/base-de-conhecimento',
-		element: <KnowledgeBase />,
+		path: '/plano-de-acao',
+		element: <CompanyActionPlan />,
 	},
 ]
 
 const loader = () => {
 	const storagedUser = localStorage.getItem(STORAGE_USER_KEY)
 	const storagedEmployee = localStorage.getItem(STORAGE_EMPLOYEE_KEY)
-	if (storagedUser === 'null' && storagedEmployee !== 'null') {
-		return redirect('/dashboard-da-empresa')
+	if (storagedEmployee === 'null' && storagedUser !== 'null') {
+		return redirect('/empresas')
 	}
 	if (!storagedUser && !storagedEmployee) {
 		return redirect('/login')
@@ -25,7 +25,7 @@ const loader = () => {
 	return null
 }
 
-const loaderedKnowledgeBase = knowledgeBaseRoutes.map(route => {
+const loaderedCompanyActionPlanRoutes = companyActionPlanRoutes.map(route => {
 	return {
 		...route,
 		loader,
@@ -33,4 +33,4 @@ const loaderedKnowledgeBase = knowledgeBaseRoutes.map(route => {
 	}
 })
 
-export { loaderedKnowledgeBase }
+export { loaderedCompanyActionPlanRoutes }

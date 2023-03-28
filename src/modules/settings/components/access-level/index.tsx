@@ -1,13 +1,19 @@
-import { User } from 'interfaces/user.type'
 import React from 'react'
 import AnalyticsIcon from '@mui/icons-material/Analytics'
 import ChromeReaderModeIcon from '@mui/icons-material/ChromeReaderMode'
 import FaceIcon from '@mui/icons-material/Face'
 import AccountBoxIcon from '@mui/icons-material/AccountBox'
+import GroupsIcon from '@mui/icons-material/Groups'
 import { Container } from './styles'
 
 type AccessLevelProps = {
-	accessLevel: User['accessLevel']
+	accessLevel:
+		| 'master'
+		| 'patrocinador'
+		| 'stackholder'
+		| 'gestor'
+		| 'consultor'
+		| 'auditor'
 }
 
 export const AccessLevel: React.FC<AccessLevelProps> = ({ accessLevel }) => {
@@ -39,6 +45,20 @@ export const AccessLevel: React.FC<AccessLevelProps> = ({ accessLevel }) => {
 					<>
 						<ChromeReaderModeIcon />
 						<p>Auditor</p>
+					</>
+				)
+			case 'stackholder':
+				return (
+					<>
+						<FaceIcon />
+						<p>Stackholder</p>
+					</>
+				)
+			case 'patrocinador':
+				return (
+					<>
+						<GroupsIcon />
+						<p>Patrocinador</p>
 					</>
 				)
 			default:

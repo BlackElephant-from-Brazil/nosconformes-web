@@ -171,7 +171,7 @@ export const Profile: React.FC = () => {
 					variant: 'success',
 				})
 				setProfileData({ ...profileData, profilePicture: '' })
-				updateUser({ ...user, profilePicture: '' })
+				updateUser({ ...user, profilePicture: '' }, null)
 			} else if (employee) {
 				await api.delete(`/employees/${employee._eq}/photo`)
 
@@ -179,7 +179,7 @@ export const Profile: React.FC = () => {
 					variant: 'success',
 				})
 				setProfileData({ ...profileData, profilePicture: '' })
-				updateUser(undefined, { ...employee, profilePicture: '' })
+				updateUser(null, { ...employee, profilePicture: '' })
 			}
 		} catch (err) {
 			handleApiError(err)
@@ -195,12 +195,11 @@ export const Profile: React.FC = () => {
 				response = await api.post(`/users/${user._eq}/photo`, data)
 				setProfileData({ ...profileData, profilePicture: response.data })
 
-				updateUser({ ...user, profilePicture: response.data })
+				updateUser({ ...user, profilePicture: response.data }, null)
 			} else if (employee) {
-				response = await api.post(`/users/${employee._eq}/photo`, data)
+				response = await api.post(`/employees/${employee._eq}/photo`, data)
 				setProfileData({ ...profileData, profilePicture: response.data })
-
-				updateUser(undefined, { ...employee, profilePicture: response.data })
+				updateUser(null, { ...employee, profilePicture: response.data })
 			}
 			enqueueSnackbar('Foto de perfil atualizada com sucesso!', {
 				variant: 'success',
@@ -241,6 +240,7 @@ export const Profile: React.FC = () => {
 					accessLevel={profileData.accessLevel}
 					name={profileData.name}
 					formRef={formRef}
+					isEmployee={!!employee}
 				/>
 				<Input type="hidden" name="accessLevel" />
 				<Alert text={displayErrors} type="error" />

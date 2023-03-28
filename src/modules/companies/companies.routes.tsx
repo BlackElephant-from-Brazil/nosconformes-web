@@ -23,7 +23,7 @@ const companiesRoutes: RouteObject[] = [
 	},
 ]
 
-const knowledgeBaseRoutes = () => {
+const loader = () => {
 	const storagedUser = localStorage.getItem(STORAGE_USER_KEY)
 	const storagedEmployee = localStorage.getItem(STORAGE_EMPLOYEE_KEY)
 	if (storagedUser === 'null' && storagedEmployee !== 'null') {
@@ -38,7 +38,7 @@ const knowledgeBaseRoutes = () => {
 const loaderedCompaniesRoutes = companiesRoutes.map(route => {
 	return {
 		...route,
-		loader: knowledgeBaseRoutes,
+		loader,
 		element: route.element,
 	}
 })

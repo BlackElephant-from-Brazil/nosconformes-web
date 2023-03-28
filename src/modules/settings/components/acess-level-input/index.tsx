@@ -1,75 +1,100 @@
 import React, { useEffect } from 'react'
 import { FormHandles } from '@unform/core'
-import { User } from 'interfaces/user.type'
 import AnalyticsIcon from '@mui/icons-material/Analytics'
 import ChromeReaderModeIcon from '@mui/icons-material/ChromeReaderMode'
 import FaceIcon from '@mui/icons-material/Face'
 import AccountBoxIcon from '@mui/icons-material/AccountBox'
 import { Select, SelectChangeEvent } from '@mui/material'
+import GroupsIcon from '@mui/icons-material/Groups'
+import { AccessLevelType } from 'interfaces/access-levels.type'
 import { Container, MenuItem } from './styles'
 
 type AccessLevelInputProps = {
-	accessLevel: 'master' | 'gestor' | 'consultor' | 'auditor' | 'steakholder'
+	accessLevel: AccessLevelType
 	name: string
 	formRef: React.RefObject<FormHandles>
+	isEmployee?: boolean
 }
 
 export const AccessLevelInput: React.FC<AccessLevelInputProps> = ({
 	accessLevel,
 	name,
 	formRef,
+	isEmployee = false,
 }) => {
 	const [selectedAccessLevel, setSelectedAccessLevel] =
-		React.useState(accessLevel)
+		React.useState<AccessLevelType>(accessLevel)
 
 	useEffect(() => {
 		setSelectedAccessLevel(accessLevel)
 	}, [accessLevel])
 
 	const handleAccessLevelChange = (
-		event: SelectChangeEvent<
-			'master' | 'gestor' | 'consultor' | 'auditor' | 'steakholder'
-		>,
+		event: SelectChangeEvent<AccessLevelType>,
 	) => {
-		setSelectedAccessLevel(event.target.value as User['accessLevel'])
+		setSelectedAccessLevel(event.target.value as AccessLevelType)
 		formRef.current?.setFieldValue('accessLevel', event.target.value)
 	}
 
 	return (
 		<Container accessLevel={selectedAccessLevel}>
 			<p>{name}</p>
-			{selectedAccessLevel && (
-				<Select
-					onChange={handleAccessLevelChange}
-					className="select-access-level"
-					value={selectedAccessLevel}
-					MenuProps={{
-						componentsProps: {
-							root: {
-								// this class "access-level-menu" is in globalStyles.ts file because of the MUI engeneering
-								className: 'access-level-menu',
+			{selectedAccessLevel &&
+				(isEmployee ? (
+					<Select
+						onChange={handleAccessLevelChange}
+						className="select-access-level"
+						value={selectedAccessLevel}
+						MenuProps={{
+							componentsProps: {
+								root: {
+									// this class "access-level-menu" is in globalStyles.ts file because of the MUI engeneering
+									className: 'access-level-menu',
+								},
 							},
-						},
-					}}
-				>
-					<MenuItem value="master" className="master">
-						<ChromeReaderModeIcon />
-						Master
-					</MenuItem>
-					<MenuItem value="consultor" className="consultor">
-						<AnalyticsIcon />
-						Consultor
-					</MenuItem>
-					<MenuItem value="gestor" className="gestor">
-						<FaceIcon />
-						Gestor
-					</MenuItem>
-					<MenuItem value="auditor" className="auditor">
-						<AccountBoxIcon />
-						Auditor
-					</MenuItem>
-				</Select>
-			)}
+						}}
+					>
+						<MenuItem value="patrocinador" className="patrocinador">
+							<GroupsIcon />
+							Patrocinador
+						</MenuItem>
+						<MenuItem value="stackholder" className="stackholder">
+							<FaceIcon />
+							Stackholder
+						</MenuItem>
+					</Select>
+				) : (
+					<Select
+						onChange={handleAccessLevelChange}
+						className="select-access-level"
+						value={selectedAccessLevel}
+						MenuProps={{
+							componentsProps: {
+								root: {
+									// this class "access-level-menu" is in globalStyles.ts file because of the MUI engeneering
+									className: 'access-level-menu',
+								},
+							},
+						}}
+					>
+						<MenuItem value="master" className="master">
+							<ChromeReaderModeIcon />
+							Master
+						</MenuItem>
+						<MenuItem value="consultor" className="consultor">
+							<AnalyticsIcon />
+							Consultor
+						</MenuItem>
+						<MenuItem value="gestor" className="gestor">
+							<FaceIcon />
+							Gestor
+						</MenuItem>
+						<MenuItem value="auditor" className="auditor">
+							<AccountBoxIcon />
+							Auditor
+						</MenuItem>
+					</Select>
+				))}
 		</Container>
 	)
 }
