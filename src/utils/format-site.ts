@@ -1,4 +1,5 @@
-export const formatSite = (site: string): string => {
+export const formatSite = (site?: string): string => {
+	if (!site) return ''
 	const siteWithoutHttp = site
 		.replace('http://', '')
 		.replace('https://', '')

@@ -143,7 +143,7 @@ export const AuditorArea: React.FC = () => {
 									}
 								/>
 								<h2>{selectedCompany.name}</h2>
-								<CompanyGraph height={100} width={100} points={100} />
+								<CompanyGraph size="small" points={100} />
 								<ExpandMoreIcon className="expand" />
 							</>
 						) : (
@@ -182,7 +182,7 @@ export const AuditorArea: React.FC = () => {
 												alt={`Logo da empresa ${company.name}`}
 											/>
 											<h3>{company.name}</h3>
-											<CompanyGraph height={100} width={100} points={100} />
+											<CompanyGraph size="small" points={100} />
 										</div>
 									))
 								)}

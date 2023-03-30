@@ -142,7 +142,7 @@ export const Companies: React.FC = () => {
 												</a>
 											</div>
 											<div className="company-graph" ref={graphDivRef}>
-												<CompanyGraph points={400} height={100} width={100} />
+												<CompanyGraph points={400} size="small" />
 											</div>
 											<CompanyStatus status={company.status} reduced />
 										</CompanyItem>
