@@ -11,7 +11,7 @@ import { handleApiError } from 'utils/handle-api-error'
 import { api } from 'api'
 import { Button } from 'components/button'
 import PostAddIcon from '@mui/icons-material/PostAdd'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from 'hooks/authentication.hook'
 import { Table } from 'components/table'
 import { Checkbox } from 'components/checkbox/input'
@@ -26,6 +26,7 @@ export const QuestionsFromGrouping: React.FC = () => {
 	const [pages, setPages] = React.useState(0)
 	const [currentPage, setCurrentPage] = React.useState(1)
 	const { questionaryId, groupingId } = useParams()
+	const navigate = useNavigate()
 	const { employee } = useAuth()
 
 	React.useEffect(() => {
@@ -61,7 +62,9 @@ export const QuestionsFromGrouping: React.FC = () => {
 	}
 
 	const handleRespondQuestionsClick = () => {
-		console.log('handleAddUsersClick')
+		navigate(
+			`/questionarios-da-empresa/${questionaryId}/perguntas-do-agrupamento/${groupingId}/responder-perguntas`,
+		)
 	}
 
 	const toggleSelectedQuestion = (questionId: string) => {
@@ -157,7 +160,7 @@ export const QuestionsFromGrouping: React.FC = () => {
 						)}
 
 						<Button
-							text="Responser perguntas"
+							text="Responder perguntas"
 							endIcon={<PostAddIcon />}
 							variant="primary"
 							onClick={handleRespondQuestionsClick}
