@@ -3,6 +3,7 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import BusinessIcon from '@mui/icons-material/Business'
 import CommentBankIcon from '@mui/icons-material/CommentBank'
+import ArticleIcon from '@mui/icons-material/Article'
 import PeopleIcon from '@mui/icons-material/People'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
@@ -139,7 +140,7 @@ export const SideBar: React.FC = () => {
 							onClick={() => handleOpenMenu('/questionarios-da-empresa')}
 						>
 							<div className="side-border" />
-							<CommentBankIcon />
+							<ArticleIcon />
 							<p className="item-name">Questionários</p>
 						</MenuItem>
 						<MenuItem

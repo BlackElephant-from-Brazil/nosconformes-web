@@ -29,9 +29,14 @@ const TabPanel = (props: TabPanelProps) => {
 type TabsProps = {
 	tabTitles: string[]
 	tabContents: React.ReactNode[]
+	tabTitleClass?: string
 }
 
-export const Tabs: React.FC<TabsProps> = ({ tabTitles, tabContents }) => {
+export const Tabs: React.FC<TabsProps> = ({
+	tabTitles,
+	tabContents,
+	tabTitleClass,
+}) => {
 	const [value, setValue] = React.useState(0)
 
 	const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -51,6 +56,7 @@ export const Tabs: React.FC<TabsProps> = ({ tabTitles, tabContents }) => {
 				textColor="inherit"
 				variant="fullWidth"
 				aria-label="full width tabs example"
+				className={tabTitleClass}
 			>
 				{tabTitles.map(tabTitle => (
 					<Tab label={tabTitle} key={tabTitle} />

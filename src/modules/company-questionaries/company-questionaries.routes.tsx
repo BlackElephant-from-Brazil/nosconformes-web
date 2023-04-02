@@ -4,12 +4,27 @@ import {
 	STORAGE_USER_KEY,
 } from 'hooks/authentication.hook'
 import { redirect, RouteObject } from 'react-router-dom'
-import { CompanyQuestionaries } from '.'
+import { Questionaries } from './pages/questionaries'
+import { QuestionaryDetails } from './pages/questionary-details'
+import { QuestionsFromGrouping } from './pages/questions-from-grouping'
+import { AnswerQuestions } from './pages/answer-questions'
 
 const companyQuestionariesRoutes: RouteObject[] = [
 	{
 		path: '/questionarios-da-empresa',
-		element: <CompanyQuestionaries />,
+		element: <Questionaries />,
+	},
+	{
+		path: '/questionarios-da-empresa/:questionaryId',
+		element: <QuestionaryDetails />,
+	},
+	{
+		path: '/questionarios-da-empresa/:questionaryId/perguntas-do-agrupamento/:groupingId',
+		element: <QuestionsFromGrouping />,
+	},
+	{
+		path: '/questionarios-da-empresa/:questionaryId/perguntas-do-agrupamento/:groupingId/responder-perguntas',
+		element: <AnswerQuestions />,
 	},
 ]
 
