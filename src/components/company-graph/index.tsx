@@ -4,83 +4,33 @@ import { Container } from './styles'
 
 type CompanyGraphProps = {
 	points: number
-	height: number
-	width: number
+	size: 'small' | 'medium' | 'large'
 }
 
 const graphSet = [
 	{ name: 'Perigo', value: 333 },
-	{ name: 'Atenção', value: 333 },
-	{ name: 'Ideal', value: 334 },
+	{ name: 'Atenção', value: 334 },
+	{ name: 'Ideal', value: 333 },
 ]
 
 const COLORS = ['#FF2163', '#FF991C', '#69B345']
 
-export const CompanyGraph: React.FC<CompanyGraphProps> = ({
-	points,
-	height,
-	width,
-}) => {
-	const dot = () => {
-		let color = '#FF2163'
-		if (points <= 333) {
-			color = '#FF2163'
-		} else if (points <= 666) {
-			color = '#FF991C'
-		} else {
-			color = '#69B345'
+export const CompanyGraph: React.FC<CompanyGraphProps> = ({ points, size }) => {
+	const graphSizeInPx = (() => {
+		switch (size) {
+			case 'small':
+				return 100
+			case 'medium':
+				return 200
+			case 'large':
+				return 300
+			default:
+				return 100
 		}
-
-		const r = 6
-		let cx = 0
-		let cy = 0
-		if (points <= 100) {
-			cx = 8
-			cy = 44
-		} else if (points <= 200) {
-			cx = 14
-			cy = 30
-		} else if (points <= 333) {
-			cx = 22
-			cy = 18
-		} else if (points <= 400) {
-			cx = 31
-			cy = 14
-		} else if (points <= 500) {
-			cx = 50
-			cy = 9
-		} else if (points <= 666) {
-			cx = 69
-			cy = 14
-		} else if (points <= 700) {
-			cx = 70
-			cy = 14
-		} else if (points <= 800) {
-			cx = 81
-			cy = 22
-		} else if (points <= 900) {
-			cx = 87
-			cy = 30
-		} else {
-			cx = 92
-			cy = 44
-		}
-
-		return (
-			<circle
-				cx={cx}
-				cy={cy}
-				r={r}
-				fill="#ffffff"
-				stroke={color}
-				strokeWidth="5"
-			/>
-		)
-	}
-
+	})()
 	return (
-		<Container graphWidth={width}>
-			<PieChart width={width} height={height}>
+		<Container graphWidth={graphSizeInPx} size={size}>
+			<PieChart width={graphSizeInPx} height={graphSizeInPx}>
 				<Pie
 					data={graphSet}
 					cx="50%"
@@ -94,12 +44,11 @@ export const CompanyGraph: React.FC<CompanyGraphProps> = ({
 					cornerRadius="50%"
 					dataKey="value"
 				>
-					{graphSet.map((entry, index) => (
-						// eslint-disable-next-line react/no-array-index-key
-						<Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-					))}
+					<Cell fill="#FF2163" enableBackground="#8884d8" fillRule="evenodd" />
+					<Cell fill="#FF991C" enableBackground="#8884d8" />
+					<Cell fill="#69B345" enableBackground="#8884d8" />
 				</Pie>
-				{dot()}
+				{/* {dot()} */}
 			</PieChart>
 			<div className="points-container">
 				<span className="points">{points}</span>

@@ -6,7 +6,7 @@ import { redirect } from 'react-router-dom'
 const validateLoggedUser = () => {
 	const storagedUser = localStorage.getItem(STORAGE_USER_KEY)
 	if (storagedUser) {
-		return redirect('/dashboard')
+		return redirect('/empresas')
 	}
 	return null
 }

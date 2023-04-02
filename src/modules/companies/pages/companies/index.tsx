@@ -37,10 +37,10 @@ export const Companies: React.FC = () => {
 	const formSearchInputRef = useRef<FormHandles>(null)
 	const [activeCompanyId, setActiveCompanyId] = useState('')
 	const graphDivRef = useRef<HTMLDivElement>(null)
+	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
-		// eslint-disable-next-line prettier/prettier
-		; (async () => {
+		;(async () => {
 			try {
 				const { data } = await api.get('/companies')
 				if (data.length === 0) {
@@ -48,6 +48,8 @@ export const Companies: React.FC = () => {
 					return
 				}
 				setCompanies(data)
+				setActiveCompanyId(data[0]._eq)
+				setIsLoading(false)
 			} catch (err: any) {
 				if (err.response.status !== 401) {
 					handleApiError(err)
@@ -93,14 +95,10 @@ export const Companies: React.FC = () => {
 		navigate(`/detalhes-da-empresa/${activeCompanyId}`)
 	}
 
-	useEffect(() => {
-		console.log(graphDivRef.current?.clientWidth)
-	}, [graphDivRef.current?.clientWidth])
-
 	return (
 		<Container>
 			<Header icon={<BusinessIcon />} title="Empresas" />
-			<Body>
+			<Body cardContext isLoading={isLoading}>
 				<div className="content">
 					<div className="companies-list-utilities">
 						<Form onSubmit={handleSearchSubmit} ref={formSearchInputRef}>
@@ -113,7 +111,7 @@ export const Companies: React.FC = () => {
 							/>
 						</Form>
 						<Button
-							buttonStyle="primary"
+							variant="primary"
 							text="Criar nova empresa +"
 							className="new-company-button"
 							onClick={handleAddNewCompany}
@@ -144,7 +142,7 @@ export const Companies: React.FC = () => {
 												</a>
 											</div>
 											<div className="company-graph" ref={graphDivRef}>
-												<CompanyGraph points={400} height={100} width={100} />
+												<CompanyGraph points={400} size="small" />
 											</div>
 											<CompanyStatus status={company.status} reduced />
 										</CompanyItem>

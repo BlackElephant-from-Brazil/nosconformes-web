@@ -5,10 +5,7 @@ import { compilerOptions } from './tsconfig.json'
 const config: Config = {
 	preset: 'ts-jest/presets/js-with-ts',
 	testEnvironment: 'jsdom',
-	coverageReporters: [
-		'text-summary',
-		'lcov'
-	],
+	coverageReporters: ['text-summary', 'lcov'],
 	coverageDirectory: 'coverage',
 	collectCoverage: true,
 	collectCoverageFrom: [
@@ -17,10 +14,10 @@ const config: Config = {
 		'<rootDir>/src/components/*',
 	],
 	clearMocks: true,
-	moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/src/' }),
-	testMatch: [
-		'<rootDir>/src/__tests__/*'
-	]
+	moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
+		prefix: '<rootDir>/src/',
+	}),
+	testMatch: ['<rootDir>/src/__tests__/*'],
 }
 
 export default config

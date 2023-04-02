@@ -17,8 +17,7 @@ const AddFirstCompany: React.FC = () => {
 	}
 
 	useEffect(() => {
-		// eslint-disable-next-line prettier/prettier
-		; (async () => {
+		;(async () => {
 			const { data } = await api.get('/companies')
 			if (data.length > 0) {
 				navigate('/empresas')
@@ -46,7 +45,7 @@ const AddFirstCompany: React.FC = () => {
 								</p>
 							</div>
 							<Button
-								buttonStyle="primary"
+								variant="primary"
 								text="Cadastrar primeira empresa ->"
 								className="bt-add-first-company"
 								onClick={handleAddFirstCompanyButtonClicked}

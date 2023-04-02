@@ -1,25 +1,34 @@
-import { User } from 'interfaces/user.type'
 import styled from 'styled-components'
 
 type ContainerProps = {
-	accessLevel: User['accessLevel']
+	accessLevel:
+		| 'master'
+		| 'patrocinador'
+		| 'stackholder'
+		| 'gestor'
+		| 'consultor'
+		| 'auditor'
 }
 
 export const Container = styled.div<ContainerProps>`
-	display: inline-block;
-	vertical-align: middle;
+	display: flex;
+	align-items: center;
 	border-radius: 12px;
 	height: 24px;
 	padding: 0 8px;
-	flex-wrap: wrap;
 	line-height: 24px !important;
+	width: fit-content;
 	background: ${({ accessLevel }) => {
 		switch (accessLevel) {
 			case 'master':
 				return '#1F4CD5'
-			case 'consultant':
+			case 'patrocinador':
+				return '#1F4CD5'
+			case 'consultor':
 				return '#69B345'
-			case 'manager':
+			case 'gestor':
+				return '#FF2163'
+			case 'stackholder':
 				return '#FF2163'
 			case 'auditor':
 				return '#23067D'
@@ -32,7 +41,7 @@ export const Container = styled.div<ContainerProps>`
 		color: #ffffff;
 		width: 18px;
 		height: 18px;
-		margin-bottom: 2px;
+		vertical-align: middle !important;
 	}
 
 	p {
@@ -41,9 +50,5 @@ export const Container = styled.div<ContainerProps>`
 		font-weight: 500 !important;
 		font-size: 12px !important;
 		color: #ffffff !important;
-	}
-
-	> * {
-		vertical-align: middle !important; // Align children to middle of line
 	}
 `

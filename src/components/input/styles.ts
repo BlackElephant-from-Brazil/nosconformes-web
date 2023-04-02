@@ -1,13 +1,13 @@
 import { styled, TextField } from '@mui/material'
 
-export const PrimaryInput = styled(TextField)(props => ({
+export const OutlinedInput = styled(TextField)(props => ({
 	display: props.type === 'hidden' ? 'none' : 'inline-flex',
 	marginTop: 10,
 	marginBottom: 10,
 	borderRadius: 8,
 	borderColor: '#E9EFF5',
-	background: '#E9EFF5',
-	backgroundColor: '#E9EFF5',
+	background: props.variant === 'standard' ? '#ffffff' : '#E9EFF5',
+	backgroundColor: props.variant === 'standard' ? '#ffffff' : '#E9EFF5',
 	width: '100%',
 
 	'& .MuiOutlinedInput-root': {

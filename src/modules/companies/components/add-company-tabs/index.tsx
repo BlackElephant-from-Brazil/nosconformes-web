@@ -142,9 +142,9 @@ export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({
 		setDisplayCompanyErrors('')
 		const cnpj = revertCnpj(formRef.current?.getFieldValue('company.cnpj'))
 		const companyFormData: Company = {
-			name: formRef.current?.getFieldValue('company.name'),
+			name: formRef.current?.getFieldValue('company.name').trim(),
 			cnpj,
-			site: formRef.current?.getFieldValue('company.site'),
+			site: formRef.current?.getFieldValue('company.site').trim(),
 		}
 		try {
 			const schema = Yup.object().shape({
@@ -177,10 +177,10 @@ export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({
 		setDisplayCompanyErrors('')
 		const phone = revertPhone(data.manager.phone)
 		const managerFormData: Manager = {
-			name: data.manager.name,
-			email: data.manager.email,
-			department: data.manager.department,
-			office: data.manager.office,
+			name: data.manager.name.trim(),
+			email: data.manager.email.trim(),
+			department: data.manager.department.trim(),
+			office: data.manager.office.trim(),
 			phone,
 		}
 		try {
@@ -273,7 +273,7 @@ export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({
 						/>
 						<Button
 							text="Próximo"
-							buttonStyle="primary"
+							variant="primary"
 							onClick={handleButtonNextClick}
 						/>
 					</Scope>
@@ -319,13 +319,13 @@ export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({
 						<div className="form-manager-button-container">
 							<Button
 								text="Pular etapa"
-								buttonStyle="secondary"
+								variant="secondary"
 								onClick={handleSubmitWithoutManagerData}
 								className="jump-buttom"
 							/>
 							<Button
 								text="Cadastrar empresa"
-								buttonStyle="primary"
+								variant="primary"
 								type="submit"
 							/>
 						</div>

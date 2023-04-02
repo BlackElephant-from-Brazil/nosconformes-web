@@ -1,10 +1,10 @@
 /* eslint-disable indent */
-import { User } from 'interfaces/user.type'
 import styled from 'styled-components'
 import { styled as muiStyled, MenuItem as MuiMenuItem } from '@mui/material'
+import { AccessLevelType } from 'interfaces/access-levels.type'
 
 type ContainerProps = {
-	accessLevel: User['accessLevel']
+	accessLevel: AccessLevelType
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -31,9 +31,13 @@ export const Container = styled.div<ContainerProps>`
 			switch (accessLevel) {
 				case 'master':
 					return '#1F4CD5'
-				case 'consultant':
+				case 'patrocinador':
+					return '#1F4CD5'
+				case 'consultor':
 					return '#69B345'
-				case 'manager':
+				case 'gestor':
+					return '#FF2163'
+				case 'stackholder':
 					return '#FF2163'
 				case 'auditor':
 					return '#23067D'
@@ -79,10 +83,16 @@ export const MenuItem = muiStyled(MuiMenuItem)(() => ({
 	'&.master': {
 		color: '#1F4CD5',
 	},
-	'&.consultant': {
+	'&.consultor': {
 		color: '#69B345',
 	},
-	'&.manager': {
+	'&.gestor': {
+		color: '#FF2163',
+	},
+	'&.patrocinador': {
+		color: '#1F4CD5',
+	},
+	'&.stackholder': {
 		color: '#FF2163',
 	},
 	'&.auditor': {

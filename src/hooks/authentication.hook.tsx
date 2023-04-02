@@ -1,3 +1,4 @@
+import { Employee } from 'interfaces/employee.type'
 import { User } from 'interfaces/user.type'
 import { enqueueSnackbar } from 'notistack'
 import React, {
@@ -15,10 +16,11 @@ type SignInCredentials = {
 }
 
 type AuthContextData = {
-	user: User
+	user: User | null
+	employee: Employee | null
 	signIn: (credentials: SignInCredentials) => Promise<boolean>
 	signOut: () => void
-	updateUser: (user: User) => void
+	updateUser: (user: User | null, employee: Employee | null) => void
 }
 
 type AuthProviderProps = {
@@ -28,10 +30,12 @@ type AuthProviderProps = {
 
 type AuthState = {
 	token: string
-	user: User
+	user: User | null
+	employee: Employee | null
 }
 
 export const STORAGE_USER_KEY = '@nosconformes:user'
+export const STORAGE_EMPLOYEE_KEY = '@nosconformes:employee'
 export const STORAGE_TOKEN_KEY = '@nosconformes:token'
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
@@ -42,11 +46,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
 }) => {
 	const [data, setData] = useState<AuthState>(() => {
 		const storagedUser = localStorage.getItem(STORAGE_USER_KEY)
+		const storagedEmployee = localStorage.getItem(STORAGE_EMPLOYEE_KEY)
 		const storagedToken = localStorage.getItem(STORAGE_TOKEN_KEY)
 
-		if (storagedToken && storagedUser) {
+		if (storagedToken && (storagedUser || storagedEmployee)) {
 			api.defaults.headers.authorization = `Bearer ${storagedToken}`
-			return { token: storagedToken, user: JSON.parse(storagedUser) }
+			const userToParse = storagedUser || ''
+			const employeeToParse = storagedEmployee || ''
+			return {
+				token: storagedToken,
+				user: JSON.parse(userToParse),
+				employee: JSON.parse(employeeToParse),
+			}
 		}
 		return {} as AuthState
 	})
@@ -59,16 +70,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
 					password,
 				})
 
-				const { accessToken, user } = response.data
+				const { accessToken, user, employee } = response.data
 
 				authenticateUser()
 				localStorage.setItem(STORAGE_TOKEN_KEY, accessToken)
-				localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(user))
+				localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(user || null))
+				localStorage.setItem(
+					STORAGE_EMPLOYEE_KEY,
+					JSON.stringify(employee || null),
+				)
 				api.defaults.headers.authorization = `Bearer ${accessToken}`
 
 				setData({
 					token: accessToken,
 					user,
+					employee,
 				})
 				return true
 			} catch (err: any) {
@@ -80,12 +96,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
 	)
 
 	const updateUser = useCallback(
-		(user: User) => {
+		(user: User | null, employee: Employee | null) => {
 			localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(user))
+			localStorage.setItem(STORAGE_EMPLOYEE_KEY, JSON.stringify(employee))
 
 			setData({
 				...data,
 				user,
+				employee,
 			})
 		},
 		[data],
@@ -102,9 +120,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
 			signIn,
 			signOut,
 			user: data.user,
+			employee: data.employee,
 			updateUser,
 		}),
-		[signIn, signOut, data.user, updateUser],
+		[signIn, signOut, data.user, data.employee, updateUser],
 	)
 
 	return (

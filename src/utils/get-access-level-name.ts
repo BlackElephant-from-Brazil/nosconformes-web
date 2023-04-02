@@ -1,12 +1,19 @@
-import { User } from 'interfaces/user.type'
-
-export const getAccessLevelName = (accessLevel: User['accessLevel']) => {
+export const getAccessLevelName = (
+	accessLevel?:
+		| 'master'
+		| 'gestor'
+		| 'consultor'
+		| 'auditor'
+		| 'patrocinador'
+		| 'stackholder',
+) => {
+	if (!accessLevel) return 'Usuário'
 	switch (accessLevel) {
 		case 'auditor':
 			return 'Auditor'
-		case 'consultant':
+		case 'consultor':
 			return 'Consultor'
-		case 'manager':
+		case 'gestor':
 			return 'Gestor'
 		case 'master':
 			return 'Master'

@@ -4,6 +4,7 @@ import { Form } from '@unform/web'
 import { FormHandles, SubmitHandler } from '@unform/core'
 import * as Yup from 'yup'
 import { useNavigate } from 'react-router-dom'
+import { handleApiError } from 'utils/handle-api-error'
 import { Container, Describer, FormChangePassword } from './styles'
 import ncHorizontal from '../../../../assets/nc-horizontal.png'
 import dm11Logotipo from '../../../../assets/dm11-logotipo.png'
@@ -36,6 +37,10 @@ const ChangePassword: React.FC = () => {
 		ChangePasswordForm
 	> = async data => {
 		setDisplayErrors('')
+		const changePasswordData = {
+			password: data.password.trim(),
+			passwordConfirmation: data.passwordConfirmation.trim(),
+		}
 		try {
 			const schema = Yup.object().shape({
 				password: Yup.string()
@@ -51,7 +56,7 @@ const ChangePassword: React.FC = () => {
 					.oneOf([Yup.ref('password'), null], errorMessages.passwordsDontMatch),
 			})
 
-			await schema.validate(data, {
+			await schema.validate(changePasswordData, {
 				abortEarly: false,
 			})
 		} catch (errors) {
@@ -66,7 +71,6 @@ const ChangePassword: React.FC = () => {
 				setDisplayErrors(allErrors)
 				return
 			}
-			console.log(errors)
 			return
 		}
 
@@ -77,9 +81,8 @@ const ChangePassword: React.FC = () => {
 				passwordConfirmation: data.passwordConfirmation,
 				_protocol: 'valid-protocol',
 			})
-		} catch (serverErrors) {
-			console.log(serverErrors)
-			return
+		} catch (errors) {
+			handleApiError(errors)
 		}
 		navigate('/login')
 	}
@@ -122,11 +125,7 @@ const ChangePassword: React.FC = () => {
 							placeholder="Confirme a senha digitada..."
 						/>
 						<Alert text={displayErrors} type="error" />
-						<Button
-							text="Atualizar senha"
-							buttonStyle="primary"
-							type="submit"
-						/>
+						<Button text="Atualizar senha" variant="primary" type="submit" />
 					</Form>
 				</div>
 				<div className="footer">

@@ -1,33 +1,36 @@
 import React from 'react'
+import excelIcon from 'assets/excel-icon.png'
+import { CircularProgress } from '@mui/material'
 import { StyledButton } from './styles'
 
-export const BT_PRIMARY = 'primary'
-export const BT_SECONDARY = 'secondary'
-export const BT_PRIMARY_ORANGE = 'primary-orange'
-
-export type ButtonVariations =
-	| typeof BT_PRIMARY
-	| typeof BT_SECONDARY
-	| typeof BT_PRIMARY_ORANGE
-
-type ButtonProps = {
+export type ButtonProps = {
 	text: string
-	buttonStyle: ButtonVariations
+	variant:
+		| 'primary'
+		| 'secondary'
+		| 'primary-orange'
+		| 'excel'
+		| 'danger'
+		| 'success'
 	onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void
 	className?: string
-	icon?: JSX.Element
+	endIcon?: JSX.Element
+	startIcon?: JSX.Element
 	type?: 'submit' | 'button' | 'reset'
 	testid?: string
+	isLoading?: boolean
 }
 
 const Button: React.FC<ButtonProps> = ({
 	text,
-	buttonStyle,
+	variant,
 	onClick,
 	className,
-	icon,
+	endIcon,
+	startIcon,
 	type,
 	testid,
+	isLoading,
 }) => {
 	return (
 		<StyledButton
@@ -39,10 +42,26 @@ const Button: React.FC<ButtonProps> = ({
 				onClick?.(e)
 			}}
 			className={className}
-			buttonstyle={buttonStyle}
-			endIcon={icon || null}
+			buttonstyle={variant}
+			endIcon={endIcon || null}
+			startIcon={startIcon || null}
+			disabled={isLoading}
 		>
 			{text}
+			{variant === 'excel' && <img src={excelIcon} alt="Ícone do excel" />}
+			{isLoading && (
+				<CircularProgress
+					size={24}
+					sx={{
+						color: '#1F4CD5',
+						position: 'absolute',
+						top: '50%',
+						left: '50%',
+						marginTop: '-12px',
+						marginLeft: '-12px',
+					}}
+				/>
+			)}
 		</StyledButton>
 	)
 }
