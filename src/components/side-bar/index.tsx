@@ -92,7 +92,10 @@ export const SideBar: React.FC = () => {
 						<MenuItem
 							textShow={displayMenuOpen}
 							open={isOpen}
-							active={active === '/empresas'}
+							active={
+								active === '/empresas' ||
+								active === '/cadastre-sua-primeira-empresa'
+							}
 							onClick={() => handleOpenMenu('/empresas')}
 						>
 							<div className="side-border" />
