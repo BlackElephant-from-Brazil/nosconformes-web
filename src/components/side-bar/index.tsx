@@ -93,8 +93,8 @@ export const SideBar: React.FC = () => {
 							textShow={displayMenuOpen}
 							open={isOpen}
 							active={
-								active === '/empresas' ||
-								active === '/cadastre-sua-primeira-empresa'
+								active.includes('/empresas') ||
+								active.includes('/cadastre-sua-primeira-empresa')
 							}
 							onClick={() => handleOpenMenu('/empresas')}
 						>
@@ -105,8 +105,8 @@ export const SideBar: React.FC = () => {
 						<MenuItem
 							textShow={displayMenuOpen}
 							open={isOpen}
-							active={active === '/base-de-conhecimento'}
-							onClick={() => handleOpenMenu('/base-de-conhecimento')}
+							active={active.includes('/base-de-conhecimento')}
+							onClick={() => handleOpenMenu('/base-de-conhecimento/perguntas')}
 						>
 							<div className="side-border" />
 							<CommentBankIcon />

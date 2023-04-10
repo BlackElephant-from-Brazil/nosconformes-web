@@ -5,11 +5,12 @@ import {
 } from 'hooks/authentication.hook'
 import { redirect, RouteObject } from 'react-router-dom'
 import { KnowledgeBase } from '.'
+import { Questions } from './pages/questions'
 
 const knowledgeBaseRoutes: RouteObject[] = [
 	{
-		path: '/base-de-conhecimento',
-		element: <KnowledgeBase />,
+		path: '/base-de-conhecimento/perguntas',
+		element: <Questions />,
 	},
 ]
 

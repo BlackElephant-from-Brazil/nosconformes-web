@@ -15,8 +15,8 @@ import { api } from 'api'
 import { enqueueSnackbar } from 'notistack'
 import { handleApiError } from 'utils/handle-api-error'
 import { isObjectEmpty } from 'utils/is-object-empty'
-import { generateRandomCode } from 'utils/generate-random-code'
 import { createFilterOptions } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
 import { AnswerGroup, Container } from './styles'
 
 type QuestionForm = {
@@ -542,7 +542,8 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 						<hr />
 						<div className="button-field">
 							<Button
-								text="Adicionar botão de anexo +"
+								text="Adicionar botão de anexo"
+								endIcon={<AddIcon />}
 								variant="secondary"
 								className="bt-add-input-field"
 								onClick={handleAddNewAccordingAttachmentButtonClick}
@@ -588,7 +589,8 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 						</div>
 						<div className="button-field">
 							<Button
-								text="Adicionar botão de anexo +"
+								text="Adicionar botão de anexo"
+								endIcon={<AddIcon />}
 								variant="secondary"
 								className="bt-add-input-field"
 								onClick={handleAddNewPartialAccordingAttachmentButtonClick}

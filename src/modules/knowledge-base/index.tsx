@@ -3,7 +3,7 @@ import CommentBankIcon from '@mui/icons-material/CommentBank'
 import { Body } from 'components/body'
 import { HeaderWithTabs, Tab } from '../../components/header-with-tabs'
 import { Container } from './styles'
-import { Questions } from './tabs/questions'
+import { Questions } from './pages/questions'
 import { Questionaries } from './tabs/questionaries'
 import { QuestionaryDetails } from './tabs/questionaries/pages/questionary-details'
 import { SelectQuestions } from './tabs/questionaries/pages/select-questions'
@@ -14,6 +14,7 @@ export const KnowledgeBase: React.FC = () => {
 	const [questionaryId, setQuestionaryId] = useState('')
 	const [loadedBody, setLoadedBody] = useState<JSX.Element | null>(null)
 	const [groupingId, setGroupingId] = useState('')
+	const [isPageLoading, setIsPageLoading] = useState(true)
 
 	const handleOpenQuestionaryDetails = (
 		link: string,
@@ -77,17 +78,18 @@ export const KnowledgeBase: React.FC = () => {
 	}, [groupingId, questionaryId])
 
 	useEffect(() => {
-		setLoadedBody(() => {
-			if (tabs.length > 0) {
-				for (let count = 0; count < tabs.length; count += 1) {
-					if (tabs[count].link === tabActive) {
-						return tabs[count].element
-					}
-				}
-			}
+		console.log('oi')
+		// setLoadedBody(() => {
+		// 	if (tabs.length > 0) {
+		// 		for (let count = 0; count < tabs.length; count += 1) {
+		// 			if (tabs[count].link === tabActive) {
+		// 				return tabs[count].element
+		// 			}
+		// 		}
+		// 	}
 
-			return null
-		})
+		// 	return null
+		// })
 	}, [tabActive, tabs])
 
 	const openTab = (link: string) => {
@@ -103,7 +105,12 @@ export const KnowledgeBase: React.FC = () => {
 				active={tabActive}
 				openTab={openTab}
 			/>
-			<Body cardContext={tabActive === '/questionarios'}>{loadedBody}</Body>
+			<Body
+				cardContext={tabActive === '/questionarios'}
+				isLoading={isPageLoading}
+			>
+				{loadedBody}
+			</Body>
 		</Container>
 	)
 }

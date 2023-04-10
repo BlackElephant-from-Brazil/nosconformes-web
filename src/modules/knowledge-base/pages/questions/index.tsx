@@ -18,8 +18,13 @@ import { Checkbox } from 'components/checkbox/input'
 import { ContextMenu } from 'components/context-menu'
 import { Dialog } from 'components/dialog'
 import { Grouping } from 'interfaces/grouping.type'
-import { AddNewQuestionContainer, Container, DialogBody } from './styles'
+import { Body } from 'components/body'
+import CommentBankIcon from '@mui/icons-material/CommentBank'
+import { HeaderWithTabs } from 'components/header-with-tabs'
+import { NotFound } from 'components/not-found'
+import AddIcon from '@mui/icons-material/Add'
 import { FormQuestion } from './components/form-question'
+import { AddNewQuestionContainer, Container, DialogBody } from './styles'
 
 const tableTitles = ['ID', 'Pergunta', 'Função', 'Tag', 'Referência']
 
@@ -41,6 +46,7 @@ export const Questions: React.FC = () => {
 	const [allGroupings, setAllGroupings] = useState<Grouping[]>([])
 	const [pages, setPages] = useState(0)
 	const [currentPage, setCurrentPage] = useState(1)
+	const [isPageLoading, setIsPageLoading] = useState(true)
 
 	useEffect(() => {
 		;(async () => {
@@ -59,6 +65,7 @@ export const Questions: React.FC = () => {
 				const { data } = await api.get('/questions')
 				setQuestions(data.findQuestions)
 				setPages(data.pageCount)
+				setIsPageLoading(false)
 			} catch (error) {
 				handleApiError(error)
 			}
@@ -296,109 +303,131 @@ export const Questions: React.FC = () => {
 
 	return (
 		<Container onContextMenu={handleContextMenu}>
-			<div className="questions-list-utilities">
-				<Form onSubmit={e => e.preventDefault()} ref={formSearchInputRef}>
-					<Input
-						name="searchQuestion"
-						placeholder="Pesquise por pergunta, função, tag, agrupamento ou referência"
-						endAdornmentIcon={<SearchRoundedIcon />}
-						className="search-input"
-						onChange={handleSearchInputChange}
-					/>
-				</Form>
-				<Button
-					variant="excel"
-					text="Importar excel"
-					className="excel-button"
-					onClick={handleImportExcelButtonClick}
-				/>
-				<input
-					type="file"
-					ref={inputFileRef}
-					style={{ display: 'none' }}
-					onChange={handleFileExcelSelected}
-					accept=".xlsx"
-				/>
-				<Button
-					variant="primary"
-					text="Cadastrar pergunta +"
-					className="new-question-button"
-					onClick={handleCreateNewQuestionButtonClick}
-				/>
-			</div>
-			<Table
-				headerTitles={tableTitles}
-				tableRows={renderTableBodyInfo()}
-				className="table-questions"
-				selectAllRows={toggleSelectAllRows}
-				isSelectable
-				pages={pages}
-				currentPage={currentPage}
-				selectPage={handleSelectPage}
+			<HeaderWithTabs
+				icon={<CommentBankIcon />}
+				title="Base de conhecimento"
+				tabs={[
+					{
+						title: 'Perguntas',
+						link: '/perguntas',
+					},
+					{
+						title: 'Questionários',
+						link: '/questionarios',
+					},
+				]}
+				active="/perguntas"
 			/>
-			<RightDrawer toggleDrawer={toggleDrawer} drawerOpen={drawerOpen}>
-				<AddNewQuestionContainer>
-					<CloseIcon className="close-drawer-icon" onClick={toggleDrawer} />
-					<FormQuestion
-						reloadTable={reloadTable}
-						toggleDrawer={toggleDrawer}
-						question={editableQuestion}
-					/>
-				</AddNewQuestionContainer>
-			</RightDrawer>
-			<ContextMenu
-				anchorEl={anchorEl}
-				handleClose={handleClose}
-				mousePosition={mousePosition}
-			>
-				<MenuItem
-					onMouseEnter={(e: any) => handleSubMenuOpen(e)}
-					onMouseLeave={handleSubMenuClose}
-				>
-					Mover para o agrupamento {'>'}
-					<Menu
-						anchorEl={subMenuAnchorEl}
-						open={Boolean(subMenuAnchorEl)}
-						onClose={handleSubMenuClose}
-						anchorOrigin={{
-							horizontal: 'right',
-							vertical: 'top',
-						}}
-					>
-						{allGroupings.map(grouping => (
-							<MenuItem
-								onClick={() => handleAddQuestionsToGrouping(grouping._eq)}
-							>
-								{grouping.name}
-							</MenuItem>
-						))}
-					</Menu>
-				</MenuItem>
-				<MenuItem onClick={handleDeleteButtonClick} className="danger">
-					Remover perguntas
-				</MenuItem>
-			</ContextMenu>
-			<Dialog
-				open={dialogOpen}
-				toggleOpen={toggleDialog}
-				variant="bottom_right"
-			>
-				<DialogBody>
-					<CloseIcon
-						className="close-dialog-icon"
-						onClick={toggleDialog}
-						data-testid="close-button"
-					/>
-					<div className="dialog-confirmation-text">
-						<h2>Tem certeza que deseja excluir as perguntas selecionadas?</h2>
-					</div>
+			<Body isLoading={isPageLoading}>
+				<div className="questions-list-utilities">
+					<Form onSubmit={e => e.preventDefault()} ref={formSearchInputRef}>
+						<Input
+							name="searchQuestion"
+							placeholder="Pesquise por pergunta, função, tag, agrupamento ou referência"
+							endAdornmentIcon={<SearchRoundedIcon />}
+							className="search-input"
+							onChange={handleSearchInputChange}
+						/>
+					</Form>
 					<Button
-						text="Excluir"
-						onClick={handleDeleteQuesitons}
-						variant="danger"
+						variant="excel"
+						text="Importar excel"
+						className="excel-button"
+						onClick={handleImportExcelButtonClick}
 					/>
-				</DialogBody>
-			</Dialog>
+					<input
+						type="file"
+						ref={inputFileRef}
+						style={{ display: 'none' }}
+						onChange={handleFileExcelSelected}
+						accept=".xlsx"
+					/>
+					<Button
+						variant="primary"
+						text="Cadastrar pergunta"
+						className="new-question-button"
+						endIcon={<AddIcon />}
+						onClick={handleCreateNewQuestionButtonClick}
+					/>
+				</div>
+				{questions.length === 0 ? (
+					<NotFound />
+				) : (
+					<Table
+						headerTitles={tableTitles}
+						tableRows={renderTableBodyInfo()}
+						className="table-questions"
+						selectAllRows={toggleSelectAllRows}
+						isSelectable
+						pages={pages}
+						currentPage={currentPage}
+						selectPage={handleSelectPage}
+					/>
+				)}
+				<RightDrawer toggleDrawer={toggleDrawer} drawerOpen={drawerOpen}>
+					<AddNewQuestionContainer>
+						<CloseIcon className="close-drawer-icon" onClick={toggleDrawer} />
+						<FormQuestion
+							reloadTable={reloadTable}
+							toggleDrawer={toggleDrawer}
+							question={editableQuestion}
+						/>
+					</AddNewQuestionContainer>
+				</RightDrawer>
+				<ContextMenu
+					anchorEl={anchorEl}
+					handleClose={handleClose}
+					mousePosition={mousePosition}
+				>
+					<MenuItem
+						onMouseEnter={(e: any) => handleSubMenuOpen(e)}
+						onMouseLeave={handleSubMenuClose}
+					>
+						Mover para o agrupamento {'>'}
+						<Menu
+							anchorEl={subMenuAnchorEl}
+							open={Boolean(subMenuAnchorEl)}
+							onClose={handleSubMenuClose}
+							anchorOrigin={{
+								horizontal: 'right',
+								vertical: 'top',
+							}}
+						>
+							{allGroupings.map(grouping => (
+								<MenuItem
+									onClick={() => handleAddQuestionsToGrouping(grouping._eq)}
+								>
+									{grouping.name}
+								</MenuItem>
+							))}
+						</Menu>
+					</MenuItem>
+					<MenuItem onClick={handleDeleteButtonClick} className="danger">
+						Remover perguntas
+					</MenuItem>
+				</ContextMenu>
+				<Dialog
+					open={dialogOpen}
+					toggleOpen={toggleDialog}
+					variant="bottom_right"
+				>
+					<DialogBody>
+						<CloseIcon
+							className="close-dialog-icon"
+							onClick={toggleDialog}
+							data-testid="close-button"
+						/>
+						<div className="dialog-confirmation-text">
+							<h2>Tem certeza que deseja excluir as perguntas selecionadas?</h2>
+						</div>
+						<Button
+							text="Excluir"
+							onClick={handleDeleteQuesitons}
+							variant="danger"
+						/>
+					</DialogBody>
+				</Dialog>
+			</Body>
 		</Container>
 	)
 }
