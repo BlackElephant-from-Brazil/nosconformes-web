@@ -64,7 +64,7 @@ export const SideBar: React.FC = () => {
 	}
 
 	const handleClickUserTag = () => {
-		navigate('/configuracoes')
+		navigate('/perfil')
 	}
 
 	return (

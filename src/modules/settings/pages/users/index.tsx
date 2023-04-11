@@ -16,6 +16,10 @@ import { handleApiError } from 'utils/handle-api-error'
 import { useAuth } from 'hooks/authentication.hook'
 import { Employee } from 'interfaces/employee.type'
 import AddIcon from '@mui/icons-material/Add'
+import { HeaderWithTabs } from 'components/header-with-tabs'
+import SettingsIcon from '@mui/icons-material/Settings'
+import { Body } from 'components/body'
+import { NotFound } from 'components/not-found'
 import { AddNewUserContainer, Container } from './styles'
 
 const tableTitles = ['Nome', 'E-mail', 'Cargo', 'Responsabilidade']
@@ -26,6 +30,7 @@ export const Users: React.FC = () => {
 	const [users, setUsers] = useState<User[] | Employee[]>([])
 	const [editableUser, setEditableUser] = useState<User | null>(null)
 	const { user, employee } = useAuth()
+	const [isPageLoading, setIsPageLoading] = useState(true)
 
 	useEffect(() => {
 		;(async () => {
@@ -33,6 +38,7 @@ export const Users: React.FC = () => {
 				if (user) {
 					const { data } = await api.get('/users')
 					setUsers(data)
+					setIsPageLoading(false)
 				} else if (employee) {
 					const { data } = await api.get('/employees')
 					setUsers(data)
@@ -127,42 +133,63 @@ export const Users: React.FC = () => {
 
 	return (
 		<Container>
-			<div className="users-list-utilities">
-				<Form onSubmit={e => e.preventDefault()} ref={formSearchInputRef}>
-					<Input
-						name="searchUser"
-						placeholder="Pesquise por nome, email ou cargo"
-						endAdornmentIcon={<SearchRoundedIcon />}
-						className="search-input"
-						onChange={handleSearchInputChange}
-					/>
-				</Form>
-				<Button
-					variant="primary"
-					text="Criar novo usuário"
-					endIcon={<AddIcon />}
-					className="new-user-button"
-					onClick={handleCreateNewUserButtonClick}
-				/>
-			</div>
-			<Table
-				headerTitles={tableTitles}
-				tableRows={renderTableBodyInfo()}
-				className="table-users"
+			<HeaderWithTabs
+				icon={<SettingsIcon />}
+				title="Configurações"
+				tabs={[
+					{
+						title: 'Perfil',
+						link: '/perfil',
+					},
+					{
+						title: 'Usuários',
+						link: '/usuarios',
+					},
+				]}
+				active="/usuarios"
 			/>
-			<RightDrawer toggleDrawer={toggleDrawer} drawerOpen={drawerOpen}>
-				<AddNewUserContainer>
-					<CloseIcon className="close-drawer-icon" onClick={toggleDrawer} />
-					<div className="drawer-body">
-						<h2>{editableUser ? 'Perfil' : 'Crie novos usuários 😁'}</h2>
-						<UserForm
-							toggleDrawer={toggleDrawer}
-							user={editableUser}
-							reloadTable={reloadTable}
+			<Body isLoading={isPageLoading}>
+				<div className="users-list-utilities">
+					<Form onSubmit={e => e.preventDefault()} ref={formSearchInputRef}>
+						<Input
+							name="searchUser"
+							placeholder="Pesquise por nome, email ou cargo"
+							endAdornmentIcon={<SearchRoundedIcon />}
+							className="search-input"
+							onChange={handleSearchInputChange}
 						/>
-					</div>
-				</AddNewUserContainer>
-			</RightDrawer>
+					</Form>
+					<Button
+						variant="primary"
+						text="Criar novo usuário"
+						endIcon={<AddIcon />}
+						className="new-user-button"
+						onClick={handleCreateNewUserButtonClick}
+					/>
+				</div>
+				{users.length === 0 ? (
+					<NotFound />
+				) : (
+					<Table
+						headerTitles={tableTitles}
+						tableRows={renderTableBodyInfo()}
+						className="table-users"
+					/>
+				)}
+				<RightDrawer toggleDrawer={toggleDrawer} drawerOpen={drawerOpen}>
+					<AddNewUserContainer>
+						<CloseIcon className="close-drawer-icon" onClick={toggleDrawer} />
+						<div className="drawer-body">
+							<h2>{editableUser ? 'Perfil' : 'Crie novos usuários 😁'}</h2>
+							<UserForm
+								toggleDrawer={toggleDrawer}
+								user={editableUser}
+								reloadTable={reloadTable}
+							/>
+						</div>
+					</AddNewUserContainer>
+				</RightDrawer>
+			</Body>
 		</Container>
 	)
 }

@@ -55,6 +55,8 @@ export const AuditorArea: React.FC = () => {
 					data.shift()
 					setQuestionaries(data)
 					setIsLoading(false)
+				} else {
+					setIsLoading(false)
 				}
 			} catch (error) {
 				handleApiError(error)
@@ -219,7 +221,7 @@ export const AuditorArea: React.FC = () => {
 						<div className="selectable-questionaries">
 							<div className="questionaries-list">
 								{companies.length === 0 ? (
-									<p>Não há nenhuma outra empresa para ser listada</p>
+									<p>Não há nenhum questionário para ser listado</p>
 								) : (
 									questionaries.map(questionary => (
 										<div
@@ -253,7 +255,9 @@ export const AuditorArea: React.FC = () => {
 						/>
 						<div className="questionaries-container">
 							{companies.length === 0 ? (
-								<p>Não há nenhuma outra empresa para ser listada</p>
+								<p className="not-found-questionaries-container">
+									Não há nada para ser exibido aqui...
+								</p>
 							) : (
 								<>
 									{selectedQuestionary && (
@@ -292,7 +296,7 @@ export const AuditorArea: React.FC = () => {
 						<h3>Agrupamentos</h3>
 						<div className="groupings-container">
 							{companies.length === 0 ? (
-								<p>Não há nenhuma outra empresa para ser listada</p>
+								<p>Não há nada para ser exibido aqui...</p>
 							) : (
 								selectedQuestionary?.groupings.map(grouping => (
 									<div

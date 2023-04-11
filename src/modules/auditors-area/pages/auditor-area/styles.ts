@@ -1,7 +1,6 @@
+/* eslint-disable indent */
 /* eslint-disable prettier/prettier */
-
 import styled from 'styled-components'
-
 
 export const Container = styled.div`
 	width: 100%;
@@ -10,17 +9,14 @@ export const Container = styled.div`
 
 	.wrapper {
 		position: relative;
-    min-height: 550px;
+		min-height: 550px;
 	}
-
-
 
 	.space-select-company {
 		height: 100px;
 	}
 
 	.select-questionary {
-
 	}
 
 	.space-select-questionary {
@@ -47,6 +43,10 @@ export const Container = styled.div`
 				display: flex;
 				flex-direction: column;
 				margin-top: 10px;
+
+				p.not-found-questionaries-container {
+					margin-top: 40px;
+				}
 
 				.questionary {
 					margin-top: 42px;
@@ -182,11 +182,10 @@ export const SelectCompany = styled.div<SelectCompanyProps>`
 			transition: 0.2s ease-in-out;
 
 			${({ selectCompanyOpen }) =>
-		selectCompanyOpen &&
+				selectCompanyOpen &&
 				`
 					transform: rotate(180deg);
-				`
-}
+				`}
 		}
 	}
 
@@ -202,17 +201,15 @@ export const SelectCompany = styled.div<SelectCompanyProps>`
 		padding-left: 24px;
 		margin-top: 10px;
 		${({ selectCompanyOpen }) =>
-		!selectCompanyOpen &&
+			!selectCompanyOpen &&
 			`
 				display: none;
 			`}
-
 
 		.companies-list {
 			display: flex;
 			flex-direction: column;
 			margin-top: 40px;
-
 
 			.company-details {
 				display: flex;
@@ -221,7 +218,7 @@ export const SelectCompany = styled.div<SelectCompanyProps>`
 				cursor: pointer;
 
 				:hover {
-					background: #F2F4F8;
+					background: #f2f4f8;
 				}
 
 				:not(:first-child) {
@@ -238,7 +235,7 @@ export const SelectCompany = styled.div<SelectCompanyProps>`
 				h3 {
 					font-weight: 700;
 					font-size: 20px;
-					color: #0F141E;
+					color: #0f141e;
 					margin-left: 16px;
 					white-space: nowrap;
 					margin-right: auto;
@@ -305,11 +302,10 @@ export const SelectQuestionary = styled.div<SelectQuestionary>`
 			transition: 0.2s ease-in-out;
 
 			${({ selectQuestionaryOpen }) =>
-		selectQuestionaryOpen &&
+				selectQuestionaryOpen &&
 				`
 					transform: rotate(180deg);
-				`
-}
+				`}
 		}
 
 		h2.no-questionary {
@@ -329,17 +325,15 @@ export const SelectQuestionary = styled.div<SelectQuestionary>`
 		padding-left: 24px;
 		margin-top: 10px;
 		${({ selectQuestionaryOpen }) =>
-		!selectQuestionaryOpen &&
+			!selectQuestionaryOpen &&
 			`
 				display: none;
 		`}
-
 
 		.questionaries-list {
 			display: flex;
 			flex-direction: column;
 			margin-top: 10px;
-
 
 			.questionary-details {
 				display: flex;
@@ -347,7 +341,7 @@ export const SelectQuestionary = styled.div<SelectQuestionary>`
 				cursor: pointer;
 
 				:hover {
-					background: #F2F4F8;
+					background: #f2f4f8;
 				}
 
 				p {
@@ -355,15 +349,14 @@ export const SelectQuestionary = styled.div<SelectQuestionary>`
 					padding-bottom: 12px;
 					font-weight: 500;
 					font-size: 18px;
-					color: #6D7C99;
+					color: #6d7c99;
 
 					span {
 						font-weight: 700;
 						font-size: 22px;
-						color: #0F141E;
+						color: #0f141e;
 					}
 				}
-
 			}
 		}
 	}

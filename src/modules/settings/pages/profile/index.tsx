@@ -15,6 +15,9 @@ import { revertPhone } from 'utils/handlePhoneChange'
 import { handleYupErrors } from 'utils/handle-yup-errors'
 import * as Yup from 'yup'
 import { Employee } from 'interfaces/employee.type'
+import { HeaderWithTabs } from 'components/header-with-tabs'
+import SettingsIcon from '@mui/icons-material/Settings'
+import { Body } from 'components/body'
 import { Container } from './styles'
 
 type UpdateProfileForm = {
@@ -54,6 +57,7 @@ export const Profile: React.FC = () => {
 	const [profileData, setProfileData] = useState({} as User | Employee)
 	const [displayErrors, setDisplayErrors] = useState('')
 	const { user, updateUser, employee } = useAuth()
+	const [isPageLoading, setIsPageLoading] = useState(true)
 
 	useEffect(() => {
 		;(async () => {
@@ -65,6 +69,7 @@ export const Profile: React.FC = () => {
 					const { data } = await api.get(`/employees/${employee._eq}`)
 					setProfileData({ ...data, password: '**********' })
 				}
+				setIsPageLoading(false)
 			} catch (err) {
 				handleApiError(err)
 			}
@@ -211,40 +216,57 @@ export const Profile: React.FC = () => {
 
 	return (
 		<Container>
-			<Button
-				text="Salvar"
-				variant="primary"
-				onClick={handleClickSubmitFormButton}
-				className="save-button"
+			<HeaderWithTabs
+				icon={<SettingsIcon />}
+				title="Configurações"
+				tabs={[
+					{
+						title: 'Perfil',
+						link: '/perfil',
+					},
+					{
+						title: 'Usuários',
+						link: '/usuarios',
+					},
+				]}
+				active="/perfil"
 			/>
-			<Form
-				ref={formRef}
-				onSubmit={handleSubmitFormUpdateProfile}
-				className="form"
-			>
-				<ImageUploader
-					onDelete={handleDeleteProfilePicture}
-					initialImage={user?.profilePicture || employee?.profilePicture}
-					onEdit={handleUploadProfilePicture}
+			<Body isLoading={isPageLoading}>
+				<Button
+					text="Salvar"
+					variant="primary"
+					onClick={handleClickSubmitFormButton}
+					className="save-button"
 				/>
-				<Input label="Nome" name="name" />
-				<Input label="Email" name="email" />
-				<Input label="Telefone" name="phone" />
-				<Input label="Cargo" name="office" />
-				<Input label="Senha" name="password" type="password" />
-				<p className="password-info">
-					Mínimo de 8 caracteres, uma letra maiúscula, uma minúscula e um
-					caractere especial.
-				</p>
-				<AccessLevelInput
-					accessLevel={profileData.accessLevel}
-					name={profileData.name}
-					formRef={formRef}
-					isEmployee={!!employee}
-				/>
-				<Input type="hidden" name="accessLevel" />
-				<Alert text={displayErrors} type="error" />
-			</Form>
+				<Form
+					ref={formRef}
+					onSubmit={handleSubmitFormUpdateProfile}
+					className="form"
+				>
+					<ImageUploader
+						onDelete={handleDeleteProfilePicture}
+						initialImage={user?.profilePicture || employee?.profilePicture}
+						onEdit={handleUploadProfilePicture}
+					/>
+					<Input label="Nome" name="name" />
+					<Input label="Email" name="email" />
+					<Input label="Telefone" name="phone" />
+					<Input label="Cargo" name="office" />
+					<Input label="Senha" name="password" type="password" />
+					<p className="password-info">
+						Mínimo de 8 caracteres, uma letra maiúscula, uma minúscula e um
+						caractere especial.
+					</p>
+					<AccessLevelInput
+						accessLevel={profileData.accessLevel}
+						name={profileData.name}
+						formRef={formRef}
+						isEmployee={!!employee}
+					/>
+					<Input type="hidden" name="accessLevel" />
+					<Alert text={displayErrors} type="error" />
+				</Form>
+			</Body>
 		</Container>
 	)
 }
