@@ -16,6 +16,12 @@ export const StyledButton = styled(Button)<PrimaryButtonProps>`
 	width: 100%;
 	margin-bottom: 10px;
 	margin-top: 10px;
+	min-width: fit-content;
+
+	svg {
+		width: 24px;
+		height: 24px;
+	}
 
 	:hover {
 		background: #183caa;

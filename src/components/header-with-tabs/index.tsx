@@ -1,10 +1,11 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Container, Tabs } from './styles'
 
 export type Tab = {
 	title: string
 	link: string
-	element: JSX.Element
+	element?: JSX.Element
 	hidden?: boolean
 }
 
@@ -13,7 +14,7 @@ type HeaderWithTabsProps = {
 	title: string
 	tabs: Tab[]
 	active: string
-	openTab: (link: string) => void
+	openTab?: (link: string) => void
 }
 
 export const HeaderWithTabs: React.FC<HeaderWithTabsProps> = ({
@@ -23,6 +24,12 @@ export const HeaderWithTabs: React.FC<HeaderWithTabsProps> = ({
 	active,
 	openTab,
 }) => {
+	const navigate = useNavigate()
+
+	const handleOpenTab = (link: string) => {
+		navigate(link)
+	}
+
 	return (
 		<Container>
 			<div className="header-content">
@@ -35,7 +42,7 @@ export const HeaderWithTabs: React.FC<HeaderWithTabsProps> = ({
 						if (hidden) return null
 						return (
 							<li
-								onClick={() => openTab(link)}
+								onClick={() => handleOpenTab(link)}
 								key={tabTitle}
 								className={link === active ? 'active' : ''}
 								role="presentation"

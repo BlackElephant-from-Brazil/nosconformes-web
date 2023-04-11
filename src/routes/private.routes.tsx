@@ -5,14 +5,14 @@ import { loaderedCompanyActionPlanRoutes } from 'modules/company-action-plan/com
 import { loaderedCompanyDashboardRoutes } from 'modules/company-dashboard/company-dashboard.routes'
 import { loaderedCompanyQuestionariesRoutes } from 'modules/company-questionaries/company-questionaries.routes'
 import { loaderedCompaniesRoutes } from '../modules/companies/companies.routes'
-import { settingsRoutes } from '../modules/settings/configurations.routes'
+import { loaderedSettingsRoutes } from '../modules/settings/configurations.routes'
 import { SideBar } from '../components/side-bar'
 import { RouteContainer } from './styles'
 import { Support } from './pages/support'
 
 const allPrivateRoutes = [
 	...loaderedCompaniesRoutes,
-	...settingsRoutes,
+	...loaderedSettingsRoutes,
 	...loaderedKnowledgeBase,
 	...loaderedAuditorsAreaRoutes,
 	...loaderedCompanyActionPlanRoutes,

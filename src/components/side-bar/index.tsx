@@ -64,7 +64,7 @@ export const SideBar: React.FC = () => {
 	}
 
 	const handleClickUserTag = () => {
-		navigate('/configuracoes')
+		navigate('/perfil')
 	}
 
 	return (
@@ -92,7 +92,10 @@ export const SideBar: React.FC = () => {
 						<MenuItem
 							textShow={displayMenuOpen}
 							open={isOpen}
-							active={active === '/empresas'}
+							active={
+								active.includes('/empresas') ||
+								active.includes('/cadastre-sua-primeira-empresa')
+							}
 							onClick={() => handleOpenMenu('/empresas')}
 						>
 							<div className="side-border" />
@@ -102,8 +105,8 @@ export const SideBar: React.FC = () => {
 						<MenuItem
 							textShow={displayMenuOpen}
 							open={isOpen}
-							active={active === '/base-de-conhecimento'}
-							onClick={() => handleOpenMenu('/base-de-conhecimento')}
+							active={active.includes('/base-de-conhecimento')}
+							onClick={() => handleOpenMenu('/base-de-conhecimento/perguntas')}
 						>
 							<div className="side-border" />
 							<CommentBankIcon />

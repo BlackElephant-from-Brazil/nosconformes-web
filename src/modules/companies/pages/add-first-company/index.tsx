@@ -3,10 +3,11 @@ import BusinessIcon from '@mui/icons-material/Business'
 import { api } from 'api'
 import { useNavigate } from 'react-router-dom'
 import { Body } from 'components/body'
-import { Header } from '../../../../components/header'
-import { AddCompanyTabs } from '../../components/add-company-tabs'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import { Header } from 'components/header'
+import { Button } from 'components/button'
+import { AddCompanyTabs } from 'modules/companies/components/add-company-tabs'
 import { Container, CreateYourFirstCompanyScreen } from './styles'
-import { Button } from '../../../../components/button'
 
 const AddFirstCompany: React.FC = () => {
 	const [isRegistering, setIsRegistering] = useState(false)
@@ -46,9 +47,10 @@ const AddFirstCompany: React.FC = () => {
 							</div>
 							<Button
 								variant="primary"
-								text="Cadastrar primeira empresa ->"
+								text="Cadastrar primeira empresa"
 								className="bt-add-first-company"
 								onClick={handleAddFirstCompanyButtonClicked}
+								endIcon={<ArrowForwardIcon />}
 							/>
 						</CreateYourFirstCompanyScreen>
 					) : (
