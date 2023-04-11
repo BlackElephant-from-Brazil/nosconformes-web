@@ -15,6 +15,7 @@ import { AccessLevel } from 'modules/settings/components/access-level'
 import { handleApiError } from 'utils/handle-api-error'
 import { useAuth } from 'hooks/authentication.hook'
 import { Employee } from 'interfaces/employee.type'
+import AddIcon from '@mui/icons-material/Add'
 import { AddNewUserContainer, Container } from './styles'
 
 const tableTitles = ['Nome', 'E-mail', 'Cargo', 'Responsabilidade']
@@ -138,7 +139,8 @@ export const Users: React.FC = () => {
 				</Form>
 				<Button
 					variant="primary"
-					text="Criar novo usuário +"
+					text="Criar novo usuário"
+					endIcon={<AddIcon />}
 					className="new-user-button"
 					onClick={handleCreateNewUserButtonClick}
 				/>

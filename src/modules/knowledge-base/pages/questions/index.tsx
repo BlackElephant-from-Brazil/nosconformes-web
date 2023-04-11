@@ -309,14 +309,14 @@ export const Questions: React.FC = () => {
 				tabs={[
 					{
 						title: 'Perguntas',
-						link: '/perguntas',
+						link: '/base-de-conhecimento/perguntas',
 					},
 					{
 						title: 'Questionários',
-						link: '/questionarios',
+						link: '/base-de-conhecimento/questionarios',
 					},
 				]}
-				active="/perguntas"
+				active="/base-de-conhecimento/perguntas"
 			/>
 			<Body isLoading={isPageLoading}>
 				<div className="questions-list-utilities">
