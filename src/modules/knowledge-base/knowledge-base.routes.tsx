@@ -6,6 +6,8 @@ import {
 import { redirect, RouteObject } from 'react-router-dom'
 import { Questions } from './pages/questions'
 import { Questionaries } from './pages/questionaries'
+import { QuestionaryDetails } from './pages/questionary-details'
+import { SelectQuestions } from './pages/select-questions'
 
 const knowledgeBaseRoutes: RouteObject[] = [
 	{
@@ -15,6 +17,14 @@ const knowledgeBaseRoutes: RouteObject[] = [
 	{
 		path: '/base-de-conhecimento/questionarios',
 		element: <Questionaries />,
+	},
+	{
+		path: '/base-de-conhecimento/questionarios/:questionaryId',
+		element: <QuestionaryDetails />,
+	},
+	{
+		path: '/base-de-conhecimento/questionarios/:questionaryId/adicionar-perguntas/:groupingId',
+		element: <SelectQuestions />,
 	},
 ]
 

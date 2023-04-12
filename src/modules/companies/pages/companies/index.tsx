@@ -19,6 +19,7 @@ import { handleCompanyImageError } from 'utils/handle-image-error'
 import { CompanyGraph } from 'components/company-graph'
 import { CompanyStatus } from 'components/company-status'
 import { formatSite } from 'utils/format-site'
+import AddIcon from '@mui/icons-material/Add'
 import {
 	Container,
 	AddNewCompanyContainerDrawer,
@@ -112,7 +113,8 @@ export const Companies: React.FC = () => {
 						</Form>
 						<Button
 							variant="primary"
-							text="Criar nova empresa +"
+							text="Criar nova empresa"
+							endIcon={<AddIcon />}
 							className="new-company-button"
 							onClick={handleAddNewCompany}
 						/>

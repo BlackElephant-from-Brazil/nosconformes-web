@@ -21,6 +21,7 @@ const TAB_ADD_MANAGER_DATA = 1
 
 type Company = {
 	name: string
+	sector: string
 	cnpj: string
 	site: string
 	logo?: string
@@ -83,6 +84,7 @@ const initialFormDataValue: NewCompanyForm = {
 	company: {
 		cnpj: '',
 		name: '',
+		sector: '',
 		site: '',
 	},
 	manager: {
@@ -143,6 +145,7 @@ export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({
 		const cnpj = revertCnpj(formRef.current?.getFieldValue('company.cnpj'))
 		const companyFormData: Company = {
 			name: formRef.current?.getFieldValue('company.name').trim(),
+			sector: formRef.current?.getFieldValue('company.sector').trim(),
 			cnpj,
 			site: formRef.current?.getFieldValue('company.site').trim(),
 		}
@@ -258,6 +261,7 @@ export const AddCompanyTabs: React.FC<AddCompanyTabsProps> = ({
 					</div>
 					<Scope path="company">
 						<Input label="Nome da empresa" name="name" />
+						<Input label="Setor" name="sector" />
 						<Input
 							label="CNPJ"
 							name="cnpj"

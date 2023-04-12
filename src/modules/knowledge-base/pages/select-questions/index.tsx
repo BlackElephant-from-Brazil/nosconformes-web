@@ -15,25 +15,32 @@ import { Button } from 'components/button'
 import { Dialog } from 'components/dialog'
 import CloseIcon from '@mui/icons-material/Close'
 import { enqueueSnackbar } from 'notistack'
-import { Container, DialogBody } from './styles'
+import { useNavigate, useParams } from 'react-router-dom'
+import CommentBankIcon from '@mui/icons-material/CommentBank'
+import { Container } from 'components/container'
+import { HeaderWithTabs } from 'components/header-with-tabs'
+import { Body } from 'components/body'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import {
+	DialogBody,
+	SaveQuestionsButtonContainer,
+	Search,
+	SelectQuestionHeader,
+	TableQuestions,
+} from './styles'
 
 const tableTitles = ['ID', 'Pergunta', 'Função', 'Tag', 'Referência']
 
-type SelectQuestionsProps = {
-	groupingId: string
-	openTab: (link: string) => void
-}
-
-export const SelectQuestions: React.FC<SelectQuestionsProps> = ({
-	groupingId,
-	openTab,
-}) => {
+export const SelectQuestions: React.FC = () => {
 	const formSearchInputRef = React.useRef<FormHandles>(null)
 	const [questions, setQuestions] = React.useState<Question[]>([])
 	const [selectedQuestions, setSelectedQuestions] = useState<string[]>([])
 	const [saveDialogOpen, setSaveDialogOpen] = useState(false)
 	const [pages, setPages] = useState(0)
 	const [currentPage, setCurrentPage] = useState(1)
+	const [isPageLoading, setIsPageLoading] = useState(true)
+	const navigate = useNavigate()
+	const { questioaryId, groupingId } = useParams()
 
 	useEffect(() => {
 		;(async () => {
@@ -41,6 +48,7 @@ export const SelectQuestions: React.FC<SelectQuestionsProps> = ({
 				const { data } = await api.get('/questions')
 				setQuestions(data.findQuestions)
 				setPages(data.pageCount)
+				setIsPageLoading(false)
 			} catch (error) {
 				handleApiError(error)
 			}
@@ -71,7 +79,7 @@ export const SelectQuestions: React.FC<SelectQuestionsProps> = ({
 	}
 
 	const handleBackButtonClick = () => {
-		openTab('/detalhes-do-questionario')
+		navigate(-1)
 	}
 
 	const handleSearchInputChange = async () => {
@@ -121,7 +129,7 @@ export const SelectQuestions: React.FC<SelectQuestionsProps> = ({
 		})
 		toggleSaveDialogOpen()
 		setSelectedQuestions([])
-		openTab('/detalhes-do-questionario')
+		navigate(`/base-de-conhecimento/questionarios/${questioaryId}`)
 	}
 
 	const handleSelectPage = async (page: number) => {
@@ -200,63 +208,83 @@ export const SelectQuestions: React.FC<SelectQuestionsProps> = ({
 
 	return (
 		<Container>
-			<div className="select-questions-header">
-				<BackButton handleClick={handleBackButtonClick} />
-				<h3>Selecione as perguntas abaixo para adicionar ao agrupamento:</h3>
-			</div>
-			<div className="search">
-				<Form
-					onSubmit={e => e.preventDefault()}
-					ref={formSearchInputRef}
-					className="search-input"
-				>
-					<Input
-						name="searchQuestion"
-						placeholder="Pesquise por nome da pergunta"
-						endAdornmentIcon={<SearchRoundedIcon />}
-						onChange={handleSearchInputChange}
-					/>
-				</Form>
-			</div>
-			<div className="table-questions">
-				<Table
-					headerTitles={tableTitles}
-					tableRows={renderTableBodyInfo()}
-					className="table-questions"
-					selectAllRows={toggleSelectAllRows}
-					isSelectable
-					pages={pages}
-					currentPage={currentPage}
-					selectPage={handleSelectPage}
-				/>
-			</div>
-			<Button
-				text="Adicionar perguntas ao agrupamento ^"
-				variant="primary"
-				onClick={handleAddQuestionsToGroupingClick}
-				className="save-questions-button"
+			<HeaderWithTabs
+				icon={<CommentBankIcon />}
+				title="Base de conhecimento"
+				tabs={[
+					{
+						title: 'Perguntas',
+						link: '/base-de-conhecimento/perguntas',
+					},
+					{
+						title: 'Questionários',
+						link: '/base-de-conhecimento/questionarios',
+					},
+				]}
+				active="/base-de-conhecimento/questionarios"
 			/>
-			<Dialog
-				open={saveDialogOpen}
-				toggleOpen={toggleSaveDialogOpen}
-				variant="bottom_right"
-			>
-				<DialogBody>
-					<CloseIcon
-						className="close-dialog-icon"
-						onClick={toggleSaveDialogOpen}
-						data-testid="close-button"
+			<Body isLoading={isPageLoading}>
+				<SelectQuestionHeader>
+					<BackButton handleClick={handleBackButtonClick} />
+					<h3>Selecione as perguntas abaixo para adicionar ao agrupamento:</h3>
+				</SelectQuestionHeader>
+				<Search>
+					<Form
+						onSubmit={e => e.preventDefault()}
+						ref={formSearchInputRef}
+						className="search-input"
+					>
+						<Input
+							name="searchQuestion"
+							placeholder="Pesquise por nome da pergunta"
+							endAdornmentIcon={<SearchRoundedIcon />}
+							onChange={handleSearchInputChange}
+						/>
+					</Form>
+				</Search>
+				<TableQuestions>
+					<Table
+						headerTitles={tableTitles}
+						tableRows={renderTableBodyInfo()}
+						className="table-questions"
+						selectAllRows={toggleSelectAllRows}
+						isSelectable
+						pages={pages}
+						currentPage={currentPage}
+						selectPage={handleSelectPage}
 					/>
-					<div className="dialog-confirmation-text">
-						<h2>Deseja adicionar as perguntas ao agrupamento?</h2>
-					</div>
+				</TableQuestions>
+				<SaveQuestionsButtonContainer>
 					<Button
-						text="Salvar"
-						onClick={handleSaveDialogConfirm}
+						text="Adicionar perguntas ao agrupamento"
 						variant="primary"
+						endIcon={<ArrowForwardIcon />}
+						onClick={handleAddQuestionsToGroupingClick}
+						className="save-questions-button"
 					/>
-				</DialogBody>
-			</Dialog>
+				</SaveQuestionsButtonContainer>
+				<Dialog
+					open={saveDialogOpen}
+					toggleOpen={toggleSaveDialogOpen}
+					variant="bottom_right"
+				>
+					<DialogBody>
+						<CloseIcon
+							className="close-dialog-icon"
+							onClick={toggleSaveDialogOpen}
+							data-testid="close-button"
+						/>
+						<div className="dialog-confirmation-text">
+							<h2>Deseja adicionar as perguntas ao agrupamento?</h2>
+						</div>
+						<Button
+							text="Salvar"
+							onClick={handleSaveDialogConfirm}
+							variant="primary"
+						/>
+					</DialogBody>
+				</Dialog>
+			</Body>
 		</Container>
 	)
 }

@@ -119,13 +119,20 @@ export const AccordionSummary = styled(MuiAccordionSummary)`
 
 			.button-add {
 				background: #cfd7e8;
-				width: 220px;
+
+				&:hover {
+					background: #93a5cb;
+				}
 			}
 
 			.button-delete {
 				background: #cfd7e8;
-				width: 220px;
 				color: #323e57;
+				margin-left: 8px;
+
+				&:hover {
+					background: #93a5cb;
+				}
 			}
 		}
 	}
