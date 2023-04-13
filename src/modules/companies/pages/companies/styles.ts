@@ -48,7 +48,7 @@ export const AddNewCompanyContainerDrawer = styled.div`
 
 export const CompaniesList = styled.div`
 	margin-top: 22px;
-
+	min-height: 550px;
 	display: flex;
 	width: 100%;
 	max-width: 100%;

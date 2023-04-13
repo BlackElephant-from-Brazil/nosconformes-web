@@ -19,6 +19,8 @@ import { FormHandles } from '@unform/core'
 import { Checkbox } from 'components/checkbox/input'
 import { ContextMenu } from 'components/context-menu'
 import { enqueueSnackbar } from 'notistack'
+import AddIcon from '@mui/icons-material/Add'
+import { useNavigate } from 'react-router-dom'
 import { AccordionSummary, Container, DialogBody } from './styles'
 
 const headerTitles = ['ID', 'Pergunta', 'Função', 'Tag', 'Referência']
@@ -27,14 +29,12 @@ type GroupingAccordionProps = {
 	groupingId: string
 	questionaryId: string
 	onDelete: (groupingId: string) => void
-	openTab: (link: string, groupingId: string) => void
 }
 
 export const GroupingAccordion: React.FC<GroupingAccordionProps> = ({
 	groupingId,
 	questionaryId,
 	onDelete,
-	openTab,
 }) => {
 	const formGroupingNameRef = React.useRef<FormHandles>(null)
 	const [isExpanded, setIsExpanded] = useState(false)
@@ -51,6 +51,7 @@ export const GroupingAccordion: React.FC<GroupingAccordionProps> = ({
 	const [dialogOpen, setDialogOpen] = useState(false)
 	const [allGroupings, setAllGroupings] = useState<Grouping[]>([])
 	const [grouping, setGrouping] = useState<Grouping>({} as Grouping)
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		;(async () => {
@@ -176,7 +177,9 @@ export const GroupingAccordion: React.FC<GroupingAccordionProps> = ({
 	}
 
 	const handleButtonAddClick = () => {
-		openTab('/selecione-as-perguntas', grouping._eq)
+		navigate(
+			`/base-de-conhecimento/questionarios/${questionaryId}/adicionar-perguntas/${grouping._eq}`,
+		)
 	}
 
 	const toggleDialogDeleteGrouping = () => {
@@ -342,13 +345,15 @@ export const GroupingAccordion: React.FC<GroupingAccordionProps> = ({
 				<div className="accordion-buttons">
 					<Button
 						variant="secondary"
-						text="Adicionar perguntas +"
+						text="Adicionar perguntas"
+						endIcon={<AddIcon />}
 						className="button-add"
 						onClick={handleButtonAddClick}
 					/>
 					<Button
 						variant="secondary"
-						text="Excluir agrupamento x"
+						text="Excluir agrupamento"
+						endIcon={<ClearIcon />}
 						className="button-delete"
 						onClick={handleButtonDeleteClick}
 					/>

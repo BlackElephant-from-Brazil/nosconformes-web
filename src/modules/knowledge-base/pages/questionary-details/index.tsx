@@ -14,21 +14,17 @@ import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Questionary } from 'interfaces/questionary.type'
 import { Menu } from 'components/menu'
-import { Container } from './styles'
+import { useNavigate, useParams } from 'react-router-dom'
+import { HeaderWithTabs } from 'components/header-with-tabs'
+import { Body } from 'components/body'
+import CommentBankIcon from '@mui/icons-material/CommentBank'
+import { Container } from 'components/container'
+import AddIcon from '@mui/icons-material/Add'
 import { GroupingAccordion } from './components/grouping-accordion'
 import { CompaniesDialog } from './components/companies-dialog'
+import { NewQuestionaryHeader, NewQuestionaryInteractiors } from './styles'
 
-type QuestionaryDetailsProps = {
-	questionaryId: string
-	closeQuestionaryDetails: () => void
-	openTab: (link: string, groupingId: string) => void
-}
-
-export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
-	questionaryId,
-	closeQuestionaryDetails,
-	openTab,
-}) => {
+export const QuestionaryDetails: React.FC = () => {
 	const formSearchInputRef = React.useRef<FormHandles>(null)
 	const formQuestionaryNameRef = React.useRef<FormHandles>(null)
 	const [companiesDialogOpen, setCompaniesDialogOpen] = useState(false)
@@ -39,6 +35,9 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 	const [menuAddGroupingAnchorEl, setMenuAddGroupingAnchorEl] =
 		useState<HTMLElement | null>(null)
 	const [availableGroupings, setAvailableGroupings] = useState<Grouping[]>([])
+	const { questionaryId } = useParams()
+	const [isPageLoading, setIsPageLoading] = useState(true)
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		;(async () => {
@@ -46,9 +45,9 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 				const { data: findQuestionary } = await api.get(
 					`/questionaries/${questionaryId}`,
 				)
-
 				setQuestionary(findQuestionary)
 				setNewQuestionaryName(findQuestionary.name)
+				setIsPageLoading(false)
 			} catch (err) {
 				handleApiError(err)
 			}
@@ -57,17 +56,16 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 
 	useEffect(() => {
 		;(async () => {
-			if (!questionary._eq) return
 			try {
 				const { data: findGroupings } = await api.get(
-					`/questionaries/available-groupings/${questionary._eq}`,
+					`/questionaries/available-groupings/${questionaryId}`,
 				)
 				setAvailableGroupings(findGroupings)
 			} catch (err) {
 				handleApiError(err)
 			}
 		})()
-	}, [questionary._eq])
+	}, [questionaryId])
 
 	const toggleCompaniesDialogOpen = () => {
 		setCompaniesDialogOpen(!companiesDialogOpen)
@@ -173,99 +171,120 @@ export const QuestionaryDetails: React.FC<QuestionaryDetailsProps> = ({
 		toggleAddGroupingMenuOpen()
 	}
 
+	const handleBackButtonClick = () => {
+		navigate(-1)
+	}
+
 	return (
 		<Container>
-			<div className="new-questionary-header">
-				<BackButton handleClick={closeQuestionaryDetails} />
-				<div className="questionary-name">
-					<p>Questionário:</p>
-					{questionaryNameEditable ? (
-						<Form
-							onSubmit={e => e.preventDefault()}
-							ref={formQuestionaryNameRef}
-						>
-							<Input
-								name="name"
-								variant="standard"
-								initialValue={newQuestionaryName}
-							/>
-							<CheckIcon onClick={handleSaveQuestionaryName} />
-							<ClearIcon onClick={handleCancelEditQuestionaryName} />
-						</Form>
-					) : (
-						<>
-							<span>
-								{newQuestionaryName !== ''
-									? newQuestionaryName
-									: 'Digite o nome do questionário'}
-							</span>
-							<EditIcon onClick={handleEditQuestionaryNameClick} />
-						</>
-					)}
-				</div>
-				<div className="questionary-buttons">
-					<Button
-						text="Compartilhar"
-						endIcon={<LockIcon />}
-						variant="primary"
-						className="share-button"
-						onClick={toggleCompaniesDialogOpen}
-					/>
-				</div>
-			</div>
-			<div className="new-questionary-interactors">
-				<Form
-					onSubmit={e => e.preventDefault()}
-					ref={formSearchInputRef}
-					className="search-input"
-				>
-					<Input
-						name="searchGrouping"
-						placeholder="Pesquise pelo agrupamento"
-						endAdornmentIcon={<SearchRoundedIcon />}
-						onChange={handleSearchInputChange}
-					/>
-				</Form>
-				<Button
-					variant="secondary"
-					text="Adicionar agrupamento +"
-					className="new-grouping-button"
-					onClick={e => handleAddGroupingButtonClick(e)}
-				/>
-			</div>
-			<div className="groupings">
-				{questionary.groupings?.map(grouping => (
-					<GroupingAccordion
-						groupingId={grouping._eq}
-						questionaryId={questionary._eq}
-						onDelete={handleDeleteGrouping}
-						openTab={openTab}
-					/>
-				))}
-			</div>
-			<CompaniesDialog
-				open={companiesDialogOpen}
-				toggleOpen={toggleCompaniesDialogOpen}
-				questionaryId={questionary._eq}
-				currentCompanies={questionary.companies}
-			/>
-			<Menu
-				open={addGroupingMenuOpen}
-				closeMenu={toggleAddGroupingMenuOpen}
-				menuItems={[
+			<HeaderWithTabs
+				icon={<CommentBankIcon />}
+				title="Base de conhecimento"
+				tabs={[
 					{
-						label: 'Novo agrupamento +',
-						click: handleCreateNewGroupingButtonClick,
-						isPrimary: true,
+						title: 'Perguntas',
+						link: '/base-de-conhecimento/perguntas',
 					},
-					...availableGroupings.map(grouping => ({
-						label: grouping.name,
-						click: () => handleAddGroupingToQuestionary(grouping._eq),
-					})),
+					{
+						title: 'Questionários',
+						link: '/base-de-conhecimento/questionarios',
+					},
 				]}
-				menuId="add-grouping-menu"
-				anchorEl={menuAddGroupingAnchorEl}
+				active="/base-de-conhecimento/questionarios"
 			/>
+			<Body isLoading={isPageLoading}>
+				<NewQuestionaryHeader>
+					<BackButton handleClick={handleBackButtonClick} />
+					<div className="questionary-name">
+						<p>Questionário:</p>
+						{questionaryNameEditable ? (
+							<Form
+								onSubmit={e => e.preventDefault()}
+								ref={formQuestionaryNameRef}
+							>
+								<Input
+									name="name"
+									variant="standard"
+									initialValue={newQuestionaryName}
+								/>
+								<CheckIcon onClick={handleSaveQuestionaryName} />
+								<ClearIcon onClick={handleCancelEditQuestionaryName} />
+							</Form>
+						) : (
+							<>
+								<span>
+									{newQuestionaryName !== ''
+										? newQuestionaryName
+										: 'Digite o nome do questionário'}
+								</span>
+								<EditIcon onClick={handleEditQuestionaryNameClick} />
+							</>
+						)}
+					</div>
+					<div className="questionary-buttons">
+						<Button
+							text="Compartilhar"
+							endIcon={<LockIcon />}
+							variant="primary"
+							className="share-button"
+							onClick={toggleCompaniesDialogOpen}
+						/>
+					</div>
+				</NewQuestionaryHeader>
+				<NewQuestionaryInteractiors>
+					<Form
+						onSubmit={e => e.preventDefault()}
+						ref={formSearchInputRef}
+						className="search-input"
+					>
+						<Input
+							name="searchGrouping"
+							placeholder="Pesquise pelo agrupamento"
+							endAdornmentIcon={<SearchRoundedIcon />}
+							onChange={handleSearchInputChange}
+						/>
+					</Form>
+					<Button
+						variant="secondary"
+						text="Adicionar agrupamento"
+						endIcon={<AddIcon />}
+						className="new-grouping-button"
+						onClick={e => handleAddGroupingButtonClick(e)}
+					/>
+				</NewQuestionaryInteractiors>
+				<div className="groupings">
+					{questionary.groupings?.map(grouping => (
+						<GroupingAccordion
+							groupingId={grouping._eq}
+							questionaryId={questionary._eq}
+							onDelete={handleDeleteGrouping}
+						/>
+					))}
+				</div>
+				<CompaniesDialog
+					open={companiesDialogOpen}
+					toggleOpen={toggleCompaniesDialogOpen}
+					questionaryId={questionary._eq}
+					currentCompanies={questionary.companies}
+				/>
+				<Menu
+					open={addGroupingMenuOpen}
+					closeMenu={toggleAddGroupingMenuOpen}
+					menuItems={[
+						{
+							label: 'Novo agrupamento +',
+							click: handleCreateNewGroupingButtonClick,
+							isPrimary: true,
+						},
+						...availableGroupings.map(grouping => ({
+							label: grouping.name,
+							click: () => handleAddGroupingToQuestionary(grouping._eq),
+						})),
+					]}
+					menuId="add-grouping-menu"
+					anchorEl={menuAddGroupingAnchorEl}
+				/>
+			</Body>
 		</Container>
 	)
 }

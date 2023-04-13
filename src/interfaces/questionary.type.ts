@@ -1,5 +1,6 @@
 import { Auditor } from './auditor.type'
 import { Company } from './company.type'
+import { Employee } from './employee.type'
 import { Grouping } from './grouping.type'
 
 export type Questionary = {
@@ -9,4 +10,5 @@ export type Questionary = {
 	companies: Company[]
 	groupings: Grouping[]
 	percentage?: number
+	employees?: Employee[]
 }
