@@ -1,6 +1,11 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
+	.wrapper {
+		position: relative;
+		min-height: 500px;
+	}
+
 	.tabs {
 		display: flex;
 		flex-direction: column;
@@ -10,22 +15,70 @@ export const Container = styled.div`
 			width: 450px;
 		}
 	}
+
+	.no-groupings {
+		font-weight: 700;
+		font-size: 22px;
+		color: #0f141e;
+		margin-top: 24px;
+	}
+
+	.space-select-questionary {
+		height: 78px;
+	}
 `
 
 type SelectQuestionaryProps = {
 	isOpen: boolean
 }
 export const SelectQuestionary = styled.div<SelectQuestionaryProps>`
+	position: absolute;
 	width: 100%;
-	height: 78px;
-	padding: 26px;
+	height: ${({ isOpen }) => (isOpen ? '420' : '78')}px;
 	display: flex;
-	align-items: center;
+	flex-direction: column;
 	background: #fff;
 	border-radius: 16px;
 	border: 2px dashed #1f4cd5;
-	justify-content: space-between;
+	transition: 0.3s ease-in-out;
+	z-index: 99;
 	cursor: pointer;
+	${({ isOpen }) =>
+		isOpen &&
+		`
+			box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+		`}
+
+	.selected-questionary {
+		display: flex;
+		align-items: center;
+		height: 78px;
+		padding: 26px;
+		justify-content: space-between;
+	}
+
+	.questionaries {
+		display: flex;
+		flex-direction: column;
+		overflow: ${({ isOpen }) => (isOpen ? 'auto' : 'hidden')};
+		padding: 26px;
+
+		.no-questionaries {
+			font-weight: 700;
+			font-size: 22px;
+			color: #0f141e;
+		}
+
+		p {
+			padding: 26px;
+			border-radius: 8px;
+
+			:not(.no-questionaries):hover {
+				cursor: pointer;
+				background: #e8e8e8;
+			}
+		}
+	}
 
 	.questionary-title {
 		font-weight: 500;

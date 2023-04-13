@@ -18,6 +18,9 @@ export const QuestionaryDetails: React.FC = () => {
 	const [selectedQuestionary, setSelectedQuestionary] =
 		React.useState<Questionary>()
 	const [groupings, setGroupings] = React.useState<Grouping[]>([])
+	const [finishedGroupings, setFinishedGroupings] = React.useState<Grouping[]>(
+		[],
+	)
 	const [isSelectQuestionaryOpen, setIsSelectQuestionaryOpen] =
 		React.useState(false)
 	const { employee } = useAuth()
@@ -47,7 +50,8 @@ export const QuestionaryDetails: React.FC = () => {
 				const { data } = await api.get(
 					`/groupings/${selectedQuestionary._eq}/questionary/${employee.companyId}/company`,
 				)
-				setGroupings(data)
+				setGroupings(data.groupings)
+				setFinishedGroupings(data.finishedGroupings)
 			} catch (err) {
 				handleApiError(err)
 			}
@@ -67,6 +71,11 @@ export const QuestionaryDetails: React.FC = () => {
 	const renderGroupings = () => {
 		return (
 			<div className="groupings">
+				{groupings.length === 0 && (
+					<p className="no-groupings">
+						Nenhum agrupamento para ser exibido aqui.
+					</p>
+				)}
 				{groupings.map(grouping => (
 					<GroupingItem
 						onClick={() => handleOpenGroupingDetailsClick(grouping._eq)}
@@ -82,7 +91,25 @@ export const QuestionaryDetails: React.FC = () => {
 	}
 
 	const renderConcludeds = () => {
-		return <p>Mundo</p>
+		return (
+			<div className="groupings">
+				{finishedGroupings.length === 0 && (
+					<p className="no-groupings">
+						Nenhum agrupamento para ser exibido aqui.
+					</p>
+				)}
+				{finishedGroupings.map(grouping => (
+					<GroupingItem
+						onClick={() => handleOpenGroupingDetailsClick(grouping._eq)}
+					>
+						<p className="grouping-name">{grouping.name}</p>
+						<div className="graph">
+							<ProgressGraph percentage={grouping.percentage || 0} size={18} />
+						</div>
+					</GroupingItem>
+				))}
+			</div>
+		)
 	}
 
 	return (
@@ -93,15 +120,37 @@ export const QuestionaryDetails: React.FC = () => {
 					isOpen={isSelectQuestionaryOpen}
 					onClick={toggleSelectQuestionaryOpen}
 				>
-					<p className="questionary-title">
-						Questionário:{' '}
-						<span className="questionary-title-name">
-							Política de privacidade
-						</span>
-					</p>
+					<div className="selected-questionary">
+						<p className="questionary-title">
+							Questionário:{' '}
+							<span className="questionary-title-name">
+								{selectedQuestionary?.name}
+							</span>
+						</p>
+						<KeyboardArrowDownIcon />
+					</div>
 
-					<KeyboardArrowDownIcon />
+					<div className="questionaries">
+						{questionaries.length === 0 && (
+							<p className="no-questionaries">
+								Nenhum questionário para ser exibido aqui...
+							</p>
+						)}
+						{questionaries.map(questionary => (
+							<p
+								className="questionary-title"
+								onClick={() => setSelectedQuestionary(questionary)}
+								role="presentation"
+							>
+								Questionário:{' '}
+								<span className="questionary-title-name">
+									{questionary.name}
+								</span>
+							</p>
+						))}
+					</div>
 				</SelectQuestionary>
+				<div className="space-select-questionary" />
 				<div className="tabs">
 					<Tabs
 						tabTitles={['Agrupamentos', 'Concluídos']}
