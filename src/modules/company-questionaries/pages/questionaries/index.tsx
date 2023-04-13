@@ -2,7 +2,6 @@ import { Body } from 'components/body'
 import { Header } from 'components/header'
 import React, { useEffect } from 'react'
 import ArticleIcon from '@mui/icons-material/Article'
-import { Button } from 'components/button'
 import { Form } from '@unform/web'
 import { Input } from 'components/input'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
@@ -12,15 +11,21 @@ import { useAuth } from 'hooks/authentication.hook'
 import { api } from 'api'
 import { handleApiError } from 'utils/handle-api-error'
 import { Company } from 'interfaces/company.type'
-import { useNavigate } from 'react-router-dom'
-import { Container, QuestionaryInfos } from './styles'
+import { Container } from './styles'
+import { AddEmployeeToQuestionaryDialog } from './components/add-employee-to-questionary-dialog'
+import { QuestionaryInfo } from './components/questionary-info'
 
 export const Questionaries: React.FC = () => {
 	const formSearchInputRef = React.useRef<FormHandles>(null)
 	const [questionaries, setQuestionaries] = React.useState<Questionary[]>([])
 	const [company, setCompany] = React.useState<Company>()
+	const [isPageLoading, setIsPageLoading] = React.useState(true)
+	const [
+		isAddUsersToQuestionaryDialogOpen,
+		setIsAddUsersToQuestionaryDialogOpen,
+	] = React.useState(false)
+	const [selectedQuestionaryId, setSelectedQuestionaryID] = React.useState('')
 	const { employee } = useAuth()
-	const navigate = useNavigate()
 
 	useEffect(() => {
 		;(async () => {
@@ -30,6 +35,7 @@ export const Questionaries: React.FC = () => {
 					`/questionaries/${employee.companyId}/company`,
 				)
 				setQuestionaries(data)
+				setIsPageLoading(false)
 			} catch (err) {
 				handleApiError(err)
 			}
@@ -62,14 +68,19 @@ export const Questionaries: React.FC = () => {
 		}
 	}
 
-	const handleOpenQuestionary = (questionaryId: string) => {
-		navigate(`/questionarios-da-empresa/${questionaryId}`)
+	const toggleIsAddUsersToQuestionaryDialogOpen = () => {
+		setIsAddUsersToQuestionaryDialogOpen(!isAddUsersToQuestionaryDialogOpen)
+	}
+
+	const handleAddEmployeesToQuestionary = (questionaryId: string) => {
+		toggleIsAddUsersToQuestionaryDialogOpen()
+		setSelectedQuestionaryID(questionaryId)
 	}
 
 	return (
 		<Container>
 			<Header title="Questionarios" icon={<ArticleIcon />} />
-			<Body cardContext>
+			<Body cardContext isLoading={isPageLoading}>
 				<Form onSubmit={e => e.preventDefault()} ref={formSearchInputRef}>
 					<Input
 						name="searchUser"
@@ -80,26 +91,19 @@ export const Questionaries: React.FC = () => {
 					/>
 				</Form>
 				{questionaries.map(questionary => (
-					<QuestionaryInfos>
-						<h2>Questionário</h2>
-						<h3
-							onClick={() => handleOpenQuestionary(questionary._eq)}
-							role="presentation"
-						>
-							{questionary.name}
-						</h3>
-						<Button
-							text="Adicionar usuários +"
-							variant="secondary"
-							className="bt-add-users-to-questionary"
-						/>
-						<span className="company-title">Empresa</span>
-						<div className="company-details">
-							<img src={company?.logo} alt={`Logo da ${company?.name}`} />
-							<p>{company?.name}</p>
-						</div>
-					</QuestionaryInfos>
+					<QuestionaryInfo
+						questionary={questionary}
+						company={company}
+						onAddEmployeesToAquestionaryButtonClick={
+							handleAddEmployeesToQuestionary
+						}
+					/>
 				))}
+				<AddEmployeeToQuestionaryDialog
+					isOpen={isAddUsersToQuestionaryDialogOpen}
+					toggleOpen={toggleIsAddUsersToQuestionaryDialogOpen}
+					questionaryId={selectedQuestionaryId}
+				/>
 			</Body>
 		</Container>
 	)

@@ -42,6 +42,7 @@ export const Users: React.FC = () => {
 				} else if (employee) {
 					const { data } = await api.get('/employees')
 					setUsers(data)
+					setIsPageLoading(false)
 				}
 			} catch (error) {
 				handleApiError(error)
