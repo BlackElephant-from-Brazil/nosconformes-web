@@ -76,7 +76,7 @@ export const CompanyDashboard: React.FC = () => {
 				const { data } = await api.get(
 					`groupings/${selectedQuestionary._eq}/questionary/${employee?.companyId}/company`,
 				)
-				setGroupings(data)
+				setGroupings([...data.groupings, ...data.finishedGroupings])
 			} catch (err) {
 				handleApiError(err)
 			}
@@ -192,7 +192,7 @@ export const CompanyDashboard: React.FC = () => {
 							<KeyboardArrowDownIcon />
 						</div>
 						<div className="questionaries-list" />
-						{/* TODO: INSER HERE OTHER QUESTIONARIES */}
+						{/* TODO: INSERT HERE OTHER QUESTIONARIES */}
 					</div>
 					<div className="space-questionaries" />
 					<div className="groupings">

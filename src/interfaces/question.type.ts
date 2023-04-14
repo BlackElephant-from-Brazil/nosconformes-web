@@ -1,4 +1,5 @@
 import { Answer } from './answer.type'
+import { Employee } from './employee.type'
 
 type Grouping = {
 	_eq: string
@@ -30,4 +31,5 @@ export type Question = {
 	accordingButtons: string[]
 	partialAccordingButtons: string[]
 	answer: Answer
+	employees?: Employee[]
 }
