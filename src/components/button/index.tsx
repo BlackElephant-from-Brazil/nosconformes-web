@@ -8,6 +8,7 @@ export type ButtonProps = {
 	variant:
 		| 'primary'
 		| 'secondary'
+		| 'secondary-danger'
 		| 'primary-orange'
 		| 'excel'
 		| 'danger'
@@ -19,6 +20,7 @@ export type ButtonProps = {
 	type?: 'submit' | 'button' | 'reset'
 	testid?: string
 	isLoading?: boolean
+	disabled?: boolean
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -31,6 +33,7 @@ const Button: React.FC<ButtonProps> = ({
 	type,
 	testid,
 	isLoading,
+	disabled,
 }) => {
 	return (
 		<StyledButton
@@ -45,7 +48,7 @@ const Button: React.FC<ButtonProps> = ({
 			buttonstyle={variant}
 			endIcon={endIcon || null}
 			startIcon={startIcon || null}
-			disabled={isLoading}
+			disabled={isLoading || disabled}
 		>
 			{text}
 			{variant === 'excel' && <img src={excelIcon} alt="Ícone do excel" />}

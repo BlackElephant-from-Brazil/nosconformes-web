@@ -34,11 +34,25 @@ export const StyledButton = styled(Button)<PrimaryButtonProps>`
 	${({ buttonstyle: buttonStyle }) => {
 		if (buttonStyle === 'secondary') {
 			return `
-						background: #FFFFFF;
+						background: transparent;
 						color: #1F4CD5;
 
 						:hover {
 							background: #D6E4FF;
+						}
+
+						:active {
+							background: #FFFFFF;
+						}
+					`
+		}
+		if (buttonStyle === 'secondary-danger') {
+			return `
+						background: transparent;
+						color: #FF2163;
+
+						:hover {
+							background: #FFE1EA;
 						}
 
 						:active {

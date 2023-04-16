@@ -193,8 +193,10 @@ export const FormQuestion: React.FC<FormQuestionProps> = ({
 				recommendation: question.recommendation,
 				description: question.description,
 			})
-			setAccordingButtons(question.accordingButtons)
-			setPartialAccordingButtons(question.partialAccordingButtons)
+			setAccordingButtons(question.accordingButtons.map(ab => ab.label))
+			setPartialAccordingButtons(
+				question.partialAccordingButtons.map(pab => pab.label),
+			)
 		}
 	}, [question])
 
