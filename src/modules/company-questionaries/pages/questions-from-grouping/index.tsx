@@ -12,10 +12,11 @@ import { api } from 'api'
 import { Button } from 'components/button'
 import PostAddIcon from '@mui/icons-material/PostAdd'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useAuth } from 'hooks/authentication.hook'
 import { Table } from 'components/table'
 import { Checkbox } from 'components/checkbox/input'
+import AddIcon from '@mui/icons-material/Add'
 import { Container } from './styles'
+import { AddEmployeeToQuestionDialog } from './components/add-employee-to-question'
 
 const tableTitles = ['Pergunta', 'Usuários']
 
@@ -26,8 +27,11 @@ export const QuestionsFromGrouping: React.FC = () => {
 	const [pages, setPages] = React.useState(0)
 	const [currentPage, setCurrentPage] = React.useState(1)
 	const { questionaryId, groupingId } = useParams()
+	const [isDialogOpen, setIsDialogOpen] = React.useState(false)
+	const [selectedQuestionsIds, setSelectedQuestionsIds] = React.useState<
+		string[]
+	>([])
 	const navigate = useNavigate()
-	const { employee } = useAuth()
 
 	React.useEffect(() => {
 		;(async () => {
@@ -35,7 +39,6 @@ export const QuestionsFromGrouping: React.FC = () => {
 				const { data: foundQuestions } = await api.get(
 					`/questions/${groupingId}/grouping`,
 				)
-				console.log(foundQuestions)
 				setQuestions(foundQuestions)
 			} catch (err) {
 				handleApiError(err)
@@ -43,8 +46,11 @@ export const QuestionsFromGrouping: React.FC = () => {
 		})()
 	}, [groupingId])
 
+	const toggleDialogOpen = () => {
+		setIsDialogOpen(!isDialogOpen)
+	}
+
 	const handleSearchInputChange = async () => {
-		// if (!employee) return
 		const searchInputValue =
 			formSearchInputRef.current?.getFieldValue('searchUser')
 		try {
@@ -58,7 +64,8 @@ export const QuestionsFromGrouping: React.FC = () => {
 	}
 
 	const handleAddUsersClick = () => {
-		console.log('handleAddUsersClick')
+		setSelectedQuestionsIds(selectedQuestions)
+		toggleDialogOpen()
 	}
 
 	const handleRespondQuestionsClick = () => {
@@ -81,6 +88,11 @@ export const QuestionsFromGrouping: React.FC = () => {
 		toggleSelectedQuestion(questionId)
 	}
 
+	const handleAddUserButtonClick = (questionIds: string[]) => {
+		setSelectedQuestionsIds(questionIds)
+		toggleDialogOpen()
+	}
+
 	const renderTableBodyInfo = () => {
 		const renderedTableRow = questions.map(question => {
 			return (
@@ -100,10 +112,23 @@ export const QuestionsFromGrouping: React.FC = () => {
 					</td>
 
 					<td className="users-cell">
-						Usuários na pergunta
-						{/* {question.references.map(ref => (
-							<Chip info={ref.label} />
-						))} */}
+						{question.employees?.map(employee => (
+							<div className="employee-in-table">
+								<img
+									src={employee.profilePicture}
+									alt={`Foto de perfil de ${employee.name}`}
+								/>
+								<p>{employee.name}</p>
+							</div>
+						))}
+						<div
+							className="add-employee"
+							onClick={() => handleAddUserButtonClick([question._eq])}
+							role="presentation"
+						>
+							<span>Adicionar usuários</span>
+							<AddIcon />
+						</div>
 					</td>
 				</tr>
 			)
@@ -136,6 +161,19 @@ export const QuestionsFromGrouping: React.FC = () => {
 		}
 	}
 
+	const handleReloadTable = async () => {
+		const searchInputValue =
+			formSearchInputRef.current?.getFieldValue('searchUser')
+		try {
+			const { data: foundQuestions } = await api.get(
+				`/questions/${groupingId}/grouping?query=${searchInputValue}`,
+			)
+			setQuestions(foundQuestions)
+		} catch (err) {
+			handleApiError(err)
+		}
+	}
+
 	return (
 		<Container>
 			<Header title="Questionários" icon={<ArticleIcon />} />
@@ -153,7 +191,8 @@ export const QuestionsFromGrouping: React.FC = () => {
 					<div className="button-group">
 						{selectedQuestions.length > 0 && (
 							<Button
-								text="Adicionar usuários +"
+								endIcon={<AddIcon />}
+								text="Adicionar usuários"
 								variant="secondary"
 								onClick={handleAddUsersClick}
 							/>
@@ -176,6 +215,12 @@ export const QuestionsFromGrouping: React.FC = () => {
 					pages={pages}
 					currentPage={currentPage}
 					selectPage={handleSelectPage}
+				/>
+				<AddEmployeeToQuestionDialog
+					isOpen={isDialogOpen}
+					questionIds={selectedQuestionsIds}
+					toggleOpen={toggleDialogOpen}
+					reloadTable={handleReloadTable}
 				/>
 			</Body>
 		</Container>

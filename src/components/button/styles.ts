@@ -16,6 +16,12 @@ export const StyledButton = styled(Button)<PrimaryButtonProps>`
 	width: 100%;
 	margin-bottom: 10px;
 	margin-top: 10px;
+	min-width: fit-content;
+
+	svg {
+		width: 24px;
+		height: 24px;
+	}
 
 	:hover {
 		background: #183caa;
@@ -28,11 +34,25 @@ export const StyledButton = styled(Button)<PrimaryButtonProps>`
 	${({ buttonstyle: buttonStyle }) => {
 		if (buttonStyle === 'secondary') {
 			return `
-						background: #FFFFFF;
+						background: transparent;
 						color: #1F4CD5;
 
 						:hover {
 							background: #D6E4FF;
+						}
+
+						:active {
+							background: #FFFFFF;
+						}
+					`
+		}
+		if (buttonStyle === 'secondary-danger') {
+			return `
+						background: transparent;
+						color: #FF2163;
+
+						:hover {
+							background: #FFE1EA;
 						}
 
 						:active {

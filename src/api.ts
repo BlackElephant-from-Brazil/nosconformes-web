@@ -2,7 +2,7 @@ import axios from 'axios'
 import { enqueueSnackbar } from 'notistack'
 
 const api = axios.create({
-	baseURL: 'https://nosconformes-api.blackelephant.com.br/',
+	baseURL: process.env.REACT_APP_API_URL,
 })
 
 api.interceptors.response.use(

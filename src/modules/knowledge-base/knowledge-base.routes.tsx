@@ -4,12 +4,27 @@ import {
 	STORAGE_USER_KEY,
 } from 'hooks/authentication.hook'
 import { redirect, RouteObject } from 'react-router-dom'
-import { KnowledgeBase } from '.'
+import { Questions } from './pages/questions'
+import { Questionaries } from './pages/questionaries'
+import { QuestionaryDetails } from './pages/questionary-details'
+import { SelectQuestions } from './pages/select-questions'
 
 const knowledgeBaseRoutes: RouteObject[] = [
 	{
-		path: '/base-de-conhecimento',
-		element: <KnowledgeBase />,
+		path: '/base-de-conhecimento/perguntas',
+		element: <Questions />,
+	},
+	{
+		path: '/base-de-conhecimento/questionarios',
+		element: <Questionaries />,
+	},
+	{
+		path: '/base-de-conhecimento/questionarios/:questionaryId',
+		element: <QuestionaryDetails />,
+	},
+	{
+		path: '/base-de-conhecimento/questionarios/:questionaryId/adicionar-perguntas/:groupingId',
+		element: <SelectQuestions />,
 	},
 ]
 

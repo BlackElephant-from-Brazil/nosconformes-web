@@ -1,8 +1,13 @@
+import { AccordingButton } from './according-button.type'
 import { Answer } from './answer.type'
+import { Employee } from './employee.type'
+import { PartialAccordingButton } from './partial-according-button.type'
+import { Questionary } from './questionary.type'
 
 type Grouping = {
 	_eq: string
 	name: string
+	questionaries: Questionary[]
 }
 type Tag = {
 	_eq: string
@@ -27,7 +32,8 @@ export type Question = {
 	threat: string
 	recommendation: string
 	description: string
-	accordingButtons: string[]
-	partialAccordingButtons: string[]
+	accordingButtons: AccordingButton[]
+	partialAccordingButtons: PartialAccordingButton[]
 	answer: Answer
+	employees?: Employee[]
 }
