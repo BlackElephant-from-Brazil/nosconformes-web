@@ -4,6 +4,7 @@ import { loaderedKnowledgeBase } from 'modules/knowledge-base/knowledge-base.rou
 import { loaderedCompanyActionPlanRoutes } from 'modules/company-action-plan/company-action-plan.routes'
 import { loaderedCompanyDashboardRoutes } from 'modules/company-dashboard/company-dashboard.routes'
 import { loaderedCompanyQuestionariesRoutes } from 'modules/company-questionaries/company-questionaries.routes'
+import { loaderedCompanyContactUsRoutes } from 'modules/company-contact-us/company-contact-us.routes'
 import { loaderedCompaniesRoutes } from '../modules/companies/companies.routes'
 import { loaderedSettingsRoutes } from '../modules/settings/configurations.routes'
 import { SideBar } from '../components/side-bar'
@@ -18,6 +19,7 @@ const allPrivateRoutes = [
 	...loaderedCompanyActionPlanRoutes,
 	...loaderedCompanyDashboardRoutes,
 	...loaderedCompanyQuestionariesRoutes,
+	...loaderedCompanyContactUsRoutes,
 	{
 		path: '/suporte',
 		element: <Support />,

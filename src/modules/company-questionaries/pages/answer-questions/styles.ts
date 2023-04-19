@@ -18,14 +18,27 @@ export const Container = styled.div`
 			justify-content: space-between;
 			align-items: center;
 
-			button:first-child {
-				background: transparent;
-				border: 1px solid #1f4cd5;
-				width: 200px;
-			}
+			button {
+				width: fit-content;
 
-			button:last-child {
-				width: 200px;
+				:first-child {
+					background: transparent;
+					border: 1px solid #1f4cd5;
+
+					:hover {
+						background: #d6e4ff;
+					}
+				}
+
+				&.disabled {
+					color: #84a9ff;
+					background: #d6e4ff;
+					border: 1px solid #84a9ff;
+
+					:hover {
+						background: #d6e4ff;
+					}
+				}
 			}
 
 			.button-chat {
@@ -71,7 +84,7 @@ export const Container = styled.div`
 export const GroupingProgress = styled.div`
 	.grouping-name {
 		text-align: center;
-		max-width: 600px;
+		max-width: 840px;
 		margin: 0 auto;
 		margin-top: 40px;
 
@@ -100,11 +113,11 @@ export const QuestionDetails = styled.div`
 
 		h2 {
 			font-weight: 700;
-			font-size: 34px;
+			font-size: 28px;
 			color: #0f141e;
-			max-width: 600px;
+			max-width: 840px;
 			margin: 0 auto;
-			margin-top: 10px;
+			margin-top: 20px;
 			text-align: center;
 		}
 	}
@@ -113,6 +126,74 @@ export const QuestionDetails = styled.div`
 		display: flex;
 		background: #d6e4ff;
 		border: 2px solid #1f4cd5;
+		border-radius: 8px;
+		padding: 20px;
+		max-width: 800px;
+		margin: 0 auto;
+		margin-top: 40px;
+
+		p {
+			font-weight: 500;
+			font-size: 20px;
+			color: #0f141e;
+		}
+	}
+
+	.attachment {
+		display: flex;
+		width: 80%;
+		padding: 36px;
+		align-items: center;
+		border: 4px dashed #1f4cd5;
+		justify-content: center;
+		margin: 0 auto;
+		margin-top: 20px;
+		cursor: pointer;
+		position: relative;
+		transition: 200ms ease-in-out;
+
+		:hover {
+			background: #d6e4ff;
+		}
+
+		.attachment-item {
+			all: unset;
+			opacity: 0;
+			inset: 0;
+			position: absolute;
+		}
+
+		svg {
+			width: 58px;
+			height: 58px;
+			color: #1f4cd5;
+		}
+
+		p {
+			color: #1f4cd5;
+			font-weight: 700;
+			font-size: 34px;
+			margin-left: 32px;
+		}
+	}
+
+	.attachment-buttons {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		max-width: 700px;
+		margin: 0 auto;
+		margin-top: 20px;
+
+		button {
+			width: fit-content;
+		}
+	}
+
+	.threat {
+		display: flex;
+		background: #ffe1ea;
+		border: 2px solid #ff2163;
 		border-radius: 8px;
 		padding: 20px;
 		max-width: 800px;
